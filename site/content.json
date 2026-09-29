@@ -1,7 +1,7 @@
 {
   "zh-CN": {
-    "title": "启明 Qiming — 让工作从你的目录继续",
-    "description": "启明是我和 Agent Dark源从真实项目管理中长出的 AI Skill。面向第一次使用 AI 的人，从当前文件夹开始，留下能接续的工作。",
+    "title": "启明 Skill｜从当前目录开始的 AI 项目管理 · 安装与案例",
+    "description": "启明 Qiming 是我和 Agent Dark源从真实项目管理中沉淀的开源 AI Skill。适合 AI 新手，从当前目录接入，保留原结构，持续管理任务、知识和工具。",
     "skip": "跳到正文",
     "nav": [
       "工作方式",
@@ -234,11 +234,40 @@
         ],
         "prompt": "$qiming 从这个项目主目录继续。先读启动入口、现有规则和当前任务，核对两套活动源码与交付证据；不要在历史归档开发，把体验版与最终验收分开记录。"
       }
+    ],
+    "faq_label": "QIMING / CLEAR ANSWERS",
+    "faq_title": "常见问题，直接回答。",
+    "faq_intro": "先弄清它会做什么、不会越过哪里，再决定从哪个目录开始。",
+    "faq_items": [
+      {
+        "question": "启明 Skill 是什么？",
+        "answer": "启明是一套项目本地的 AI 工作管理 Skill。你指定一个目录，它先理解已有文件和规则，再建立该项目自己的接续入口，帮助后续 Agent 继续开发、写作、运营或其他长期工作。"
+      },
+      {
+        "question": "没用过 AI，可以从哪里开始？",
+        "answer": "准备一个文件夹，放进已有资料；安装启明种子后，在该目录告诉 Agent“$qiming 在当前目录启用启明”。接着只说眼前要做的一件小事。"
+      },
+      {
+        "question": "安装后会自动管理所有目录吗？",
+        "answer": "不会。安装只是放入接入种子；只有你明确要求接入的项目目录才会形成独立实例。旧项目的命名、资料和规则优先保留。"
+      },
+      {
+        "question": "启明的“会员”是什么意思？",
+        "answer": "会员是需要持续维护的项目、账户、设备、脚本、Skill、程序或 MCP 等对象，不是付费订阅。产物有归属和来源，内部辅助文件留在所属会员下。"
+      },
+      {
+        "question": "资料与密码保存在哪里？",
+        "answer": "项目规则、任务、知识和工具保存在你自己的项目目录。账户档案只记录安全存储位置的引用，不把密码和密钥写进普通项目文件。"
+      },
+      {
+        "question": "目前验证了哪些 Agent？",
+        "answer": "Codex 的项目接入、绑定与远端安装已有定向验证。Claude Code、Gemini CLI、Cursor、OpenCode 等宿主和不同系统组合仍需逐项实测，不把安装支持当作完整兼容证明。"
+      }
     ]
   },
   "zh-TW": {
-    "title": "啟明 Qiming — 讓工作從你的目錄繼續",
-    "description": "啟明是我和 Agent Dark源從真實專案管理中長出的 AI Skill。讓初次使用 AI 的人，從目前資料夾開始留下可接續的工作。",
+    "title": "啟明 Skill｜從目前目錄開始的 AI 專案管理 · 安裝與案例",
+    "description": "啟明 Qiming 是我和 Agent Dark源從真實專案管理中沉澱的開源 AI Skill。適合 AI 新手，從目前目錄接入，保留原結構，持續管理任務、知識和工具。",
     "skip": "跳至正文",
     "nav": [
       "運作方式",
@@ -471,11 +500,40 @@
         ],
         "prompt": "$qiming 從主專案目錄繼續。先讀啟動入口、既有規則和目前任務，核對兩套活動原始碼與交付證據；不要在歷史歸檔開發，分開記錄體驗版與最終驗收。"
       }
+    ],
+    "faq_label": "QIMING / CLEAR ANSWERS",
+    "faq_title": "常見問題，直接回答。",
+    "faq_intro": "先了解它會做什麼、作用範圍在哪裡，再選擇起點。",
+    "faq_items": [
+      {
+        "question": "啟明 Skill 是什麼？",
+        "answer": "啟明是一套專案本地的 AI 工作管理 Skill。你指定資料夾，它先理解既有檔案與規則，再建立專案自己的接續入口，協助後續 Agent 繼續開發、寫作、營運或其他長期工作。"
+      },
+      {
+        "question": "沒用過 AI，要從哪裡開始？",
+        "answer": "準備資料夾，放進既有資料；安裝啟明種子後，在該目錄告訴 Agent「$qiming 在目前目錄啟用啟明」。接著只說眼前想完成的一件小事。"
+      },
+      {
+        "question": "安裝後會自動管理所有資料夾嗎？",
+        "answer": "不會。安裝只提供接入種子；只有你明確要求接入的專案目錄才會形成獨立實例。原有命名、資料與規則優先保留。"
+      },
+      {
+        "question": "啟明的「會員」是什麼？",
+        "answer": "會員是需要持續維護的專案、帳戶、設備、腳本、Skill、程式或 MCP 等對象，不是付費訂閱。成果記錄歸屬與來源，內部輔助檔案留在所屬會員下。"
+      },
+      {
+        "question": "資料與密碼存在哪裡？",
+        "answer": "專案規則、任務、知識與工具保存在你自己的專案目錄。帳戶檔案只記錄安全儲存位置的參照，不把密碼與金鑰寫入普通專案檔案。"
+      },
+      {
+        "question": "目前驗證了哪些 Agent？",
+        "answer": "Codex 的專案接入、綁定與遠端安裝已有定向驗證。Claude Code、Gemini CLI、Cursor、OpenCode 等宿主與不同系統組合仍需逐項實測。"
+      }
     ]
   },
   "ja": {
-    "title": "啓明 Qiming — 作業をあなたのディレクトリから続ける",
-    "description": "啓明は私と Agent の Dark源 が実際のプロジェクト管理から育てた AI Skill。AI が初めてでも、今のフォルダーから仕事を引き継げます。",
+    "title": "啓明 Qiming Skill｜作業ディレクトリから始める AI プロジェクト管理",
+    "description": "Qiming は私と Agent Dark源の実際のプロジェクト管理から生まれたオープンソース AI Skill です。初心者も現在のディレクトリから始め、既存の構造を保ちながら作業、知識、ツールを管理できます。",
     "skip": "本文へ移動",
     "nav": [
       "仕組み",
@@ -708,11 +766,40 @@
         ],
         "prompt": "$qiming 主プロジェクトのルートから続けてください。入口、既存の規則、現在の作業を読み、二つのコードベースと納品証拠を確認してください。履歴ディレクトリでは開発せず、体験版と最終受入れを分けて記録してください。"
       }
+    ],
+    "faq_label": "QIMING / CLEAR ANSWERS",
+    "faq_title": "よくある質問",
+    "faq_intro": "導入前に、できることと適用範囲を確認してください。",
+    "faq_items": [
+      {
+        "question": "Qiming Skill とは？",
+        "answer": "プロジェクトのディレクトリ内で動く AI 作業管理 Skill です。既存のファイルとルールを読み、次の Agent が開発、執筆、運営などの仕事を続けられる入口を作ります。"
+      },
+      {
+        "question": "AI が初めてなら何から始めますか？",
+        "answer": "フォルダーを一つ用意し、資料を入れます。Qiming のシードをインストールした後、そのディレクトリで「$qiming ここで啓明を有効にして」と伝え、最初の小さな作業を一つ頼みます。"
+      },
+      {
+        "question": "インストールすると全フォルダーが自動管理されますか？",
+        "answer": "いいえ。インストールは導入用のシードを置くだけです。明示的に指定したプロジェクトだけに独立したインスタンスを作り、既存の構造を優先します。"
+      },
+      {
+        "question": "「メンバー」とは有料会員ですか？",
+        "answer": "いいえ。継続管理するプロジェクト、アカウント、デバイス、スクリプト、Skill、プログラム、MCP などの管理対象を意味します。成果には帰属と由来を残します。"
+      },
+      {
+        "question": "データとパスワードはどこに保存しますか？",
+        "answer": "ルール、作業、知識、ツールは自分のプロジェクト内に残ります。アカウント記録には安全な保管先への参照だけを残し、通常のファイルにパスワードや鍵を書きません。"
+      },
+      {
+        "question": "どの Agent で検証済みですか？",
+        "answer": "Codex でのプロジェクト導入、接続、公開リポジトリからのインストールを確認しました。Claude Code、Gemini CLI、Cursor、OpenCode と他の OS の組み合わせは個別の実機検証が必要です。"
+      }
     ]
   },
   "en": {
-    "title": "Qiming — Work that continues from your directory",
-    "description": "Qiming is the AI Skill that grew from real project management by me and my agent Dark源. It helps AI beginners start in the directory they already have.",
+    "title": "Qiming Skill — AI project management from your working directory",
+    "description": "Qiming is an open-source AI Skill that grew from real project management by me and Agent Dark源. Start with one folder, preserve its structure, and retain work, knowledge, and tools across sessions.",
     "skip": "Skip to content",
     "nav": [
       "How it works",
@@ -944,6 +1031,35 @@
           "The main instance and Codex binding passed checks. The old directory has no separate Qiming instance. A customer preview is not final contract acceptance, and sessions started inside either codebase still need a scope check."
         ],
         "prompt": "$qiming Continue from the main project root. Read its entry, existing rules, and current task; check both active codebases and delivery evidence. Do not develop from the archive, and track the preview separately from final acceptance."
+      }
+    ],
+    "faq_label": "QIMING / CLEAR ANSWERS",
+    "faq_title": "Frequently asked questions",
+    "faq_intro": "Understand what Qiming does and where its project boundary sits before you begin.",
+    "faq_items": [
+      {
+        "question": "What is Qiming Skill?",
+        "answer": "Qiming is a project-local AI work management Skill. It reads the files and rules in a directory you choose, then creates an entry so future agents can continue development, writing, site operations, or other long-running work."
+      },
+      {
+        "question": "How do I start if I am new to AI?",
+        "answer": "Prepare one folder and put your material there. Install the Qiming seed, then ask your agent in that folder: “$qiming Enable Qiming in this directory.” Give it one small task to do first."
+      },
+      {
+        "question": "Does installation automatically manage all my folders?",
+        "answer": "No. Installing the seed only makes adoption available. An independent instance is created only in a project you explicitly select. Existing names, files, and rules take priority."
+      },
+      {
+        "question": "Does “member” mean a paid subscription?",
+        "answer": "No. A member is a project, account, device, reusable script, Skill, program, or MCP that you maintain over time. Retained work records its owner and source; internal files stay with their parent member."
+      },
+      {
+        "question": "Where do my data and passwords live?",
+        "answer": "Project rules, tasks, knowledge, and tools remain in your own project directory. Account records refer to secure credential storage; ordinary project files do not contain passwords or keys."
+      },
+      {
+        "question": "Which agents have been verified?",
+        "answer": "Project adoption, binding, and remote installation have targeted verification with Codex. Claude Code, Gemini CLI, Cursor, OpenCode, and other operating system combinations still require individual real-world tests."
       }
     ]
   }

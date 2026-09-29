@@ -1,6 +1,6 @@
 # Qiming / 启明
 
-Official website / 官网：https://qiming-skill.y4nssss.chatgpt.site/
+Official website / 官网：https://qiming.dashen.wang/
 
 Qiming is a project-local AI management Skill for people starting with AI and people continuing complex work. It reads the working directory you choose, preserves existing files and conventions, and creates a self-contained instance for that project. Work, managed objects (“会员”), knowledge, and reusable tools remain yours.
 

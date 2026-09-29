@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>https://qiming.dashen.wang/</loc>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://qiming.dashen.wang/"/>
+    <xhtml:link rel="alternate" hreflang="zh-TW" href="https://qiming.dashen.wang/zh-TW/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://qiming.dashen.wang/ja/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://qiming.dashen.wang/en/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://qiming.dashen.wang/"/>
+  </url>
+  <url>
+    <loc>https://qiming.dashen.wang/zh-TW/</loc>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://qiming.dashen.wang/"/>
+    <xhtml:link rel="alternate" hreflang="zh-TW" href="https://qiming.dashen.wang/zh-TW/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://qiming.dashen.wang/ja/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://qiming.dashen.wang/en/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://qiming.dashen.wang/"/>
+  </url>
+  <url>
+    <loc>https://qiming.dashen.wang/ja/</loc>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://qiming.dashen.wang/"/>
+    <xhtml:link rel="alternate" hreflang="zh-TW" href="https://qiming.dashen.wang/zh-TW/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://qiming.dashen.wang/ja/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://qiming.dashen.wang/en/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://qiming.dashen.wang/"/>
+  </url>
+  <url>
+    <loc>https://qiming.dashen.wang/en/</loc>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://qiming.dashen.wang/"/>
+    <xhtml:link rel="alternate" hreflang="zh-TW" href="https://qiming.dashen.wang/zh-TW/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://qiming.dashen.wang/ja/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://qiming.dashen.wang/en/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://qiming.dashen.wang/"/>
+  </url>
+</urlset>

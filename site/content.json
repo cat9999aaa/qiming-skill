@@ -150,6 +150,11 @@
     "changes": [
       {
         "date": "2026.09.28",
+        "title": "官网域名与搜索入口",
+        "body": "启明官网启用 qiming.dashen.wang，使用 Cloudflare Pages 直接托管并开启橙云。四语言页面增加独立索引信息、站点地图和可见问答。"
+      },
+      {
+        "date": "2026.09.28",
         "title": "项目范围与接续",
         "body": "完善项目本地实例、启动摘要、Agent 项目指令，以及会员衍生能力的归属规则。已记录 112 项自动化检查和 Codex 定向实测；完整跨宿主矩阵仍待运行。"
       },
@@ -414,6 +419,11 @@
     "changelog_label": "05 / CHANGELOG",
     "changelog_title": "更新紀錄",
     "changes": [
+      {
+        "date": "2026.09.28",
+        "title": "官網網域與搜尋入口",
+        "body": "啟明官網啟用 qiming.dashen.wang，由 Cloudflare Pages 直接託管並開啟代理。四種語言頁面提供獨立索引資訊、網站地圖和可見問答。"
+      },
       {
         "date": "2026.09.28",
         "title": "專案範圍與接續",
@@ -682,6 +692,11 @@
     "changes": [
       {
         "date": "2026.09.28",
+        "title": "公式ドメインと検索対応",
+        "body": "公式サイトを qiming.dashen.wang に移し、Cloudflare Pages で直接配信しプロキシを有効化しました。4 言語のページに検索向け情報、サイトマップ、よくある質問を追加しました。"
+      },
+      {
+        "date": "2026.09.28",
         "title": "プロジェクト範囲と引き継ぎ",
         "body": "ローカルインスタンス、起動時の要約、Agent 向け指示、派生ツールの所属規則を改善。自動チェック 112 件と Codex での限定検証を記録。エージェント間の完全な検証は今後の課題です。"
       },
@@ -946,6 +961,11 @@
     "changelog_label": "05 / CHANGELOG",
     "changelog_title": "Changelog",
     "changes": [
+      {
+        "date": "2026.09.28",
+        "title": "Official domain and search access",
+        "body": "The official site moved to qiming.dashen.wang with direct Cloudflare Pages hosting and proxying enabled. All four language pages include search metadata, a sitemap, and visible FAQs."
+      },
       {
         "date": "2026.09.28",
         "title": "Project scope and continuity",

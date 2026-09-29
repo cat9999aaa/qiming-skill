@@ -17,6 +17,6 @@ For another release source, change `repo_url` in `site/release.json` and rebuild
 
 Source inspiration: [Omarchy's homepage](https://omarchy.us/) for its direct hero-to-install structure. The colors, logo, control-panel motif, and copy are original to Qiming and do not use Evangelion or NERV assets.
 
-## Production routing
+## Production hosting
 
-The static site is published through ChatGPT Sites at `https://qiming-skill.y4nssss.chatgpt.site/`. Cloudflare Worker `qiming-site-proxy` serves the official `https://qiming.dashen.wang/` custom domain and forwards paths to that published static origin. The Worker is the Cloudflare custom domain origin, so DNS and TLS for `qiming.dashen.wang` are managed by Cloudflare with proxying enabled. The source and pinned Wrangler configuration are in `site/proxy-worker/`. To update the Worker, run `npm ci`, `npm test`, `npx wrangler deploy --dry-run`, then deploy with a Cloudflare-authorized account. The static site must be published first.
+The official domain `https://qiming.dashen.wang/` is hosted directly on Cloudflare Pages project `qiming-skill`. Its DNS record is a proxied (orange-cloud) CNAME to `qiming-skill.pages.dev`. The build output is `site/dist/`; upload its contents, with `index.html` at the root, for each release. The earlier ChatGPT Sites address is a secondary published copy, not the origin for this domain. Rebuild the static files before publishing so canonical, `hreflang`, robots and sitemap URLs continue to point at the official domain.

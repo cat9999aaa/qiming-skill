@@ -1,0 +1,65 @@
+"""Preview and inspect discoverability bindings; authority stays user-owned."""
+
+from __future__ import annotations
+
+import hashlib
+from pathlib import Path
+
+from .codec import load_record
+from .discovery import project_root
+from .startup import ensure_startup, startup_status
+from .validate import _control_path, validate
+
+_HOST_DIRS = {"codex": ".agents", "claude": ".claude", "gemini": ".gemini", "cursor": ".cursor", "opencode": ".opencode"}
+_INSTRUCTION_FILES = {"codex": "AGENTS.md", "claude": "CLAUDE.md", "gemini": "GEMINI.md", "cursor": "AGENTS.md", "opencode": "AGENTS.md"}
+
+
+def ensure_project_entrypoints(manifest_path: Path) -> dict[str, object]:
+    """Create or safely refresh the owning project's startup instructions."""
+    return ensure_startup(manifest_path)
+
+
+def binding_preview(manifest_path: Path, host: str, host_root: Path) -> dict[str, object]:
+    if host not in _HOST_DIRS:
+        raise ValueError("unsupported host name")
+    manifest_path = manifest_path.resolve()
+    manifest, _ = load_record(manifest_path, "json")
+    if host_root.resolve() != project_root(manifest_path, manifest):
+        return {"status": "conflict", "reason": "outside-project", "source_path": None, "binding_path": None}
+    if manifest.get("state") != "ready" or not isinstance(manifest.get("instance"), dict):
+        return {"status": "partial", "source_path": None, "binding_path": None, "reason": "user-instance-not-ready"}
+    check = validate(manifest_path, [], False)
+    if check["status"] != "ok":
+        return {"status": "conflict", "source_path": None, "binding_path": None, "reason": "instance-validation-failed", "diagnostics": check["diagnostics"]}
+    source = (manifest_path.parent / str(manifest["instance"]["entry"])).resolve()
+    instance_manifest = (manifest_path.parent / str(manifest["instance"]["manifest"])).resolve()
+    binding = host_root.resolve() / _HOST_DIRS[host] / "skills" / source.parent.name
+    return {"status": "ok", "host": host, "workspace_manifest": str(manifest_path), "instance_id": manifest["instance"]["id"], "source_path": str(source), "source_directory": str(source.parent), "binding_path": str(binding), "instruction_path": str(host_root.resolve() / _INSTRUCTION_FILES[host]), "source_fingerprint": hashlib.sha256(instance_manifest.read_bytes()).hexdigest(), "method": "symlink-or-copy", "note": "Binding contains only discoverability; keep authority in the user instance"}
+
+
+def binding_status(manifest_path: Path, host: str) -> dict[str, object]:
+    manifest_path = manifest_path.resolve()
+    workspace_root = project_root(manifest_path)
+    preview = binding_preview(manifest_path, host, workspace_root)
+    if preview["status"] != "ok":
+        return preview
+    binding = Path(preview["binding_path"])
+    if not binding.exists():
+        return {"status": "not-bound", "binding_path": str(binding), "instance_id": preview["instance_id"]}
+    check = startup_status(manifest_path.resolve(), host, _INSTRUCTION_FILES[host])
+    if check["status"] != "ok":
+        return {**check, "binding_path": str(binding), "instruction_path": preview["instruction_path"], "instance_id": preview["instance_id"]}
+    if binding.resolve() == Path(preview["source_directory"]):
+        return {"status": "bound", "binding_path": str(binding), "instance_id": preview["instance_id"], "source_fingerprint": preview["source_fingerprint"]}
+    copy_manifest = binding / "instance.json"
+    if not copy_manifest.is_symlink() and copy_manifest.is_file() and hashlib.sha256(copy_manifest.read_bytes()).hexdigest() == preview["source_fingerprint"]:
+        try:
+            instance, _ = load_record(copy_manifest, "json")
+            for resource in instance["resources"]:
+                path = _control_path(binding, resource["path"])
+                if not path.is_file() or hashlib.sha256(path.read_bytes()).hexdigest() != resource["sha256"]:
+                    raise ValueError("Copied resource differs from its authority")
+            return {"status": "bound-copy", "binding_path": str(binding), "instance_id": preview["instance_id"], "source_fingerprint": preview["source_fingerprint"]}
+        except (OSError, ValueError, KeyError):
+            pass
+    return {"status": "stale-or-conflicting", "binding_path": str(binding), "instance_id": preview["instance_id"]}

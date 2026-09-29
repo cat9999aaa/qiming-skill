@@ -1,0 +1,13 @@
+{
+  "protocol": "qiming.profile/1",
+  "collections": {
+    "work": {"purpose": "work", "root": "work", "directory": ".", "pattern": "*.md", "codec": "markdown-frontmatter", "mapping": "work-default"}
+  },
+  "mappings": {
+    "work-default": {"name": {"source": "/title", "writable": false}, "summary": {"source": "/summary", "default": null, "writable": false}}
+  },
+  "record_rules": {},
+  "scope_rules": {"exclude": [".git", "node_modules", ".venv"]},
+  "retrieval": {"max_results": 50},
+  "extensions": {}
+}

@@ -1,0 +1,950 @@
+{
+  "zh-CN": {
+    "title": "启明 Qiming — 让工作从你的目录继续",
+    "description": "启明是我和 Agent Dark源从真实项目管理中长出的 AI Skill。面向第一次使用 AI 的人，从当前文件夹开始，留下能接续的工作。",
+    "skip": "跳到正文",
+    "nav": [
+      "工作方式",
+      "新手开始",
+      "示例",
+      "常用提示词",
+      "启明故事",
+      "更新日志",
+      "安装"
+    ],
+    "language": "语言",
+    "header_cta": "开始使用",
+    "hero_tag": "PROJECT-LOCAL / USER-OWNED",
+    "hero_lines": [
+      "让每个目录",
+      "长出自己的",
+      "工作方式。"
+    ],
+    "hero_lead": "没用过 AI，也不必先学会复杂提示词。把资料放进一个文件夹，告诉 Agent 想做的第一件事；启明帮它看懂现场，留下下次还能继续的入口。",
+    "hero_primary": "查看安装方式",
+    "hero_secondary": "看一个实际例子",
+    "hero_note": "一个目录管一件长期工作。旧资料留在原位，新的能力按需要长出来。",
+    "panel_top": "QIMING / WORKSPACE CONTROL",
+    "panel_status": "LOCAL INSTANCE",
+    "panel_source": "当前目录",
+    "panel_files": [
+      "已有文件",
+      "正在做的事",
+      "用户约定"
+    ],
+    "panel_arrow": "理解现场 · 形成入口 · 持续演化",
+    "panel_instance": "你的启明实例",
+    "panel_units": [
+      "工作入口",
+      "会员关系",
+      "知识经验",
+      "恢复线索"
+    ],
+    "panel_footer": "ONE PROJECT / ONE OWNER / MANY AGENTS",
+    "statement": "换 Agent、换电脑，也不必重新讲一遍你的工作。",
+    "method_label": "01 / OPERATING MODEL",
+    "method_title": "一次接入，之后按你的工作生长。",
+    "method_intro": "先看你有什么，再一起做一件具体的事。启明把有用的结果留在你的目录里，不要求你先设计一套复杂分类。",
+    "methods": [
+      {
+        "number": "01",
+        "title": "读懂现场",
+        "body": "识别目录、项目指令、现有资料和当前目标。已有命名与结构优先。"
+      },
+      {
+        "number": "02",
+        "title": "建立入口",
+        "body": "在当前项目建立独立实例、短入口和 Agent 项目指令，让新会话知道从哪里继续。"
+      },
+      {
+        "number": "03",
+        "title": "留下成果",
+        "body": "任务、错误、知识、脚本、Skill 与 MCP 按真实维护价值沉淀，逐渐成为你的工作系统。"
+      }
+    ],
+    "member_label": "MEMBERS / WHAT STAYS",
+    "member_title": "“会员”是长期管理对象，不是付费订阅。",
+    "member_body": "项目、账户、设备、独立脚本、Skill、程序或 MCP，只要由你持有并需要长期维护，就可以有自己的身份、归属和接续记录。内部辅助文件归父会员；密码和密钥只保存安全存储的引用。",
+    "member_chips": [
+      "稳定身份",
+      "来源与归属",
+      "实际验证",
+      "下一步"
+    ],
+    "examples_label": "02 / REAL WORK",
+    "examples_title": "两个真实目录，六种可以照着试的用法。",
+    "examples_intro": "前两个来自我的实际工作，已隐去项目、账户和工具名称：本机管理目录与健康项目主目录都已接入启明。健康项目的旧开发线只是归档，从那里直接开会话不会自动载入主项目。后面六种场景是可复制的示例。",
+    "example_prompt": "你可以这样说",
+    "example_result": "启明会关注",
+    "examples": [
+      {
+        "category": "写作",
+        "title": "把散乱素材写成第一章",
+        "prompt": "这个目录有旧稿、采访笔记和零散想法。先列出现有素材与来源，和我确定本章要回答的问题，再写第一章草稿；留下修改记录和下一章待办。",
+        "result": "草稿、素材来源、未决问题和下一章入口。"
+      },
+      {
+        "category": "网站运营",
+        "title": "给内容站安排一周更新",
+        "prompt": "先看当前站点的栏目、最近文章和发布流程。列出本周三篇内容的目标、负责人和发布时间；完成一篇后记录预览、上线结果与待复查项。",
+        "result": "栏目现状、内容日程、发布证据与回顾任务。"
+      },
+      {
+        "category": "学习",
+        "title": "从零整理一门课程",
+        "prompt": "这是我的学习资料夹。先盘点讲义、练习和已掌握内容，给我一个七天的学习安排。今天只做第一节，并记录不会的题和明天怎么复习。",
+        "result": "学习目标、每日任务、错题与复习线索。"
+      },
+      {
+        "category": "开源维护",
+        "title": "接手搁置半年的仓库",
+        "prompt": "阅读 README、未完成 Issue、测试和最近改动。先挑一个范围明确的问题，修复后运行相关检查，并写清哪些旧问题还没有验证。",
+        "result": "当前状态、一个可验证的改动和剩余问题。"
+      },
+      {
+        "category": "小团队协作",
+        "title": "把客户需求变成交付",
+        "prompt": "读取这个客户项目的需求、会议纪要和已交付文件。区分已确认与待确认事项，为下一次交付列出负责人、验收条件和需要客户提供的资料。",
+        "result": "需求来源、责任、验收标准和阻塞项。"
+      },
+      {
+        "category": "研究",
+        "title": "把调研资料变成结论",
+        "prompt": "整理此目录的论文、链接和实验记录。先按问题而不是文件类型组织证据，标明每个结论的来源与不确定处，再给出下一次验证计划。",
+        "result": "可追溯结论、证据索引和待验证假设。"
+      }
+    ],
+    "prompts_label": "03 / PROMPT LIBRARY",
+    "prompts_title": "常用提示词",
+    "prompts_intro": "接入后，在当前项目目录里直接使用。启明只对这个项目的实例负责。",
+    "prompt_copy": "复制提示词",
+    "prompt_copied": "已复制",
+    "prompts": [
+      {
+        "title": "首次接入",
+        "body": "$qiming 在当前目录启用启明。先看已有文件与项目指令，保留原结构，建立本项目的接续入口；说明你理解的目标和下一步。"
+      },
+      {
+        "title": "继续上次工作",
+        "body": "继续这个项目上次未完成的事。先读项目入口与相关记录，再推进当前目标；结束时写清验证结果和下一步。"
+      },
+      {
+        "title": "沉淀经验",
+        "body": "回顾这次遇到的错误与解决过程。判断哪些值得保存成知识或可复用工具，并把来源、适用范围和验证写清。"
+      },
+      {
+        "title": "接管长期资产",
+        "body": "把我明确交给你管理的这个账户/设备/脚本纳入当前项目。记录用途、归属和维护入口；凭据只存安全引用，不写明文。"
+      }
+    ],
+    "story_label": "04 / ORIGIN",
+    "story_title": "启明的故事",
+    "story_paragraphs": [
+      "我和我的 Agent Dark源，最初只是想把手头的项目管好。我们在真实工作里一点点留下项目人格、目录、规则、脚本和经验，慢慢形成一套自己的管理模板。启明就是从这套模板长出来的。",
+      "我常常换任务、换 Agent，也经常重装系统。每次重新开始，最难受的不是安装软件，而是重要上下文只留在上一段对话里。于是我和 Dark源把入口、判断和下一步放回工作目录，让下一位 Agent 能从现场继续。",
+      "我把它叫“启明”，也因为启明星的含义：天还没亮时，先给人一个方向。我希望第一次用 AI 的人不用懂复杂术语，也能从一个文件夹、一件小事开始，慢慢建立属于自己的工作方式。",
+      "安装的只是种子。之后沉淀的会员、知识、工具和项目习惯，属于每一个使用它的人。"
+    ],
+    "changelog_label": "05 / CHANGELOG",
+    "changelog_title": "更新日志",
+    "changes": [
+      {
+        "date": "2026.09.28",
+        "title": "项目范围与接续",
+        "body": "完善项目本地实例、启动摘要、Agent 项目指令，以及会员衍生能力的归属规则。已记录 112 项自动化检查和 Codex 定向实测；完整跨宿主矩阵仍待运行。"
+      },
+      {
+        "date": "2026.09.27",
+        "title": "可运行的管理种子",
+        "body": "形成 Skill 入口、确定性工具、资料映射、会员与知识记录、导出与恢复预演等基础能力。"
+      }
+    ],
+    "install_label": "06 / GET QIMING",
+    "install_title": "从你当前的目录开始。",
+    "install_intro": "启明的种子可安装到 AI Agent；真正的接入要在目标项目目录明确发起。首次运行需要 Python 3.11+。安装种子本身不会自动改动你的其他项目。",
+    "install_command": "一条命令安装种子",
+    "install_prompt": "复制给 Agent 的安装提示词",
+    "install_after": "安装后，在目标目录对 Agent 说：",
+    "install_adopt": "$qiming 在当前目录启用启明。先阅读现有资料，保留原结构，建立本项目的独立实例和下一步。",
+    "install_pending": "公开仓库发布后显示真实安装命令。当前可在本项目源码中使用，官网不会展示失效地址。",
+    "install_agent_template": "请从启明的官方 GitHub 仓库 {repo_url} 安装 qiming Skill 到当前项目，先检查 Python 3.11+。保留已有文件与项目指令；安装后不要自动接入，等我明确说“在当前目录启用启明”再执行首次适配。",
+    "install_source": "查看官方源码",
+    "install_note": "安装命令使用 Skills CLI 的项目安装方式；实际加载能力取决于所用 Agent。Claude Code、Gemini CLI、Cursor、OpenCode 等组合仍需逐项实测。",
+    "footer_line": "让工作从真实目录继续生长。",
+    "footer_links": [
+      "工作方式",
+      "示例",
+      "故事",
+      "更新",
+      "安装"
+    ],
+    "footer_status": "项目本地 · 用户持有 · 可接续",
+    "beginner_label": "FOR FIRST-TIME AI USERS",
+    "beginner_title": "第一次用 AI，就这样开始。",
+    "beginner_intro": "准备一个文件夹，放入现有资料；安装启明种子后，在这个文件夹里明确要求接入。接下来，你只需要说清眼前的一件事。",
+    "beginner_steps": [
+      {
+        "number": "01",
+        "title": "准备文件夹",
+        "body": "新项目可以是空文件夹；旧项目直接用原目录，不搬家。"
+      },
+      {
+        "number": "02",
+        "title": "让 Agent 认识它",
+        "body": "说“在当前目录启用启明”。Agent 先看已有内容，建立本项目自己的入口。"
+      },
+      {
+        "number": "03",
+        "title": "做第一件事",
+        "body": "说“帮我整理第一章”或“修复这个问题”。完成后留下结果、证据与下一步。"
+      }
+    ],
+    "beginner_prompt_label": "一句话试试",
+    "beginner_prompt": "我第一次用 AI 管理这个文件夹。请先告诉我你看到了什么、建议先做哪一件小事；在我确认后再动手，并把结果和下一步留在这里。",
+    "real_label": "来自真实工作 · 已脱敏",
+    "real_field_labels": [
+      "遇到的问题",
+      "现场过程",
+      "留下什么",
+      "真实边界"
+    ],
+    "real_prompt_label": "把这种工作交给 Agent",
+    "real_cases": [
+      {
+        "status": "已接入启明",
+        "category": "本机管理",
+        "title": "一台反复重装的开发电脑",
+        "facts": [
+          "我经常重装系统。软件、脚本和账号散落在对话和不同文件夹里，下一次又要重新解释。",
+          "我把电脑放进独立管理目录。启明先核对系统和已有记录，再把长期使用的媒体工具登记成会员，并给安装与验证分别留任务。",
+          "现在一个短入口能找到本机检查、工具档案、安装结果和待办。账号只记录安全存储位置，不把密码写进普通文件。",
+          "工具服务与管理页已经接通；真实生成仍未验证，备份恢复也仍待复验。"
+        ],
+        "prompt": "$qiming 继续管理这台电脑。先核对系统现状和已有记录；接入这个新工具，判断它是否要成为会员，分别写清安装成功、实际功能验证和下一步。"
+      },
+      {
+        "status": "已接入启明主项目",
+        "category": "复杂开发项目",
+        "title": "一个有合同与多角色流程的健康项目",
+        "facts": [
+          "这是一个合同、两套活动源码、多个岗位和客户体验并行的健康项目。旧开发线仍留作历史资料，容易让 Agent 把归档误当成正在交付的项目。",
+          "我在主项目根目录接入启明。它保留原有项目规则，把两套活动源码、交付证据与当前任务连到短入口；项目专属 Skill 和 AGENTS.md 让新会话知道从哪里继续。",
+          "主目录已经有独立实例、工作记录和资产归属；已验证的客户体验与仍缺的合同事项分开记录。旧目录是归档，不从那里发版。",
+          "主项目的接入与 Codex 绑定已校验。旧目录本身不是独立启明实例；体验版不等于最终合同验收，直接从活动源码子仓库启动时也需核对范围。"
+        ],
+        "prompt": "$qiming 从这个项目主目录继续。先读启动入口、现有规则和当前任务，核对两套活动源码与交付证据；不要在历史归档开发，把体验版与最终验收分开记录。"
+      }
+    ]
+  },
+  "zh-TW": {
+    "title": "啟明 Qiming — 讓工作從你的目錄繼續",
+    "description": "啟明是我和 Agent Dark源從真實專案管理中長出的 AI Skill。讓初次使用 AI 的人，從目前資料夾開始留下可接續的工作。",
+    "skip": "跳至正文",
+    "nav": [
+      "運作方式",
+      "新手開始",
+      "範例",
+      "常用提示詞",
+      "啟明故事",
+      "更新紀錄",
+      "安裝"
+    ],
+    "language": "語言",
+    "header_cta": "開始使用",
+    "hero_tag": "PROJECT-LOCAL / USER-OWNED",
+    "hero_lines": [
+      "讓每個目錄",
+      "長出自己的",
+      "工作方式。"
+    ],
+    "hero_lead": "沒用過 AI，也不用先學會複雜提示詞。把資料放進一個資料夾，告訴 Agent 想做的第一件事；啟明協助理解現況，留下下次能繼續的入口。",
+    "hero_primary": "查看安裝方式",
+    "hero_secondary": "看一個實際範例",
+    "hero_note": "一個目錄管理一件長期工作。舊資料留在原位，新能力按需成長。",
+    "panel_top": "QIMING / WORKSPACE CONTROL",
+    "panel_status": "LOCAL INSTANCE",
+    "panel_source": "目前目錄",
+    "panel_files": [
+      "現有檔案",
+      "進行中的事",
+      "使用者約定"
+    ],
+    "panel_arrow": "理解現況 · 建立入口 · 持續演化",
+    "panel_instance": "你的啟明實例",
+    "panel_units": [
+      "工作入口",
+      "會員關係",
+      "知識經驗",
+      "復原線索"
+    ],
+    "panel_footer": "ONE PROJECT / ONE OWNER / MANY AGENTS",
+    "statement": "換 Agent、換電腦，也不必重新說明你的工作。",
+    "method_label": "01 / OPERATING MODEL",
+    "method_title": "接入一次，之後隨你的工作成長。",
+    "method_intro": "先看你已有什麼，再一起完成一件具體的事。啟明把有用的成果留在你的目錄，不要求你先設計複雜分類。",
+    "methods": [
+      {
+        "number": "01",
+        "title": "理解現況",
+        "body": "辨識目錄、專案指令、現有資料與目前目標。原有命名與結構優先。"
+      },
+      {
+        "number": "02",
+        "title": "建立入口",
+        "body": "在目前專案建立獨立實例、短入口與 Agent 專案指令，讓新對話知道從哪裡繼續。"
+      },
+      {
+        "number": "03",
+        "title": "留下成果",
+        "body": "任務、錯誤、知識、腳本、Skill 與 MCP 依維護價值沉澱，逐漸成為你的工作系統。"
+      }
+    ],
+    "member_label": "MEMBERS / WHAT STAYS",
+    "member_title": "「會員」是長期管理物件，並非付費訂閱。",
+    "member_body": "專案、帳戶、設備、獨立腳本、Skill、程式或 MCP，只要由你持有並需長期維護，就能有自己的身分、歸屬與接續紀錄。內部輔助檔案歸父會員；密碼與金鑰只保存安全儲存位置的參照。",
+    "member_chips": [
+      "穩定身分",
+      "來源與歸屬",
+      "實際驗證",
+      "下一步"
+    ],
+    "examples_label": "02 / REAL WORK",
+    "examples_title": "兩個真實目錄，六種可以照著試的用法。",
+    "examples_intro": "前兩個案例來自我的實際工作，已隱去專案、帳戶及工具名稱。電腦管理目錄與健康專案主目錄都已接入啟明。健康專案的舊開發線只是歸檔；從該處直接開啟會話，不會自動載入主專案。後面六個場景可照著嘗試。",
+    "example_prompt": "你可以這樣說",
+    "example_result": "啟明會關注",
+    "examples": [
+      {
+        "category": "寫作",
+        "title": "把散亂素材寫成第一章",
+        "prompt": "這個目錄有舊稿、訪談筆記和想法。先列出素材與來源，和我確認本章的問題，再寫第一章草稿；留下修改紀錄與下一章待辦。",
+        "result": "草稿、素材來源、未決問題與下一章入口。"
+      },
+      {
+        "category": "網站營運",
+        "title": "安排一週內容更新",
+        "prompt": "先看網站欄目、近期文章和發布流程。列出本週三篇內容的目標、負責人和時間；完成一篇後記錄預覽、上線結果與待複查項。",
+        "result": "欄目現況、內容日程、發布證據與回顧任務。"
+      },
+      {
+        "category": "學習",
+        "title": "從零整理一門課",
+        "prompt": "盤點這個資料夾的講義、練習和已掌握內容，給我七天安排。今天只做第一節，記錄不會的題目與明日複習方式。",
+        "result": "學習目標、每日任務、錯題與複習線索。"
+      },
+      {
+        "category": "開源維護",
+        "title": "接手擱置半年的程式庫",
+        "prompt": "閱讀 README、未完成 Issue、測試和最近改動。挑一個範圍明確的問題，修復後執行相關檢查，寫清尚未驗證的舊問題。",
+        "result": "目前狀態、可驗證改動與剩餘問題。"
+      },
+      {
+        "category": "小團隊協作",
+        "title": "把客戶需求變成交付",
+        "prompt": "閱讀需求、會議紀錄與已交付檔案。區分已確認和待確認事項，為下一次交付列出負責人、驗收條件與待客戶提供的資料。",
+        "result": "需求來源、責任、驗收標準與阻塞項。"
+      },
+      {
+        "category": "研究",
+        "title": "把調研資料變成結論",
+        "prompt": "整理目錄中的論文、連結與實驗紀錄。按問題組織證據，標明每項結論的來源與不確定處，提出下一次驗證計畫。",
+        "result": "可追溯結論、證據索引與待驗證假設。"
+      }
+    ],
+    "prompts_label": "03 / PROMPT LIBRARY",
+    "prompts_title": "常用提示詞",
+    "prompts_intro": "接入後，在目前專案目錄直接使用。啟明只對此專案的實例負責。",
+    "prompt_copy": "複製提示詞",
+    "prompt_copied": "已複製",
+    "prompts": [
+      {
+        "title": "首次接入",
+        "body": "$qiming 在目前目錄啟用啟明。先看現有檔案與專案指令，保留原結構，建立本專案的接續入口；說明你理解的目標與下一步。"
+      },
+      {
+        "title": "繼續上次工作",
+        "body": "繼續此專案上次未完成的事。先讀專案入口與相關紀錄，再推進目前目標；結束時寫清驗證結果與下一步。"
+      },
+      {
+        "title": "沉澱經驗",
+        "body": "回顧這次遇到的錯誤與解決過程。判斷哪些值得保存為知識或可重用工具，寫清來源、適用範圍與驗證。"
+      },
+      {
+        "title": "接管長期資產",
+        "body": "將我明確交給你管理的帳戶／設備／腳本納入目前專案。記錄用途、歸屬與維護入口；憑據只保存安全參照，不寫明文。"
+      }
+    ],
+    "story_label": "04 / ORIGIN",
+    "story_title": "啟明的故事",
+    "story_paragraphs": [
+      "我和我的 Agent Dark源，最初只是想把手上的專案管好。我們在真實工作中逐步留下專案人格、目錄、規則、腳本和經驗，慢慢形成自己的管理範本。啟明就從這份範本長出來。",
+      "我常換任務、換 Agent，也經常重灌系統。重新開始時最難的不是裝軟體，而是重要脈絡只留在上次對話裡。於是我和 Dark源把入口、判斷與下一步放回工作目錄。",
+      "我把它叫「啟明」，也因為啟明星的意義：天還沒亮時，先給人方向。我希望第一次用 AI 的人不必懂複雜術語，也能從一個資料夾、一件小事開始。",
+      "安裝的只是種子。之後沉澱的會員、知識、工具與專案習慣，屬於每個使用它的人。"
+    ],
+    "changelog_label": "05 / CHANGELOG",
+    "changelog_title": "更新紀錄",
+    "changes": [
+      {
+        "date": "2026.09.28",
+        "title": "專案範圍與接續",
+        "body": "完善專案本地實例、啟動摘要、Agent 專案指令與會員衍生能力的歸屬規則。已記錄 112 項自動化檢查及 Codex 定向實測；完整跨宿主矩陣仍待執行。"
+      },
+      {
+        "date": "2026.09.27",
+        "title": "可執行的管理種子",
+        "body": "形成 Skill 入口、確定性工具、資料映射、會員與知識紀錄、匯出與復原預演等基礎能力。"
+      }
+    ],
+    "install_label": "06 / GET QIMING",
+    "install_title": "從你目前的目錄開始。",
+    "install_intro": "啟明種子可安裝到 AI Agent；真正的接入需在目標專案目錄明確發起。首次執行需要 Python 3.11+。安裝種子不會自動改動其他專案。",
+    "install_command": "一行指令安裝種子",
+    "install_prompt": "複製給 Agent 的安裝提示詞",
+    "install_after": "安裝後，在目標目錄對 Agent 說：",
+    "install_adopt": "$qiming 在目前目錄啟用啟明。先閱讀現有資料，保留原結構，建立本專案的獨立實例與下一步。",
+    "install_pending": "公開儲存庫發布後顯示真實安裝指令。目前可在本專案原始碼中使用，官網不展示失效網址。",
+    "install_agent_template": "請從啟明的官方 GitHub 儲存庫 {repo_url} 安裝 qiming Skill 到目前專案，先檢查 Python 3.11+。保留現有檔案與專案指令；安裝後不要自動接入，等我明確說「在目前目錄啟用啟明」再執行首次適配。",
+    "install_source": "查看官方原始碼",
+    "install_note": "安裝指令使用 Skills CLI 的專案安裝方式；實際載入能力取決於所用 Agent。Claude Code、Gemini CLI、Cursor、OpenCode 等組合仍需逐項實測。",
+    "footer_line": "讓工作從真實目錄繼續成長。",
+    "footer_links": [
+      "運作方式",
+      "範例",
+      "故事",
+      "更新",
+      "安裝"
+    ],
+    "footer_status": "專案本地 · 使用者持有 · 可接續",
+    "beginner_label": "FOR FIRST-TIME AI USERS",
+    "beginner_title": "第一次用 AI，就這樣開始。",
+    "beginner_intro": "準備一個資料夾，放入現有資料；安裝啟明種子後，在此資料夾明確要求接入。接著只需說清眼前的一件事。",
+    "beginner_steps": [
+      {
+        "number": "01",
+        "title": "準備資料夾",
+        "body": "新專案可以是空的；舊專案直接沿用原目錄。"
+      },
+      {
+        "number": "02",
+        "title": "讓 Agent 認識它",
+        "body": "說「在目前目錄啟用啟明」。Agent 先查看資料，再建立本專案入口。"
+      },
+      {
+        "number": "03",
+        "title": "完成第一件事",
+        "body": "例如整理第一章或修復問題；結束時留下成果、證據與下一步。"
+      }
+    ],
+    "beginner_prompt_label": "一句話試試",
+    "beginner_prompt": "我第一次用 AI 管理這個資料夾。請先告訴我你看到了什麼、建議先做哪一件小事；我確認後再動手，並把成果與下一步留在這裡。",
+    "real_label": "真實工作 · 已去識別",
+    "real_field_labels": [
+      "遇到的問題",
+      "現場過程",
+      "留下什麼",
+      "真實邊界"
+    ],
+    "real_prompt_label": "把這類工作交給 Agent",
+    "real_cases": [
+      {
+        "status": "已接入啟明",
+        "category": "電腦管理",
+        "title": "一台反覆重灌的開發電腦",
+        "facts": [
+          "我常重灌系統。軟體、腳本與帳戶散落在對話和不同資料夾，下一次又得重新說明。",
+          "我把電腦放進獨立管理目錄。啟明先核對系統和既有紀錄，再把長期使用的媒體工具登記為會員，分開記錄安裝與驗證任務。",
+          "短入口現在能找到電腦檢查、工具檔案、安裝結果與待辦。帳戶只保存安全儲存位置的參照。",
+          "工具服務與管理頁已接通；實際生成尚未驗證，備份復原仍待複查。"
+        ],
+        "prompt": "$qiming 繼續管理這台電腦。先核對系統現況與既有紀錄；接入新工具，判斷是否要成為會員，分別寫清安裝結果、實際功能驗證與下一步。"
+      },
+      {
+        "status": "主專案已接入啟明",
+        "category": "複雜開發",
+        "title": "一個有合約與多角色流程的健康專案",
+        "facts": [
+          "這個健康專案同時有合約、兩套活動原始碼、多種崗位與客戶體驗。舊開發線保留為歷史資料，容易被誤認為目前交付位置。",
+          "我在主專案根目錄接入啟明。它保留原有規則，以短入口串起兩套活動原始碼、交付證據與目前任務；專案 Skill 與 AGENTS.md 幫助新會話接續。",
+          "主目錄已有獨立實例、工作紀錄與資產歸屬；已驗證的客戶體驗和未完成的合約項目分開記錄。舊目錄是歸檔，不從那裡發布。",
+          "主專案接入及 Codex 綁定已通過校驗。舊目錄沒有獨立啟明實例；體驗版不等於最終合約驗收，從原始碼子倉庫直接啟動仍需確認範圍。"
+        ],
+        "prompt": "$qiming 從主專案目錄繼續。先讀啟動入口、既有規則和目前任務，核對兩套活動原始碼與交付證據；不要在歷史歸檔開發，分開記錄體驗版與最終驗收。"
+      }
+    ]
+  },
+  "ja": {
+    "title": "啓明 Qiming — 作業をあなたのディレクトリから続ける",
+    "description": "啓明は私と Agent の Dark源 が実際のプロジェクト管理から育てた AI Skill。AI が初めてでも、今のフォルダーから仕事を引き継げます。",
+    "skip": "本文へ移動",
+    "nav": [
+      "仕組み",
+      "はじめて",
+      "使用例",
+      "プロンプト",
+      "啓明の物語",
+      "更新履歴",
+      "導入"
+    ],
+    "language": "言語",
+    "header_cta": "使い始める",
+    "hero_tag": "PROJECT-LOCAL / USER-OWNED",
+    "hero_lines": [
+      "ディレクトリごとに",
+      "自分だけの",
+      "仕事の形を。"
+    ],
+    "hero_lead": "AI が初めてでも、難しいプロンプトは不要です。資料を一つのフォルダーに置き、最初にしたいことを Agent に伝える。啓明は現状を理解し、次回の入口を残します。",
+    "hero_primary": "導入方法を見る",
+    "hero_secondary": "使用例を見る",
+    "hero_note": "一つのディレクトリに一つの継続的な仕事。既存資料はそのままです。",
+    "panel_top": "QIMING / WORKSPACE CONTROL",
+    "panel_status": "LOCAL INSTANCE",
+    "panel_source": "現在のディレクトリ",
+    "panel_files": [
+      "既存ファイル",
+      "進行中の作業",
+      "利用者のルール"
+    ],
+    "panel_arrow": "現状を理解 · 入口を作る · 継続的に育てる",
+    "panel_instance": "あなたの啓明インスタンス",
+    "panel_units": [
+      "作業の入口",
+      "管理対象",
+      "知識と経験",
+      "復旧の手掛かり"
+    ],
+    "panel_footer": "ONE PROJECT / ONE OWNER / MANY AGENTS",
+    "statement": "Agent やパソコンが変わっても、仕事を最初から説明し直さない。",
+    "method_label": "01 / OPERATING MODEL",
+    "method_title": "一度導入し、あとは仕事に合わせて育てる。",
+    "method_intro": "まず手元の資料を確認し、具体的な作業を一つ進めます。複雑な分類を先に設計する必要はありません。",
+    "methods": [
+      {
+        "number": "01",
+        "title": "現状を知る",
+        "body": "ディレクトリ、プロジェクト指示、既存資料、現在の目標を確認。元の名前と構造を優先します。"
+      },
+      {
+        "number": "02",
+        "title": "入口を作る",
+        "body": "現在のプロジェクトに独立したインスタンス、短い案内、Agent 向けの指示を作ります。"
+      },
+      {
+        "number": "03",
+        "title": "成果を残す",
+        "body": "タスク、失敗、知識、スクリプト、Skill、MCP を保守価値に応じて記録します。"
+      }
+    ],
+    "member_label": "MEMBERS / WHAT STAYS",
+    "member_title": "「メンバー」は長期管理の対象。課金プランではありません。",
+    "member_body": "プロジェクト、アカウント、デバイス、独立したスクリプト、Skill、プログラム、MCP には、それぞれの識別情報と引き継ぎ記録を持たせられます。補助ファイルは親に属し、パスワードや鍵は安全な保管先への参照だけを記録します。",
+    "member_chips": [
+      "安定した識別",
+      "由来と所属",
+      "実際の検証",
+      "次の一手"
+    ],
+    "examples_label": "02 / REAL WORK",
+    "examples_title": "実際の二つのディレクトリと、六つの応用例。",
+    "examples_intro": "最初の二例は私の実際の仕事を匿名化したものです。PC 管理と健康サービスの主プロジェクトにはどちらも啓明を導入済みです。旧開発ディレクトリはアーカイブで、そこから会話を始めても主プロジェクトの啓明は自動で読み込まれません。続く六例は応用例です。",
+    "example_prompt": "こんなふうに依頼",
+    "example_result": "啓明が残すもの",
+    "examples": [
+      {
+        "category": "執筆",
+        "title": "散らばった素材から第一章へ",
+        "prompt": "旧稿、取材メモ、アイデアを調べ、素材と出典を一覧にしてください。章の問いを確認してから草稿を書き、修正記録と次章の作業を残してください。",
+        "result": "草稿、出典、未決事項、次章への入口。"
+      },
+      {
+        "category": "サイト運営",
+        "title": "一週間の記事更新を計画",
+        "prompt": "サイトの分類、最近の記事、公開手順を確認。今週の三記事について目的、担当、公開日を決め、一記事のプレビューと公開結果を記録してください。",
+        "result": "現状、予定、公開の証拠、見直し作業。"
+      },
+      {
+        "category": "学習",
+        "title": "一つの講座を整理",
+        "prompt": "資料、練習、理解済みの内容を整理し、七日間の計画を作ってください。今日は第一節だけ進め、間違えた問題と明日の復習を記録してください。",
+        "result": "学習目標、日々の作業、間違い、復習の手掛かり。"
+      },
+      {
+        "category": "OSS 保守",
+        "title": "半年止まったリポジトリへ",
+        "prompt": "README、未完了 Issue、テスト、最近の変更を確認。一つの小さな問題を修正し、関連テストを実行して未検証事項を残してください。",
+        "result": "現状、一つの検証済み変更、残る問題。"
+      },
+      {
+        "category": "小規模チーム",
+        "title": "顧客の要望を納品へ",
+        "prompt": "要望、議事録、納品済みファイルを読み、確定事項と未確定事項を分け、次の納品の担当、受入条件、必要資料を整理してください。",
+        "result": "要望の出所、責任、受入条件、障害。"
+      },
+      {
+        "category": "調査",
+        "title": "資料から根拠のある結論へ",
+        "prompt": "論文、リンク、実験記録を整理。ファイル形式ではなく問い別に証拠を並べ、結論の出所と不確実性、次の検証計画を書いてください。",
+        "result": "追跡可能な結論、証拠、検証待ちの仮説。"
+      }
+    ],
+    "prompts_label": "03 / PROMPT LIBRARY",
+    "prompts_title": "よく使うプロンプト",
+    "prompts_intro": "導入後、現在のプロジェクトでそのまま使えます。啓明はこのプロジェクトのインスタンスだけを扱います。",
+    "prompt_copy": "コピー",
+    "prompt_copied": "コピーしました",
+    "prompts": [
+      {
+        "title": "初回導入",
+        "body": "$qiming このディレクトリで啓明を有効にしてください。既存ファイルとプロジェクト指示を確認し、元の構造を保って引き継ぎの入口を作ってください。"
+      },
+      {
+        "title": "前回の続き",
+        "body": "このプロジェクトで前回の未完了作業を続けてください。入口と関連記録を読み、現在の目標を進め、検証結果と次の手順を残してください。"
+      },
+      {
+        "title": "経験を残す",
+        "body": "今回の失敗と解決を振り返り、知識や再利用可能なツールとして残すべきものを判断してください。出所、適用範囲、検証を記録してください。"
+      },
+      {
+        "title": "長期資産を管理",
+        "body": "私が明示的に管理を任せたアカウント／デバイス／スクリプトをこのプロジェクトに登録してください。認証情報の値は書かず、安全な保管先だけを参照してください。"
+      }
+    ],
+    "story_label": "04 / ORIGIN",
+    "story_title": "啓明の物語",
+    "story_paragraphs": [
+      "私と私の Agent「Dark源」は、最初はただ自分たちのプロジェクトをきちんと管理したかっただけです。実際の仕事の中で、プロジェクトの人格、ディレクトリ、ルール、スクリプト、経験が少しずつ管理テンプレートになりました。啓明はそこから生まれました。",
+      "私は仕事や Agent を替え、OS もよく再インストールします。そのたびに困ったのはソフトの再導入以上に、文脈が前回の会話にしかないことでした。そこで私たちは入口と次の一手を作業ディレクトリに戻しました。",
+      "「啓明」という名には、夜明け前に方向を示す明けの明星の意味も込めています。AI が初めての人にも、難しい用語を知らずに一つのフォルダー、一つの仕事から始めてほしいと思います。",
+      "インストールするのは種だけです。その後の管理対象、知識、ツール、仕事の習慣は、使う人のものです。"
+    ],
+    "changelog_label": "05 / CHANGELOG",
+    "changelog_title": "更新履歴",
+    "changes": [
+      {
+        "date": "2026.09.28",
+        "title": "プロジェクト範囲と引き継ぎ",
+        "body": "ローカルインスタンス、起動時の要約、Agent 向け指示、派生ツールの所属規則を改善。自動チェック 112 件と Codex での限定検証を記録。エージェント間の完全な検証は今後の課題です。"
+      },
+      {
+        "date": "2026.09.27",
+        "title": "動作する管理の種",
+        "body": "Skill の入口、決定的ツール、資料の対応付け、管理対象と知識の記録、エクスポートと復旧の予行演習を実装。"
+      }
+    ],
+    "install_label": "06 / GET QIMING",
+    "install_title": "今いるディレクトリから始める。",
+    "install_intro": "啓明の種は AI Agent にインストールできます。実際の導入は対象プロジェクトで明示的に依頼します。初回実行には Python 3.11+ が必要です。",
+    "install_command": "一つのコマンドで種を導入",
+    "install_prompt": "Agent に渡す導入プロンプト",
+    "install_after": "インストール後、対象ディレクトリで Agent に伝えること：",
+    "install_adopt": "$qiming このディレクトリで啓明を有効にしてください。既存資料と構造を保ち、このプロジェクト専用のインスタンスを作ってください。",
+    "install_pending": "公開リポジトリの公開後に実際のインストールコマンドを表示します。現在はプロジェクトのソースから利用できます。",
+    "install_agent_template": "啓明の公式 GitHub リポジトリ {repo_url} から qiming Skill を現在のプロジェクトにインストールしてください。Python 3.11+ を確認し、既存ファイルと指示を保護してください。私が明示的に依頼するまで初回適応は行わないでください。",
+    "install_source": "公式ソースを見る",
+    "install_note": "コマンドは Skills CLI のプロジェクト導入方式を使います。実際の読み込みは Agent ごとに異なります。Claude Code、Gemini CLI、Cursor、OpenCode などは個別検証が必要です。",
+    "footer_line": "仕事を実際のディレクトリから続ける。",
+    "footer_links": [
+      "仕組み",
+      "使用例",
+      "物語",
+      "更新",
+      "導入"
+    ],
+    "footer_status": "プロジェクト内 · 利用者が保持 · 引き継げる",
+    "beginner_label": "FOR FIRST-TIME AI USERS",
+    "beginner_title": "AI が初めてなら、ここから。",
+    "beginner_intro": "フォルダーを用意して資料を入れます。啓明の種をインストールしたら、そのフォルダーで導入を明示的に依頼してください。",
+    "beginner_steps": [
+      {
+        "number": "01",
+        "title": "フォルダーを用意",
+        "body": "新規なら空でも大丈夫。既存プロジェクトは移動しません。"
+      },
+      {
+        "number": "02",
+        "title": "Agent に伝える",
+        "body": "「このディレクトリで啓明を有効にして」と依頼。Agent が資料を読み、入口を作ります。"
+      },
+      {
+        "number": "03",
+        "title": "最初の一件を進める",
+        "body": "一章を整理する、問題を直すなど。成果と検証、次の手順を残します。"
+      }
+    ],
+    "beginner_prompt_label": "この一文から",
+    "beginner_prompt": "AI でこのフォルダーを管理するのは初めてです。まず何があるか、最初に進める小さな作業を一つ教えてください。私が確認してから着手し、結果と次の手順をここに残してください。",
+    "real_label": "実際の仕事 · 匿名化済み",
+    "real_field_labels": [
+      "課題",
+      "実際の経緯",
+      "残るもの",
+      "確認済みの範囲"
+    ],
+    "real_prompt_label": "Agent への依頼例",
+    "real_cases": [
+      {
+        "status": "啓明を導入済み",
+        "category": "PC 管理",
+        "title": "何度も再インストールした開発用 PC",
+        "facts": [
+          "OS の再インストールが多く、ソフト、スクリプト、アカウントの情報が会話やフォルダーに散らばっていました。",
+          "専用の管理ディレクトリで現状と記録を確認。継続的に使うメディアツールを管理対象として登録し、導入と機能検証を別々に記録しました。",
+          "短い入口から PC の点検、ツールの記録、導入結果、次の作業をたどれます。認証情報は安全な保管先への参照だけです。",
+          "ツールのサービスと管理画面は接続済みですが、実際の生成とバックアップ復旧は未検証です。"
+        ],
+        "prompt": "$qiming この PC の管理を続けてください。現状と既存の記録を確認し、新しいツールの登録要否、導入結果、実際の機能検証、次の手順を分けて残してください。"
+      },
+      {
+        "status": "主プロジェクトに啓明を導入済み",
+        "category": "複雑な開発",
+        "title": "契約と複数の役割を持つ健康サービス",
+        "facts": [
+          "契約、二つの稼働中のコードベース、複数の役割、顧客向け体験が並行する健康プロジェクトです。旧開発ディレクトリは履歴用で、現行の納品場所と間違えやすい状態でした。",
+          "私は主プロジェクトのルートに啓明を導入しました。既存の規則を残し、二つのコードベース、納品証拠、現在の作業を短い入口で結びました。専用 Skill と AGENTS.md が新しい会話の出発点です。",
+          "主ディレクトリには独立したインスタンス、作業記録、資産の帰属があります。確認済みの体験版と残る契約項目を分け、旧ディレクトリからはリリースしません。",
+          "主プロジェクトの導入と Codex の接続は検証済みです。旧ディレクトリに独立した啓明はなく、体験版は最終受入れではありません。コードベース内から始める場合も範囲の確認が必要です。"
+        ],
+        "prompt": "$qiming 主プロジェクトのルートから続けてください。入口、既存の規則、現在の作業を読み、二つのコードベースと納品証拠を確認してください。履歴ディレクトリでは開発せず、体験版と最終受入れを分けて記録してください。"
+      }
+    ]
+  },
+  "en": {
+    "title": "Qiming — Work that continues from your directory",
+    "description": "Qiming is the AI Skill that grew from real project management by me and my agent Dark源. It helps AI beginners start in the directory they already have.",
+    "skip": "Skip to content",
+    "nav": [
+      "How it works",
+      "Start here",
+      "Examples",
+      "Prompts",
+      "Our story",
+      "Changelog",
+      "Install"
+    ],
+    "language": "Language",
+    "header_cta": "Get started",
+    "hero_tag": "PROJECT-LOCAL / USER-OWNED",
+    "hero_lines": [
+      "Give every directory",
+      "a way of working",
+      "of its own."
+    ],
+    "hero_lead": "New to AI? You do not need a perfect prompt. Put your material in one folder and tell an agent the first thing you want to do. Qiming helps it understand the workspace and leave a clear place to continue.",
+    "hero_primary": "See installation",
+    "hero_secondary": "Explore an example",
+    "hero_note": "One directory for one continuing body of work. Existing files stay where they are.",
+    "panel_top": "QIMING / WORKSPACE CONTROL",
+    "panel_status": "LOCAL INSTANCE",
+    "panel_source": "Current directory",
+    "panel_files": [
+      "Existing files",
+      "Work in progress",
+      "Your conventions"
+    ],
+    "panel_arrow": "Understand · Connect · Evolve",
+    "panel_instance": "Your Qiming instance",
+    "panel_units": [
+      "Work entry",
+      "Members",
+      "Knowledge",
+      "Recovery"
+    ],
+    "panel_footer": "ONE PROJECT / ONE OWNER / MANY AGENTS",
+    "statement": "Change agents or computers without explaining your work from scratch.",
+    "method_label": "01 / OPERATING MODEL",
+    "method_title": "Adopt once. Grow with your actual work.",
+    "method_intro": "Look at what you have, then do one concrete thing. Qiming keeps the useful result in your directory without asking you to design a taxonomy first.",
+    "methods": [
+      {
+        "number": "01",
+        "title": "Read the room",
+        "body": "Inspect the directory, project instructions, existing material, and current goal. Your names and structure come first."
+      },
+      {
+        "number": "02",
+        "title": "Create an entry",
+        "body": "Establish a project-owned instance, short handoff, and agent instructions so a new session knows where to continue."
+      },
+      {
+        "number": "03",
+        "title": "Keep the outcome",
+        "body": "Retain tasks, errors, knowledge, scripts, Skills, and MCPs according to their real maintenance value."
+      }
+    ],
+    "member_label": "MEMBERS / WHAT STAYS",
+    "member_title": "A “member” is a managed object, not a subscription.",
+    "member_body": "Projects, accounts, devices, reusable scripts, Skills, programs, and MCPs can each have an identity, owner, and handoff record when you maintain them over time. Internal files stay with their parent. Passwords and keys are represented only by references to secure storage.",
+    "member_chips": [
+      "Stable identity",
+      "Origin and owner",
+      "Real verification",
+      "Next step"
+    ],
+    "examples_label": "02 / REAL WORK",
+    "examples_title": "Two real folders. Six ways to make it yours.",
+    "examples_intro": "The first two cases come from my real work, with project, account, and tool names removed. Both my computer management directory and the health project root have adopted Qiming. The old health development directory is an archive; starting there does not automatically load the main project. Six more cards show transferable uses.",
+    "example_prompt": "Say this",
+    "example_result": "Qiming keeps track of",
+    "examples": [
+      {
+        "category": "Writing",
+        "title": "Turn scattered material into chapter one",
+        "prompt": "This folder has old drafts, interview notes, and ideas. Inventory the material and sources, agree on the question for this chapter with me, draft chapter one, and leave revision notes and the next chapter task.",
+        "result": "A draft, source trail, open questions, and a next-chapter entry."
+      },
+      {
+        "category": "Site operations",
+        "title": "Plan a week of content updates",
+        "prompt": "Review the site categories, recent posts, and publishing flow. Plan three posts with goals, owners, and dates. After the first, record the preview, live result, and follow-up checks.",
+        "result": "Site status, content schedule, publication evidence, and review task."
+      },
+      {
+        "category": "Learning",
+        "title": "Organize a course from zero",
+        "prompt": "Inventory these notes and exercises, identify what I know, and propose a seven-day plan. Do only lesson one today; record missed questions and tomorrow’s review.",
+        "result": "Learning goal, daily steps, mistakes, and review trail."
+      },
+      {
+        "category": "Open source",
+        "title": "Revive a repository left idle",
+        "prompt": "Read the README, open Issues, tests, and recent changes. Pick one bounded problem, fix it, run the relevant checks, and list older problems still unverified.",
+        "result": "Current state, one verified change, and remaining issues."
+      },
+      {
+        "category": "Small team",
+        "title": "Turn a client request into a deliverable",
+        "prompt": "Read the request, meeting notes, and delivered files. Separate agreed items from open questions, then list the owner, acceptance condition, and missing client input for the next delivery.",
+        "result": "Source of requests, ownership, acceptance, and blockers."
+      },
+      {
+        "category": "Research",
+        "title": "Turn research files into an answer",
+        "prompt": "Organize the papers, links, and experiment notes by question. Cite the source and uncertainty for each conclusion, then propose the next test.",
+        "result": "Traceable conclusions, evidence, and untested hypotheses."
+      }
+    ],
+    "prompts_label": "03 / PROMPT LIBRARY",
+    "prompts_title": "Useful prompts",
+    "prompts_intro": "Use these in the current project after adoption. Its Qiming instance belongs to this project only.",
+    "prompt_copy": "Copy prompt",
+    "prompt_copied": "Copied",
+    "prompts": [
+      {
+        "title": "First adoption",
+        "body": "$qiming Enable Qiming in this directory. Read existing files and project instructions, preserve the structure, and create a handoff for this project. Tell me the goal and next step you found."
+      },
+      {
+        "title": "Continue previous work",
+        "body": "Continue the unfinished work in this project. Read its entry and relevant records, advance the current goal, and leave verification results and the next step."
+      },
+      {
+        "title": "Retain a lesson",
+        "body": "Review the error and resolution from this task. Decide what belongs in reusable knowledge or a tool, and record its source, scope, and verification."
+      },
+      {
+        "title": "Manage an asset",
+        "body": "Add the account, device, or script I explicitly handed over to this project. Record its purpose, owner, and maintenance entry. Keep credentials in secure storage; record only a reference."
+      }
+    ],
+    "story_label": "04 / ORIGIN",
+    "story_title": "The Qiming story",
+    "story_paragraphs": [
+      "My agent Dark源 and I first wanted a better way to manage our own projects. In real work we gradually kept project personas, directories, rules, scripts, and lessons. They became a management template. Qiming grew from that template.",
+      "I switch tasks and agents, and I often reinstall my operating system. The hard part was not reinstalling software; it was losing context that lived only in the previous conversation. Dark源 and I moved the entry, decisions, and next step back into the working directory.",
+      "I named it Qiming for the morning star: a point of direction before sunrise. I want someone using AI for the first time to start with a single folder and one small task, without learning a vocabulary of tools first.",
+      "The install is only a seed. The members, knowledge, tools, and working habits that follow belong to the person who uses it."
+    ],
+    "changelog_label": "05 / CHANGELOG",
+    "changelog_title": "Changelog",
+    "changes": [
+      {
+        "date": "2026.09.28",
+        "title": "Project scope and continuity",
+        "body": "Improved project-owned instances, startup context, agent instructions, and ownership of derived capabilities. Evidence records 112 automated checks and a targeted Codex trial; the full cross-agent matrix remains untested."
+      },
+      {
+        "date": "2026.09.27",
+        "title": "A usable management seed",
+        "body": "Established the Skill entry, deterministic tools, source mapping, member and knowledge records, export, and recovery rehearsal."
+      }
+    ],
+    "install_label": "06 / GET QIMING",
+    "install_title": "Begin in the directory you're in.",
+    "install_intro": "Install the Qiming seed into your AI agent, then explicitly adopt it in the target project. First use requires Python 3.11+. Installing the seed does not change your other projects.",
+    "install_command": "Install the seed with one command",
+    "install_prompt": "Copy this installation prompt to your agent",
+    "install_after": "After installation, tell your agent in the target directory:",
+    "install_adopt": "$qiming Enable Qiming in this directory. Preserve the existing material and structure, then create an independent instance and the next step for this project.",
+    "install_pending": "A real installation command will appear after the public repository is published. The source is currently usable within this project; the site will not show a dead link.",
+    "install_agent_template": "Install the qiming Skill from the official GitHub repository {repo_url} into the current project. Check Python 3.11+ first. Preserve existing files and project instructions. Do not adopt the project until I explicitly ask you to enable Qiming here.",
+    "install_source": "View official source",
+    "install_note": "The command uses project installation through the Skills CLI. Actual loading depends on the agent. Claude Code, Gemini CLI, Cursor, OpenCode, and other combinations still need individual real-world verification.",
+    "footer_line": "Let work continue from the directory where it lives.",
+    "footer_links": [
+      "Method",
+      "Examples",
+      "Story",
+      "Changes",
+      "Install"
+    ],
+    "footer_status": "Project-local · User-owned · Continuable",
+    "beginner_label": "FOR FIRST-TIME AI USERS",
+    "beginner_title": "Your first AI project starts here.",
+    "beginner_intro": "Prepare a folder and put your material in it. After installing the Qiming seed, explicitly ask your agent to adopt it in that folder. Then describe one task in plain words.",
+    "beginner_steps": [
+      {
+        "number": "01",
+        "title": "Prepare a folder",
+        "body": "An empty folder works for a new project. Keep an existing project where it is."
+      },
+      {
+        "number": "02",
+        "title": "Introduce it to the agent",
+        "body": "Say “Enable Qiming in this directory.” The agent reads the material and creates a project entry."
+      },
+      {
+        "number": "03",
+        "title": "Do one small task",
+        "body": "Organize a chapter or fix a problem. Leave the outcome, verification, and next step."
+      }
+    ],
+    "beginner_prompt_label": "Try this sentence",
+    "beginner_prompt": "This is my first time using AI to manage this folder. Tell me what is here and suggest one small first task. Wait for my confirmation before changing anything, then leave the result and next step here.",
+    "real_label": "FROM REAL WORK / DETAILS REMOVED",
+    "real_field_labels": [
+      "The problem",
+      "What happened",
+      "What remains",
+      "Verified boundary"
+    ],
+    "real_prompt_label": "Ask your agent",
+    "real_cases": [
+      {
+        "status": "Qiming adopted",
+        "category": "Computer care",
+        "title": "A development computer rebuilt again and again",
+        "facts": [
+          "I often reinstall my operating system. Software, scripts, and account information were scattered across conversations and folders, so every restart needed another explanation.",
+          "I gave the computer its own management directory. Qiming checked the current system and existing records, registered a long-lived media tool as a member, and tracked installation separately from functional verification.",
+          "A short entry now points to the system check, tool record, installation result, and next task. Account records contain secure-storage references, not passwords.",
+          "The service and management page were connected. Actual generation is still unverified, and backup recovery remains to be checked."
+        ],
+        "prompt": "$qiming Continue managing this computer. Check the current system and existing records, decide whether this new tool needs a member record, and separate installation, real function testing, and next steps."
+      },
+      {
+        "status": "Qiming adopted in the main project",
+        "category": "Complex development",
+        "title": "A health project with a contract and several roles",
+        "facts": [
+          "This health project combines contract scope, two active codebases, several roles, and a customer preview. An old development directory remains for history and can be mistaken for the live delivery location.",
+          "I adopted Qiming at the main project root. It preserved the existing rules and connected both codebases, delivery evidence, and the current task through a short entry. A project Skill and AGENTS.md give new sessions their starting point.",
+          "The main directory now has its own instance, work records, and asset ownership. Verified preview work is tracked separately from remaining contract requirements. The old directory is an archive and is not used for releases.",
+          "The main instance and Codex binding passed checks. The old directory has no separate Qiming instance. A customer preview is not final contract acceptance, and sessions started inside either codebase still need a scope check."
+        ],
+        "prompt": "$qiming Continue from the main project root. Read its entry, existing rules, and current task; check both active codebases and delivery evidence. Do not develop from the archive, and track the preview separately from final acceptance."
+      }
+    ]
+  }
+}

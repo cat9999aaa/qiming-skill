@@ -1,0 +1,12 @@
+{
+  "protocol": "qiming.workspace/1",
+  "workspace_id": "ws_83a4f43b-bfdc-487a-a3e4-f4a4d0981a40",
+  "state": "ready",
+  "instance": {"id": "ins_d1819bce-5388-4f34-b275-075676b840c8", "entry": "qiming-user/SKILL.md", "manifest": "qiming-user/instance.json"},
+  "workspace_entry": "START.md",
+  "conventions": "conventions.md",
+  "profile": "profile.json",
+  "roots": {"work": {"location": "..", "access": "read-write"}},
+  "init_journal": null,
+  "extensions": {}
+}

@@ -1,5 +1,7 @@
 # Qiming website
 
+Live site: https://qiming-skill.y4nssss.chatgpt.site/
+
 The official site is a dependency-free static build. `content.json` contains four localized editions: Simplified Chinese (root), Traditional Chinese (`/zh-TW/`), Japanese (`/ja/`), and English (`/en/`). `assets/` contains the original Qiming logo, favicon, styles, and copy interaction.
 
 Build and preview locally:

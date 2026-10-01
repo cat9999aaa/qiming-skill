@@ -1,0 +1,34 @@
+{
+  "items": [
+    {
+      "slug": "organize-your-work",
+      "published": "2026-10-01",
+      "default_locale": "zh-CN",
+      "source": {"zh-CN": "why-qiming.zh-CN.md"},
+      "title": {
+        "zh-CN": "启明怎样把混乱的目录变成能继续工作的项目",
+        "zh-TW": "啟明如何讓混亂目錄變成可以接續的專案",
+        "ja": "Qiming は散らかった作業フォルダーをどう引き継げる形にするか",
+        "en": "How Qiming turns a scattered folder into work you can resume"
+      },
+      "summary": {
+        "zh-CN": "从本机 AI、Pi 子会员、客户交付和网站运营等脱敏实战，看清启明怎样确认范围、建立入口、归属长期对象、验证结果并留下下一步。",
+        "zh-TW": "以本機 AI、Pi 子會員、客戶交付與網站營運等匿名實例，說明啟明如何確定範圍、留下入口與驗證。",
+        "ja": "ローカル AI、Pi の管理対象、納品、サイト運営の匿名化した実例で、Qiming の引き継ぎと検証を説明します。",
+        "en": "Sanitized examples from local AI, Pi, delivery work, and site operations show how Qiming records scope, ownership, evidence, and the next step."
+      },
+      "availability": {
+        "zh-CN": "简体中文全文",
+        "zh-TW": "全文為簡體中文",
+        "ja": "本文は簡体字中国語",
+        "en": "Full article in Simplified Chinese"
+      },
+      "read_label": {
+        "zh-CN": "阅读全文",
+        "zh-TW": "閱讀簡體中文全文",
+        "ja": "中国語の全文を読む",
+        "en": "Read the Chinese article"
+      }
+    }
+  ]
+}

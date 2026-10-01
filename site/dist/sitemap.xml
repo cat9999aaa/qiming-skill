@@ -161,6 +161,38 @@
     <xhtml:link rel="alternate" hreflang="x-default" href="https://qiming.dashen.wang/cases/"/>
   </url>
   <url>
+    <loc>https://qiming.dashen.wang/articles/</loc>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://qiming.dashen.wang/articles/"/>
+    <xhtml:link rel="alternate" hreflang="zh-TW" href="https://qiming.dashen.wang/zh-TW/articles/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://qiming.dashen.wang/ja/articles/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://qiming.dashen.wang/en/articles/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://qiming.dashen.wang/articles/"/>
+  </url>
+  <url>
+    <loc>https://qiming.dashen.wang/zh-TW/articles/</loc>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://qiming.dashen.wang/articles/"/>
+    <xhtml:link rel="alternate" hreflang="zh-TW" href="https://qiming.dashen.wang/zh-TW/articles/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://qiming.dashen.wang/ja/articles/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://qiming.dashen.wang/en/articles/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://qiming.dashen.wang/articles/"/>
+  </url>
+  <url>
+    <loc>https://qiming.dashen.wang/ja/articles/</loc>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://qiming.dashen.wang/articles/"/>
+    <xhtml:link rel="alternate" hreflang="zh-TW" href="https://qiming.dashen.wang/zh-TW/articles/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://qiming.dashen.wang/ja/articles/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://qiming.dashen.wang/en/articles/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://qiming.dashen.wang/articles/"/>
+  </url>
+  <url>
+    <loc>https://qiming.dashen.wang/en/articles/</loc>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://qiming.dashen.wang/articles/"/>
+    <xhtml:link rel="alternate" hreflang="zh-TW" href="https://qiming.dashen.wang/zh-TW/articles/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://qiming.dashen.wang/ja/articles/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://qiming.dashen.wang/en/articles/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://qiming.dashen.wang/articles/"/>
+  </url>
+  <url>
     <loc>https://qiming.dashen.wang/prompts/</loc>
     <xhtml:link rel="alternate" hreflang="zh-CN" href="https://qiming.dashen.wang/prompts/"/>
     <xhtml:link rel="alternate" hreflang="zh-TW" href="https://qiming.dashen.wang/zh-TW/prompts/"/>
@@ -351,5 +383,10 @@
     <xhtml:link rel="alternate" hreflang="ja" href="https://qiming.dashen.wang/ja/more/"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://qiming.dashen.wang/en/more/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://qiming.dashen.wang/more/"/>
+  </url>
+  <url>
+    <loc>https://qiming.dashen.wang/articles/organize-your-work/</loc>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://qiming.dashen.wang/articles/organize-your-work/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://qiming.dashen.wang/articles/organize-your-work/"/>
   </url>
 </urlset>

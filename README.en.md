@@ -26,4 +26,4 @@ A “member” is a long-lived object you maintain, not a paid subscription. Scr
 
 Existing files and local conventions take priority. One OpenCode/GLM-5.3 field report supports the value of reading context, but the complete agent and OS matrix remains untested.
 
-Website: [Get started](https://qiming.dashen.wang/en/start/) · [Use cases](https://qiming.dashen.wang/en/domains/) · [Real cases](https://qiming.dashen.wang/en/cases/) · [Feedback](https://qiming.dashen.wang/en/feedback/) · [Changelog](https://qiming.dashen.wang/en/updates/)
+Website: [Get started](https://qiming.dashen.wang/en/start/) · [Use cases](https://qiming.dashen.wang/en/domains/) · [Real cases](https://qiming.dashen.wang/en/cases/) · [Articles](https://qiming.dashen.wang/en/articles/) · [Feedback](https://qiming.dashen.wang/en/feedback/) · [Changelog](https://qiming.dashen.wang/en/updates/)

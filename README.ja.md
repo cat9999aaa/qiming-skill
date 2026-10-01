@@ -26,4 +26,4 @@ Skill のインストールだけでは、他のディレクトリを管理し�
 
 OpenCode/GLM-5.3 の現場報告は一件ありますが、全 Agent・OS の動作を証明するものではありません。
 
-公式サイト：[始める](https://qiming.dashen.wang/ja/start/) · [活用分野](https://qiming.dashen.wang/ja/domains/) · [実例](https://qiming.dashen.wang/ja/cases/) · [報告](https://qiming.dashen.wang/ja/feedback/) · [更新](https://qiming.dashen.wang/ja/updates/)
+公式サイト：[始める](https://qiming.dashen.wang/ja/start/) · [活用分野](https://qiming.dashen.wang/ja/domains/) · [実例](https://qiming.dashen.wang/ja/cases/) · [記事](https://qiming.dashen.wang/ja/articles/) · [報告](https://qiming.dashen.wang/ja/feedback/) · [更新](https://qiming.dashen.wang/ja/updates/)

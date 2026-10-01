@@ -150,8 +150,8 @@
     "changes": [
       {
         "date": "2026.10.01",
-        "title": "说清启明适合什么",
-        "body": "四语言首页与原理页增加适用和不适用边界；简中原理页发布约一万字的介绍、Omarchy 本地 AI 管理教程与真实项目案例。"
+        "title": "独立文章栏目与适用边界",
+        "body": "四语言首页与原理页说明启明适合与不适合的工作；新增独立文章栏目，简体中文实战长文在文章详情页讲本地 AI 管理和脱敏项目案例。"
       },
       {
         "date": "2026.10.01",
@@ -431,8 +431,8 @@
     "changes": [
       {
         "date": "2026.10.01",
-        "title": "說清啟明適合什麼",
-        "body": "四語首頁與原理頁補上適用和不適用邊界；簡體中文原理頁發佈長篇介紹、Omarchy 本機 AI 管理教學與真實案例。"
+        "title": "獨立文章欄目與適用邊界",
+        "body": "四語首頁與原理頁說明啟明適合與不適合的工作；新增獨立文章欄目，簡體中文實戰長文在文章頁介紹本機 AI 管理和匿名案例。"
       },
       {
         "date": "2026.10.01",
@@ -712,8 +712,8 @@
     "changes": [
       {
         "date": "2026.10.01",
-        "title": "Qiming の向き不向きを説明",
-        "body": "四言語のトップと仕組みページに適用範囲を追加。簡体字中国語の長文では Omarchy 上のローカル AI 管理と実例を説明します。"
+        "title": "記事ページと適用範囲",
+        "body": "四言語のトップと仕組みページに向き不向きを追加。独立した記事一覧から、ローカル AI 管理と匿名化した事例を説明する簡体字中国語の全文を読めます。"
       },
       {
         "date": "2026.10.01",
@@ -993,8 +993,8 @@
     "changes": [
       {
         "date": "2026.10.01",
-        "title": "Explaining when Qiming helps",
-        "body": "All four home and how-it-works pages now state fit and limits in plain language. A full Simplified Chinese guide covers Omarchy local AI management and real projects."
+        "title": "A dedicated Articles section",
+        "body": "All four home and how-it-works pages state fit and limits in plain language. The new Articles section links to a Simplified Chinese field guide on local AI management and sanitized project cases."
       },
       {
         "date": "2026.10.01",

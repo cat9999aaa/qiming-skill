@@ -14,10 +14,10 @@ from xml.sax.saxutils import escape as xml_escape
 
 HERE = Path(__file__).resolve().parent
 LOCALES = {"zh-CN": "", "zh-TW": "zh-TW", "ja": "ja", "en": "en"}
-PAGES = ("home", "start", "how", "domains", "cases", "prompts", "feedback", "story", "updates", "faq", "more")
-MAIN_NAV = ("home", "start", "how", "domains", "cases", "prompts", "feedback")
-MOBILE_NAV = ("home", "start", "domains", "cases", "more")
-MORE_NAV = ("prompts", "feedback", "story", "updates", "faq")
+PAGES = ("home", "start", "how", "domains", "cases", "articles", "prompts", "feedback", "story", "updates", "faq", "more")
+MAIN_NAV = ("home", "start", "how", "domains", "cases", "articles", "prompts", "feedback")
+MOBILE_NAV = ("home", "start", "domains", "articles", "more")
+MORE_NAV = ("cases", "prompts", "feedback", "story", "updates", "faq")
 LANG_LABELS = {"zh-CN": "简中", "zh-TW": "繁中", "ja": "日本語", "en": "EN"}
 OG_LOCALES = {"zh-CN": "zh_CN", "zh-TW": "zh_TW", "ja": "ja_JP", "en": "en_US"}
 
@@ -29,6 +29,29 @@ def e(value: object) -> str:
 def route(locale: str, page: str = "home") -> str:
     parts = ([LOCALES[locale]] if LOCALES[locale] else []) + ([page] if page != "home" else [])
     return "/" + "/".join(parts) + ("/" if parts else "")
+
+
+def article_route(locale: str, slug: str) -> str:
+    if not re.fullmatch(r"[a-z0-9]+(?:-[a-z0-9]+)*", slug):
+        raise ValueError("invalid article slug")
+    return route(locale, "articles") + slug + "/"
+
+
+def article_catalog() -> list[dict]:
+    items = json.loads((HERE / "articles" / "catalog.json").read_text(encoding="utf-8"))["items"]
+    if not items or len({item["slug"] for item in items}) != len(items):
+        raise ValueError("article catalog needs unique entries")
+    for item in items:
+        article_route("zh-CN", item["slug"])
+        if item["default_locale"] not in item["source"]:
+            raise ValueError("article default locale needs full text")
+        for locale, filename in item["source"].items():
+            if locale not in LOCALES or Path(filename).name != filename or not (HERE / "articles" / filename).is_file():
+                raise ValueError("invalid article source")
+        for key in ("title", "summary", "availability", "read_label"):
+            if set(item[key]) != set(LOCALES):
+                raise ValueError("article metadata must cover four locales")
+    return items
 
 
 def repo_slug(url: str | None) -> str | None:
@@ -63,14 +86,14 @@ def link_card(locale: str, page: str, p: dict, index: int) -> str:
             f'<span class="link-arrow" aria-hidden="true">↗</span></a>')
 
 
-def fit_panel(fit: dict) -> str:
+def fit_panel(fit: dict, article_href: str) -> str:
     columns = []
     for key, section_id in (("fit", "fit-boundary"), ("not_fit", "not-fit-boundary")):
         points = "".join(f'<li>{e(item)}</li>' for item in fit[key + "_points"])
         columns.append(f'<article class="pixel-card fit-card" id="{section_id}"><h2>{e(fit[key + "_title"])}</h2>'
                        f'<p>{e(fit[key + "_body"])}</p><ul>{points}</ul></article>')
     return (f'<section class="page-section wrap fit-section"><div class="fit-grid">{"".join(columns)}</div>'
-            f'<p class="guide-link-row"><a href="/how/#full-guide">{e(fit["long_label"])} ↗</a>'
+            f'<p class="guide-link-row" id="full-guide"><a href="{e(article_href)}">{e(fit["long_label"])} ↗</a>'
             f'<span>{e(fit["long_note"])}</span></p></section>')
 
 
@@ -81,9 +104,9 @@ def article_inline(value: str) -> str:
                    if piece.startswith("https://") else e(piece) for piece in pieces)
 
 
-def longform_article() -> str:
-    """Render the project's controlled, plain Markdown article without a runtime dependency."""
-    source = (HERE / "articles" / "why-qiming.zh-CN.md").read_text(encoding="utf-8")
+def longform_article(item: dict, locale: str, labels: dict) -> str:
+    """Render one catalogued Markdown article without a runtime dependency."""
+    source = (HERE / "articles" / item["source"][locale]).read_text(encoding="utf-8")
     lines = source.splitlines()
     headings: list[tuple[str, str]] = []
     section_number = 0
@@ -98,6 +121,7 @@ def longform_article() -> str:
     paragraph: list[str] = []
     code: list[str] | None = None
     current_section = 0
+    title: str | None = None
 
     def flush() -> None:
         if paragraph:
@@ -126,21 +150,28 @@ def longform_article() -> str:
             sections.append(f'<h2 id="{heading_id}">{e(heading)}</h2>')
         elif line.startswith("# "):
             flush()
-            sections.append(f'<h2 class="guide-title">{e(line[2:])}</h2>')
+            if title is not None:
+                raise ValueError("longform article has multiple titles")
+            title = line[2:]
         else:
             paragraph.append(line)
     flush()
     if code is not None:
         raise ValueError("unfinished code fence in longform article")
+    if title is None:
+        raise ValueError("longform article needs a title")
     toc = "".join(f'<a href="#{heading_id}">{e(heading)}</a>' for heading_id, heading in headings)
-    return (f'<section class="page-section wrap longform" id="full-guide"><div class="guide-layout">'
+    return (f'<section class="page-section wrap longform"><div class="article-heading">'
+            f'<a href="{route(locale, "articles")}">← {e(labels["articles"])}</a>'
+            f'<time datetime="{e(item["published"])}">{e(item["published"])}</time></div>'
+            f'<h1 class="guide-title">{e(title)}</h1><div class="guide-layout">'
             f'<nav class="guide-toc" aria-label="文章目录"><span class="eyebrow">阅读目录</span>{toc}</nav>'
             f'<article class="guide-prose">{"".join(sections)}</article></div></section>')
 
 
 def header(locale: str, page: str, p: dict) -> str:
     desktop = "".join(f'<a href="{route(locale, key)}"{(" aria-current=" + chr(34) + "page" + chr(34)) if key == page else ""}>{e(p["labels"][key])}</a>' for key in MAIN_NAV)
-    icons = ("⌂", "✦", "▦", "▣", "···")
+    icons = ("⌂", "✦", "▦", "▤", "···")
     mobile = "".join(
         f'<a href="{route(locale, key)}"{(" aria-current=" + chr(34) + "page" + chr(34)) if key == page else ""}>'
         f'<span class="mobile-icon" aria-hidden="true">{icon}</span><span>{e(p["labels"][key])}</span></a>'
@@ -160,7 +191,7 @@ def header(locale: str, page: str, p: dict) -> str:
 
 
 def footer(locale: str, p: dict, t: dict) -> str:
-    links = "".join(link(locale, key, p["labels"][key]) for key in ("start", "how", "domains", "cases", *MORE_NAV))
+    links = "".join(link(locale, key, p["labels"][key]) for key in ("start", "how", "domains", "cases", "articles", "prompts", "feedback", "story", "updates", "faq"))
     return (f'<footer class="site-footer"><div class="wrap footer-grid"><div>'
             f'<a class="brand" href="{route(locale)}"><img src="/assets/logo.svg" width="42" height="42" alt="">'
             f'<span><b>启明</b><small>QIMING SKILL</small></span></a><p>{e(t["footer_line"])}</p></div>'
@@ -168,7 +199,7 @@ def footer(locale: str, p: dict, t: dict) -> str:
             f'<span>© 2026 QIMING</span><span>{e(t["footer_status"])}</span><a href="#top">↑ TOP</a></div></footer>')
 
 
-def home(locale: str, t: dict, p: dict, fit: dict) -> str:
+def home(locale: str, t: dict, p: dict, fit: dict, article_href: str) -> str:
     files = "".join(f'<li>{e(item)}</li>' for item in t["panel_files"])
     units = "".join(f'<span>{e(item)}</span>' for item in t["panel_units"])
     cards = "".join(link_card(locale, key, p, i) for i, key in enumerate(("how", "domains", "cases"), 1))
@@ -183,7 +214,7 @@ def home(locale: str, t: dict, p: dict, fit: dict) -> str:
             f'<div class="terminal-block green"><small>02 / {e(t["panel_instance"])}</small><div class="unit-grid">{units}</div></div>'
             f'</div><div class="terminal-foot">PROJECT-LOCAL · Q/01</div></div></section>'
             f'<section class="statement"><div class="wrap"><span>※</span><p>{e(t["statement"])}</p></div></section>'
-            f'{fit_panel(fit)}'
+            f'{fit_panel(fit, article_href)}'
             f'<section class="page-section wrap"><div class="section-heading"><span class="eyebrow">EXPLORE / 03</span>'
             f'<h2>{e(p["section_more"])}</h2></div><div class="card-grid">{cards}</div></section>')
 
@@ -209,14 +240,28 @@ def start(locale: str, t: dict, p: dict, repo_url: str | None) -> str:
             f'<p class="scope-note">{e(p["scope_note"])}</p></section>')
 
 
-def how(locale: str, t: dict, fit: dict) -> str:
+def how(locale: str, t: dict, fit: dict, article_href: str) -> str:
     steps = "".join(f'<article class="pixel-card step-card"><span class="pixel-index">{e(item["number"])}</span>'
                     f'<h2>{e(item["title"])}</h2><p>{e(item["body"])}</p></article>' for item in t["methods"])
     chips = "".join(f'<span>{e(item)}</span>' for item in t["member_chips"])
     return (f'<section class="page-section wrap"><div class="steps-grid">{steps}</div>'
             f'<div class="member-panel"><div class="member-icon">Q+</div><div><span class="eyebrow">{e(t["member_label"])}</span>'
             f'<h2>{e(t["member_title"])}</h2><p>{e(t["member_body"])}</p><div class="chips">{chips}</div></div></div></section>'
-            f'{fit_panel(fit)}' + (longform_article() if locale == "zh-CN" else ""))
+            f'{fit_panel(fit, article_href)}')
+
+
+def articles_index(locale: str, items: list[dict]) -> str:
+    cards = []
+    for item in items:
+        available_locale = locale if locale in item["source"] else item["default_locale"]
+        href = article_route(available_locale, item["slug"])
+        cards.append(f'<article class="pixel-card article-card"><div class="case-top">'
+                     f'<time datetime="{e(item["published"])}">{e(item["published"])}</time>'
+                     f'<span>{e(item["availability"][locale])}</span></div>'
+                     f'<h2>{e(item["title"][locale])}</h2><p>{e(item["summary"][locale])}</p>'
+                     f'<a href="{e(href)}" hreflang="{available_locale}">{e(item["read_label"][locale])} ↗</a></article>')
+    layout = "article-list single" if len(items) == 1 else "article-list"
+    return f'<section class="page-section wrap"><div class="{layout}">{"".join(cards)}</div></section>'
 
 
 def domains(t: dict) -> str:
@@ -278,20 +323,23 @@ def more(locale: str, p: dict) -> str:
     return f'<section class="page-section wrap"><div class="card-grid">{cards}</div></section>'
 
 
-def page_body(locale: str, page: str, t: dict, p: dict, fit: dict, repo_url: str | None) -> str:
+def page_body(locale: str, page: str, t: dict, p: dict, fit: dict, repo_url: str | None,
+              articles: list[dict]) -> str:
+    featured_href = article_route(articles[0]["default_locale"], articles[0]["slug"])
     if page == "home":
-        return home(locale, t, p, fit)
+        return home(locale, t, p, fit, featured_href)
     intro = (f'<section class="page-hero wrap"><span class="eyebrow">QIMING / {e(page.upper())}</span>'
              f'<h1>{e(p["labels"][page])}</h1><p>{e(p["lead"][page])}</p></section>')
-    contents = {"start": lambda: start(locale, t, p, repo_url), "how": lambda: how(locale, t, fit),
+    contents = {"start": lambda: start(locale, t, p, repo_url), "how": lambda: how(locale, t, fit, featured_href),
                 "domains": lambda: domains(t), "cases": lambda: cases(t, p), "prompts": lambda: prompts(t),
                 "feedback": lambda: feedback(p), "story": lambda: story(t), "updates": lambda: updates(t),
-                "faq": lambda: faq(t), "more": lambda: more(locale, p)}
+                "faq": lambda: faq(t), "more": lambda: more(locale, p),
+                "articles": lambda: articles_index(locale, articles)}
     return intro + contents[page]()
 
 
 def render(locale: str, t: dict, repo_url: str | None, site_url: str, page: str = "home", p: dict | None = None,
-           fit: dict | None = None) -> str:
+           fit: dict | None = None, articles: list[dict] | None = None, article: dict | None = None) -> str:
     validate_site_url(site_url)
     repo_slug(repo_url)
     if page not in PAGES:
@@ -300,11 +348,18 @@ def render(locale: str, t: dict, repo_url: str | None, site_url: str, page: str 
         p = json.loads((HERE / "page_content.json").read_text(encoding="utf-8"))[locale]
     if fit is None:
         fit = json.loads((HERE / "fit_content.json").read_text(encoding="utf-8"))[locale]
-    canonical = site_url + route(locale, page)
-    title = t["title"] if page == "home" else f'{p["labels"][page]} | Qiming Skill'
-    description = p["summary"][page]
-    alternate = "".join(f'<link rel="alternate" hreflang="{code}" href="{e(site_url + route(code, page))}">' for code in LOCALES)
-    alternate += f'<link rel="alternate" hreflang="x-default" href="{e(site_url + route("zh-CN", page))}">'
+    if articles is None:
+        articles = article_catalog()
+    if article is not None and locale not in article["source"]:
+        raise ValueError("article translation is not available")
+    canonical = site_url + (article_route(locale, article["slug"]) if article else route(locale, page))
+    title = (f'{article["title"][locale]} | Qiming Skill' if article else
+             t["title"] if page == "home" else f'{p["labels"][page]} | Qiming Skill')
+    description = article["summary"][locale] if article else p["summary"][page]
+    alternates = (article["source"] if article else LOCALES)
+    alternate = "".join(f'<link rel="alternate" hreflang="{code}" href="{e(site_url + (article_route(code, article["slug"]) if article else route(code, page)))}">' for code in alternates)
+    alternate += (f'<link rel="alternate" hreflang="x-default" href="{e(site_url + article_route(article["default_locale"], article["slug"]))}">'
+                  if article else f'<link rel="alternate" hreflang="x-default" href="{e(site_url + route("zh-CN", page))}">')
     graph = [
         {"@type": "WebPage", "@id": canonical + "#webpage", "url": canonical, "name": title,
          "description": description, "inLanguage": locale, "isPartOf": {"@id": site_url + "/#website"}},
@@ -316,10 +371,18 @@ def render(locale: str, t: dict, repo_url: str | None, site_url: str, page: str 
                       "license": repo_url + "/blob/main/LICENSE", "programmingLanguage": ["Python", "Markdown"],
                       "isAccessibleForFree": True})
         graph[0]["about"] = {"@id": site_url + "/#skill"}
+    if article:
+        graph.append({"@type": "Article", "headline": article["title"][locale], "datePublished": article["published"],
+                      "inLanguage": locale, "mainEntityOfPage": canonical})
     if page != "home":
-        graph.append({"@type": "BreadcrumbList", "itemListElement": [
+        crumbs = [
             {"@type": "ListItem", "position": 1, "name": p["labels"]["home"], "item": site_url + route(locale)},
-            {"@type": "ListItem", "position": 2, "name": p["labels"][page], "item": canonical}]})
+            {"@type": "ListItem", "position": 2, "name": p["labels"][page], "item": site_url + route(locale, page)}]
+        if article:
+            crumbs.append({"@type": "ListItem", "position": 3, "name": article["title"][locale], "item": canonical})
+        else:
+            crumbs[-1]["item"] = canonical
+        graph.append({"@type": "BreadcrumbList", "itemListElement": crumbs})
     structured = json.dumps({"@context": "https://schema.org", "@graph": graph}, ensure_ascii=False).replace("<", "\\u003c")
     return f'''<!doctype html>
 <html lang="{locale}">
@@ -331,7 +394,7 @@ def render(locale: str, t: dict, repo_url: str | None, site_url: str, page: str 
   <meta name="robots" content="index, follow, max-image-preview:large">
   <link rel="canonical" href="{e(canonical)}">
   {alternate}
-  <meta property="og:type" content="website">
+  <meta property="og:type" content="{'article' if article else 'website'}">
   <meta property="og:site_name" content="启明 Qiming">
   <meta property="og:title" content="{e(title)}">
   <meta property="og:description" content="{e(description)}">
@@ -347,20 +410,28 @@ def render(locale: str, t: dict, repo_url: str | None, site_url: str, page: str 
 <body>
   <a class="skip-link" href="#main">{e(t['skip'])}</a>
   {header(locale, page, p)}
-  <main id="main">{page_body(locale, page, t, p, fit, repo_url)}</main>
+  <main id="main">{longform_article(article, locale, p['labels']) if article else page_body(locale, page, t, p, fit, repo_url, articles)}</main>
   {footer(locale, p, t)}
 </body>
 </html>
 '''
 
 
-def sitemap(site_url: str) -> str:
+def sitemap(site_url: str, articles: list[dict] | None = None) -> str:
+    if articles is None:
+        articles = article_catalog()
     entries = []
     for page in PAGES:
         alternates = "".join(f'    <xhtml:link rel="alternate" hreflang="{code}" href="{xml_escape(site_url + route(code, page))}"/>\n' for code in LOCALES)
         alternates += f'    <xhtml:link rel="alternate" hreflang="x-default" href="{xml_escape(site_url + route("zh-CN", page))}"/>\n'
         for locale in LOCALES:
             entries.append(f'  <url>\n    <loc>{xml_escape(site_url + route(locale, page))}</loc>\n{alternates}  </url>\n')
+    for item in articles:
+        available = item["source"]
+        article_alternates = "".join(f'    <xhtml:link rel="alternate" hreflang="{code}" href="{xml_escape(site_url + article_route(code, item["slug"]))}"/>\n' for code in available)
+        article_alternates += f'    <xhtml:link rel="alternate" hreflang="x-default" href="{xml_escape(site_url + article_route(item["default_locale"], item["slug"]))}"/>\n'
+        for locale in available:
+            entries.append(f'  <url>\n    <loc>{xml_escape(site_url + article_route(locale, item["slug"]))}</loc>\n{article_alternates}  </url>\n')
     return ('<?xml version="1.0" encoding="UTF-8"?>\n'
             '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" '
             'xmlns:xhtml="http://www.w3.org/1999/xhtml">\n' + "".join(entries) + '</urlset>\n')
@@ -372,20 +443,27 @@ def build(out: Path, repo_url: str | None, site_url: str) -> None:
     content = json.loads((HERE / "content.json").read_text(encoding="utf-8"))
     pages = json.loads((HERE / "page_content.json").read_text(encoding="utf-8"))
     fits = json.loads((HERE / "fit_content.json").read_text(encoding="utf-8"))
+    articles = article_catalog()
     if set(content) != set(LOCALES) or set(pages) != set(LOCALES) or set(fits) != set(LOCALES):
         raise ValueError("site content must contain exactly four supported locales")
     for locale in LOCALES:
         for page in PAGES:
             target = out / route(locale, page).lstrip("/")
             target.mkdir(parents=True, exist_ok=True)
-            (target / "index.html").write_text(render(locale, content[locale], repo_url, site_url, page, pages[locale], fits[locale]), encoding="utf-8")
+            (target / "index.html").write_text(render(locale, content[locale], repo_url, site_url, page, pages[locale], fits[locale], articles), encoding="utf-8")
+        for item in articles:
+            if locale not in item["source"]:
+                continue
+            target = out / article_route(locale, item["slug"]).lstrip("/")
+            target.mkdir(parents=True, exist_ok=True)
+            (target / "index.html").write_text(render(locale, content[locale], repo_url, site_url, "articles", pages[locale], fits[locale], articles, item), encoding="utf-8")
     assets = out / "assets"
     assets.mkdir(parents=True, exist_ok=True)
     for name in ("style.css", "app.js", "logo.svg", "favicon.ico"):
         shutil.copyfile(HERE / "assets" / name, assets / name)
     (out / "release.json").write_text(json.dumps({"repo_url": repo_url, "site_url": site_url, "published": bool(repo_url)}, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     (out / "robots.txt").write_text(f"User-agent: *\nAllow: /\n\nUser-agent: OAI-SearchBot\nAllow: /\n\nSitemap: {site_url}/sitemap.xml\n", encoding="utf-8")
-    (out / "sitemap.xml").write_text(sitemap(site_url), encoding="utf-8")
+    (out / "sitemap.xml").write_text(sitemap(site_url, articles), encoding="utf-8")
 
 
 def main() -> None:

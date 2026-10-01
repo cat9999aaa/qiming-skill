@@ -2,7 +2,7 @@
 
 Live site: https://qiming.dashen.wang/
 
-The official site is a dependency-free static build. `content.json` retains the four existing localized editions; `page_content.json` contains topic-level metadata, navigation, the self-managed site case, and the sanitized field report. `fit_content.json` provides plain-language fit and non-fit boundaries in all four languages. `articles/why-qiming.zh-CN.md` is the full Simplified Chinese introduction, rendered on `/how/`; other languages link to it with its language stated. Simplified Chinese uses the root URL; Traditional Chinese uses `/zh-TW/`, Japanese `/ja/`, and English `/en/`. Each locale has separate pages for getting started, how it works, domains, cases, prompts, feedback, story, updates, FAQ, and a More menu. `assets/` contains the Qiming logo, favicon, pixel-inspired styles, and copy interaction.
+The official site is a dependency-free static build. `content.json` retains the four existing localized editions; `page_content.json` contains topic-level metadata, navigation, the self-managed site case, and the sanitized field report. `fit_content.json` provides plain-language fit and non-fit boundaries in all four languages. `articles/catalog.json` is the article index; `articles/why-qiming.zh-CN.md` is the full Simplified Chinese introduction, rendered at `/articles/organize-your-work/`. The four localized `/articles/` pages list available articles and state the language of each full text. Simplified Chinese uses the root URL; Traditional Chinese uses `/zh-TW/`, Japanese `/ja/`, and English `/en/`. Each locale has separate pages for getting started, how it works, domains, cases, articles, prompts, feedback, story, updates, FAQ, and a More menu. `assets/` contains the Qiming logo, favicon, pixel-inspired styles, and copy interaction.
 
 Build and preview locally:
 
@@ -19,7 +19,7 @@ Source inspiration: [Omarchy's homepage](https://omarchy.us/) for its direct val
 
 ## Search and content maintenance
 
-Each topic has its own canonical URL, description, visible `h1`, four-language alternate links, JSON-LD for visible entities, and sitemap entry. `robots.txt` allows public crawlers, including OAI-SearchBot. These help pages be discovered and understood; they do not guarantee search ranking or AI citations. Update the relevant content files when a topic changes. The long article is edited as Markdown and rendered with the site's small dependency-free block renderer. Keep field reports labeled with attribution, sample size, and limits; never publish private project paths, domains, machine identifiers, or credentials.
+Each topic has its own canonical URL, description, visible `h1`, four-language alternate links, JSON-LD for visible entities, and sitemap entry. Article details advertise only languages with actual full text. `robots.txt` allows public crawlers, including OAI-SearchBot. These help pages be discovered and understood; they do not guarantee search ranking or AI citations. Update the relevant content files when a topic changes. Long articles are edited as Markdown and rendered with the site's small dependency-free block renderer. Keep field reports labeled with attribution, sample size, and limits; never publish private project paths, domains, machine identifiers, or credentials.
 
 ## Production hosting
 

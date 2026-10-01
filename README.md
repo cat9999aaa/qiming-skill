@@ -2,7 +2,7 @@
 
 Official website / 官网：https://qiming.dashen.wang/
 
-Plain-language introduction and Omarchy local AI walkthrough (Simplified Chinese): https://qiming.dashen.wang/how/#full-guide
+Articles and the Omarchy local AI walkthrough (Simplified Chinese): https://qiming.dashen.wang/articles/organize-your-work/
 
 **Read in your language:** [简体中文](README.zh-CN.md) · [繁體中文](README.zh-TW.md) · [日本語](README.ja.md) · [English](README.en.md)
 

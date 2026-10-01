@@ -26,4 +26,4 @@ npx skills add cat9999aaa/qiming-skill --skill qiming
 
 既有結構與本地自訂優先保留。跨 Agent 讀取有一份 OpenCode/GLM-5.3 現場報告，完整宿主矩陣仍待驗證。
 
-官網：[開始使用](https://qiming.dashen.wang/zh-TW/start/) · [領域](https://qiming.dashen.wang/zh-TW/domains/) · [案例](https://qiming.dashen.wang/zh-TW/cases/) · [回饋](https://qiming.dashen.wang/zh-TW/feedback/) · [更新](https://qiming.dashen.wang/zh-TW/updates/)
+官網：[開始使用](https://qiming.dashen.wang/zh-TW/start/) · [領域](https://qiming.dashen.wang/zh-TW/domains/) · [案例](https://qiming.dashen.wang/zh-TW/cases/) · [文章](https://qiming.dashen.wang/zh-TW/articles/) · [回饋](https://qiming.dashen.wang/zh-TW/feedback/) · [更新](https://qiming.dashen.wang/zh-TW/updates/)

@@ -1,0 +1,39 @@
+{
+  "id": "S19",
+  "name": "中断与回退",
+  "fixture": {
+    "files": {
+      "draft.md": "用户原始内容\n",
+      "scenario.txt": "在每个持久化边界注入异常，并在中断后由用户编辑 draft.md。"
+    },
+    "directories": []
+  },
+  "prompt": "逐个持久化边界注入测试异常，记录已完成和未完成步骤；插入一次用户编辑后重试或回退，仅处理指纹仍匹配的项。",
+  "authorization": [
+    "read workspace",
+    "write draft and control records",
+    "inject test interruption"
+  ],
+  "required_capabilities": [
+    "filesystem_read",
+    "filesystem_write",
+    "command_execution",
+    "fault_injection"
+  ],
+  "assertions": [
+    {
+      "kind": "file_contains",
+      "path": "draft.md",
+      "text": "用户原始内容"
+    },
+    {
+      "kind": "path_exists",
+      "path": ".qiming/workspace.json"
+    }
+  ],
+  "trace_requirements": [
+    {
+      "operation": "reconcile"
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "id": "S03",
+  "name": "按主题与按作品组织",
+  "fixture": {
+    "files": {
+      "主题/城市/提纲.md": "城市专题提纲",
+      "作品/步行文章.md": "步行文章草稿"
+    },
+    "directories": []
+  },
+  "prompt": "依据现有按主题和按作品的两种组织线索建立本地 profile 映射，保留原目录与术语；不要新建强制统一的业务树。",
+  "authorization": [
+    "read workspace",
+    "write control records"
+  ],
+  "required_capabilities": [
+    "filesystem_read",
+    "filesystem_write",
+    "command_execution"
+  ],
+  "assertions": [
+    {
+      "kind": "path_exists",
+      "path": ".qiming/profile.json"
+    },
+    {
+      "kind": "path_exists",
+      "path": "主题/城市/提纲.md"
+    }
+  ],
+  "trace_requirements": [
+    {
+      "operation": "profile-map"
+    }
+  ]
+}

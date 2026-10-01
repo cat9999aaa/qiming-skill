@@ -1,0 +1,58 @@
+{
+  "id": "S22",
+  "name": "异机恢复",
+  "fixture": {
+    "files": {
+      "content/article.md": "# 城市步行\n真实测试业务内容\n",
+      "scenario.txt": "runner 将资料导出到另一个根目录后执行恢复。"
+    },
+    "directories": []
+  },
+  "prompt": "导出实例、档案和文章，在不同根路径恢复；核对 ID、关系、哈希、可接续任务，并分别报告缺失备份与凭据恢复材料。",
+  "authorization": [
+    "read workspace",
+    "write bundle and target workspace"
+  ],
+  "required_capabilities": [
+    "filesystem_read",
+    "filesystem_write",
+    "command_execution",
+    "second_root"
+  ],
+  "assertions": [
+    {
+      "kind": "path_exists",
+      "path": ".qiming/workspace.json"
+    },
+    {
+      "kind": "path_exists",
+      "path": "content/article.md"
+    },
+    {
+      "kind": "path_exists",
+      "path": "restored/.qiming/qiming-user/SKILL.md"
+    },
+    {
+      "kind": "json_fields_equal",
+      "path": ".qiming/workspace.json",
+      "other_path": "restored/.qiming/workspace.json",
+      "field": "workspace_id"
+    },
+    {
+      "kind": "files_sha256_equal",
+      "path": "content/article.md",
+      "other_path": "restored/content/article.md"
+    }
+  ],
+  "trace_requirements": [
+    {
+      "operation": "bundle"
+    },
+    {
+      "operation": "restore"
+    },
+    {
+      "operation": "validate"
+    }
+  ]
+}

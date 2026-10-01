@@ -1,13 +1,88 @@
 {
   "protocol": "qiming.profile/1",
   "collections": {
-    "work": {"purpose": "work", "root": "work", "directory": ".", "pattern": "*.md", "codec": "markdown-frontmatter", "mapping": "work-default"}
+    "work": {
+      "purpose": "work",
+      "root": "project",
+      "directory": ".qiming/work",
+      "pattern": "**/*.json",
+      "codec": "json",
+      "mapping": "record"
+    },
+    "knowledge": {
+      "purpose": "knowledge",
+      "root": "project",
+      "directory": ".qiming/knowledge",
+      "pattern": "**/*.json",
+      "codec": "json",
+      "mapping": "record"
+    },
+    "members": {
+      "purpose": "members",
+      "root": "project",
+      "directory": ".qiming/members",
+      "pattern": "**/*.json",
+      "codec": "json",
+      "mapping": "record"
+    }
   },
   "mappings": {
-    "work-default": {"name": {"source": "/title", "writable": false}, "summary": {"source": "/summary", "default": null, "writable": false}}
+    "record": {
+      "id": {
+        "source": "/id",
+        "writable": true
+      },
+      "type": {
+        "source": "/type",
+        "writable": true
+      },
+      "name": {
+        "source": "/name",
+        "writable": true
+      },
+      "summary": {
+        "source": "/summary",
+        "writable": true
+      },
+      "status": {
+        "source": "/status",
+        "writable": true
+      },
+      "next": {
+        "source": "/next",
+        "writable": true
+      },
+      "scope": {
+        "source": "/scope",
+        "writable": true
+      },
+      "lifecycle": {
+        "source": "/lifecycle",
+        "writable": true
+      },
+      "review_after": {
+        "source": "/review_after",
+        "writable": true
+      }
+    }
   },
   "record_rules": {},
-  "scope_rules": {"exclude": [".git", "node_modules", ".venv"]},
-  "retrieval": {"max_results": 50},
-  "extensions": {}
+  "scope_rules": {
+    "exclude": [
+      ".git",
+      "node_modules",
+      ".venv",
+      "AGENTS.md",
+      "CLAUDE.md",
+      "GEMINI.md",
+      ".qiming/qiming-user",
+      ".qiming/operations"
+    ]
+  },
+  "retrieval": {
+    "max_results": 50
+  },
+  "extensions": {
+    "preset": "general"
+  }
 }

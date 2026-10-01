@@ -77,3 +77,26 @@ def normalize_fields(source: dict[str, object], mapping: dict[str, object]) -> d
             value = values[value]
         result[field] = deepcopy(value)
     return result
+
+
+def validate_profile(profile, manifest):
+    if profile.get('protocol') != 'qiming.profile/1' or not isinstance(profile.get('collections'),dict) or not isinstance(profile.get('mappings'),dict):
+        raise ValueError('profile requires protocol, collections and mappings')
+    for name, collection in profile['collections'].items():
+        if not isinstance(collection,dict) or collection.get('root') not in manifest.get('roots',{}):
+            raise ValueError(f'collection {name}: unknown root alias')
+        if collection.get('codec','json') not in {'json','yaml','markdown-frontmatter'}:
+            raise ValueError(f'collection {name}: unsupported codec')
+        mapping=collection.get('mapping')
+        if mapping is not None and mapping not in profile['mappings']:
+            raise ValueError(f'collection {name}: unknown mapping')
+        for field in ('directory','pattern'):
+            value=collection.get(field,'.' if field=='directory' else '**/*.json')
+            if not isinstance(value,str) or not value or Path(value).is_absolute() or '..' in Path(value).parts:
+                raise ValueError(f'collection {name}: unsafe {field}')
+        for field in ('exclude',):
+            if field in collection and (not isinstance(collection[field],list) or not all(isinstance(x,str) for x in collection[field])):
+                raise ValueError(f'collection {name}: exclude must be a list of patterns')
+    for mapping in profile['mappings'].values():
+        if not isinstance(mapping,dict): raise ValueError('mapping must be an object')
+        normalize_fields({},mapping)

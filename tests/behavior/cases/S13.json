@@ -1,0 +1,38 @@
+{
+  "id": "S13",
+  "name": "知识冲突与过期",
+  "fixture": {
+    "files": {
+      "notes/v1.md": "版本 1 需要方法 A。",
+      "notes/v2.md": "版本 2 需要方法 B。",
+      "notes/summary.md": "旧摘要：所有版本都用 A。"
+    },
+    "directories": []
+  },
+  "prompt": "检索 v1 与 v2 的相反做法并记录适用条件。旧摘要只能提示重审，不能作为当前验收结论；缺失来源保持未知。",
+  "authorization": [
+    "read workspace",
+    "write control records"
+  ],
+  "required_capabilities": [
+    "filesystem_read",
+    "filesystem_write",
+    "command_execution"
+  ],
+  "assertions": [
+    {
+      "kind": "path_exists",
+      "path": ".qiming/workspace.json"
+    },
+    {
+      "kind": "file_contains",
+      "path": "notes/v2.md",
+      "text": "方法 B"
+    }
+  ],
+  "trace_requirements": [
+    {
+      "operation": "search"
+    }
+  ]
+}

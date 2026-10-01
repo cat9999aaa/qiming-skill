@@ -1,0 +1,41 @@
+{
+  "id": "S11",
+  "name": "无历史工作交接",
+  "fixture": {
+    "files": {
+      "任务.md": "已经完成标题，下一步写第二节。",
+      "文章.md": "# 城市步行\n第一节已经完成。\n"
+    },
+    "directories": []
+  },
+  "prompt": "runner 先让一个 Agent 记录做到一半的状态，再用无历史新 Agent 接手。先核对现场，再继续第二节，不能重复首阶段已完成的外部动作。",
+  "authorization": [
+    "read workspace",
+    "write article and control records"
+  ],
+  "required_capabilities": [
+    "filesystem_read",
+    "filesystem_write",
+    "command_execution",
+    "fresh_session"
+  ],
+  "assertions": [
+    {
+      "kind": "file_contains",
+      "path": "文章.md",
+      "text": "第二节"
+    },
+    {
+      "kind": "path_exists",
+      "path": ".qiming/workspace.json"
+    }
+  ],
+  "trace_requirements": [
+    {
+      "operation": "fresh-session"
+    },
+    {
+      "operation": "write"
+    }
+  ]
+}

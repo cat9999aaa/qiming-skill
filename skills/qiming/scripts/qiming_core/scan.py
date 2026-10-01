@@ -49,6 +49,14 @@ def scan(manifest_path: Path, roots: list[str], relative_paths: list[str], budge
     errors: list[dict[str, object]] = []
     excluded: list[str] = []
     queue: list[tuple[str, Path, Path, int]] = []
+    if not roots:
+        from .profile import load_profile
+        from .collections import collection_paths
+        profile=load_profile(manifest_path)
+        for collection in profile['collections'].values():
+            for root,path in collection_paths(manifest_path,profile,collection):
+                if len(queue)>=max_entries: break
+                queue.append((collection['root'],root,path,0))
     for alias in roots:
         root = _root(manifest_path, alias)
         for relative in relative_paths or [""]:

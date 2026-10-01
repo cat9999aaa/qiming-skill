@@ -12,7 +12,7 @@ from pathlib import Path
 
 from .codec import load_record
 from .journal import _sync_directory, plan_fingerprint, read_json, save_backup, write_json
-from .locks import LockHeld, operation_lock
+from .locks import LockHeld, operation_lock, lock_conflict
 from .plan import resolve_target
 
 
@@ -72,7 +72,17 @@ def _stage(manifest_path: Path, change: dict[str, object]) -> bytes | None:
     data = original.read_bytes()
     if _hash_bytes(data) != change.get("desired_sha256"):
         raise ValueError("staged content fingerprint changed")
+    from .secrets import managed_payload_issues
+    issues=managed_payload_issues(manifest_path,change['target'],data)
+    if issues: raise ValueError('SECRET_VALUE_FORBIDDEN: replace credential values with provider references')
     return data
+
+
+def _verify_guards(manifest_path, plan):
+    for guard in plan.get('guards',[]):
+        target=resolve_target(manifest_path,guard['target'],writable=False)
+        if _current(target)!=guard.get('expected_sha256'):
+            raise ValueError(f'Read dependency changed: {target}')
 
 
 def _verify_plan(manifest_path: Path, plan: dict[str, object]) -> tuple[list[Path], list[bytes | None]]:
@@ -82,6 +92,7 @@ def _verify_plan(manifest_path: Path, plan: dict[str, object]) -> tuple[list[Pat
     profile = manifest_path.parent / str(manifest["profile"])
     if _current(profile) != plan.get("profile_sha256"):
         raise ValueError("profile fingerprint changed")
+    _verify_guards(manifest_path, plan)
     paths: list[Path] = []
     data: list[bytes | None] = []
     for change in plan.get("changes", []):
@@ -102,7 +113,8 @@ def _replace(path: Path, data: bytes | None, old_mode: int | None) -> None:
         return
     descriptor, temporary = tempfile.mkstemp(prefix=".qiming-", dir=path.parent)
     try:
-        os.fchmod(descriptor, old_mode if old_mode is not None else 0o600)
+        if hasattr(os, "fchmod"):
+            os.fchmod(descriptor, old_mode if old_mode is not None else 0o600)
         with os.fdopen(descriptor, "wb") as stream:
             stream.write(data)
             stream.flush()
@@ -178,8 +190,10 @@ def apply_plan(manifest_path: Path, plan: dict[str, object], *, _test_fail_after
                 _clear_migration(manifest_path, plan)
             return result
     except LockHeld as exc:
-        return _problem("LOCKED", "Operation lock exists and must be inspected", locator=str(exc))
+        return lock_conflict(manifest_path)
     except (OSError, ValueError, KeyError) as exc:
+        if str(exc).startswith("SECRET_VALUE_FORBIDDEN"):
+            return _problem("SECRET_VALUE_FORBIDDEN", "Use a credential provider reference instead of a secret value")
         if "journal_path" in locals() and journal_path.exists():
             return _problem("RECOVERY_REQUIRED", str(exc), status="partial", journal_ref=journal_path)
         return _problem("WRITE_CONFLICT", str(exc))
@@ -233,6 +247,6 @@ def reconcile(manifest_path: Path, journal_ref: Path, mode: str) -> dict[str, ob
             _clear_migration(manifest_path, journal["plan"])
             return {"status": "ok", "result": {"journal_ref": str(journal_ref), "state": "rolled_back"}, "diagnostics": [], "changed": changed}
     except LockHeld as exc:
-        return _problem("LOCKED", "Operation lock exists and must be inspected", locator=str(exc))
+        return lock_conflict(manifest_path)
     except (OSError, ValueError, KeyError) as exc:
         return _problem("IO_ERROR", str(exc), status="error", journal_ref=journal_ref)

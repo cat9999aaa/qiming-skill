@@ -24,6 +24,7 @@ def authority_records(manifest_path: Path, collections: list[str], *, limit: int
 
         redirects, _ = load_record(redirects_path, "json")
     errors: list[str] = []
+    skipped: list[str] = []
     visited = 0
     truncated = False
     for collection_id in selected:
@@ -36,7 +37,8 @@ def authority_records(manifest_path: Path, collections: list[str], *, limit: int
         if not directory.is_dir():
             errors.append(f"missing collection directory: {collection_id}")
             continue
-        for path in sorted(directory.glob(str(collection.get("pattern", "*.json")))):
+        from .collections import collection_paths
+        for root, path in collection_paths(manifest_path, profile, collection):
             if limit is not None and visited >= limit:
                 truncated = True
                 break
@@ -45,6 +47,9 @@ def authority_records(manifest_path: Path, collections: list[str], *, limit: int
                 continue
             locator = {"root": collection["root"], "path": str(path.relative_to(root)), "collection": collection_id}
             try:
+                if collection.get('codec') == 'markdown-frontmatter' and not path.read_bytes().startswith(b'---'):
+                    skipped.append(str(path.relative_to(root)))
+                    continue
                 view = member_view(manifest_path, locator)
                 if f"{view['ref']['workspace_id']}:{view['ref']['id']}" not in redirects:
                     rows.append(view)
@@ -52,7 +57,7 @@ def authority_records(manifest_path: Path, collections: list[str], *, limit: int
                 errors.append(str(path.relative_to(root)))
         if truncated:
             break
-    return rows, {"collections": selected, "visited": visited, "truncated": truncated, "errors": errors}
+    return rows, {"collections": selected, "visited": visited, "truncated": truncated, "errors": errors, "skipped": skipped}
 
 
 def source_set_fingerprint(rows: list[dict[str, object]]) -> str:

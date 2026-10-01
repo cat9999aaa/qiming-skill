@@ -1,0 +1,41 @@
+{
+  "id": "S02",
+  "name": "原地接手",
+  "fixture": {
+    "files": {
+      "作品/初稿.md": "城市步行初稿：先谈街角。",
+      "素材/访谈.txt": "受访者说街道应当更安静。",
+      "旧笔记.md": "下次核对采访日期。"
+    },
+    "directories": []
+  },
+  "prompt": "接手当前文章并继续修改作品/初稿.md。先识别原件和素材，再记录扫描范围和下一步；保留素材与旧笔记的原始字节。",
+  "authorization": [
+    "read workspace",
+    "write article and control records"
+  ],
+  "required_capabilities": [
+    "filesystem_read",
+    "filesystem_write",
+    "command_execution"
+  ],
+  "assertions": [
+    {
+      "kind": "file_contains",
+      "path": "作品/初稿.md",
+      "text": "城市步行初稿"
+    },
+    {
+      "kind": "path_exists",
+      "path": ".qiming/workspace.json"
+    }
+  ],
+  "trace_requirements": [
+    {
+      "operation": "scan"
+    },
+    {
+      "operation": "write"
+    }
+  ]
+}

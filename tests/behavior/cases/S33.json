@@ -1,0 +1,37 @@
+{
+  "id": "S33",
+  "name": "导出完整性",
+  "fixture": {
+    "files": {
+      "content/asset.bin": "synthetic binary placeholder",
+      "outside-note.md": "外部原件由 runner 单独准备。"
+    },
+    "directories": []
+  },
+  "prompt": "尝试嵌套导出并拒绝，随后正常导出；修改源或 bundle 内容以检查指纹，列出外部原件和恢复材料缺口；未经恢复不宣称通过。",
+  "authorization": [
+    "read workspace",
+    "write bundle and test copy"
+  ],
+  "required_capabilities": [
+    "filesystem_read",
+    "filesystem_write",
+    "command_execution",
+    "bundle_fixture"
+  ],
+  "assertions": [
+    {
+      "kind": "path_exists",
+      "path": ".qiming/workspace.json"
+    },
+    {
+      "kind": "path_exists",
+      "path": "content/asset.bin"
+    }
+  ],
+  "trace_requirements": [
+    {
+      "operation": "bundle-verify"
+    }
+  ]
+}

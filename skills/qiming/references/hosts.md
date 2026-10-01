@@ -20,4 +20,25 @@
 | Cursor | `.cursor/skills/<name>/SKILL.md`，也识别 `.agents/skills` | [Cursor Docs](https://prod.cursor.com/docs/skills) |
 | OpenCode | `.opencode/skills/<name>/SKILL.md`，也识别 `.agents/skills` | [OpenCode Docs](https://opencode.ai/docs/skills) |
 
-这些路径是文档层兼容信息。每个宿主还需实际验证格式识别、工具调用和目标行为三项。没有跑过的模型、版本、系统组合标为 `not-run`。只读宿主可接续与检索；写入、命令、凭据或调度能力必须按现场观测报告。GPT-6 Astra 的说明宜保持简短、按需展开，避免在入口堆叠重复流程；依据 [OpenAI 官方建议](https://developers.openai.com/blog/rethinking-skills-and-prompts-for-gpt-6-astra)。
+
+## 路径核对与验证边界
+
+核对日期：2026-10-01。绑定结构的自动化测试不等于真实会话遵从。Python 3.11+；Linux/macOS 用 python3，Windows 用 py -3。复制绑定可用于无软链权限的环境。
+
+| 宿主 | 项目 Skill 路径 | 当前验证 |
+| --- | --- | --- |
+| Codex | .agents/skills/qiming-user | 定向历史行为验证；本次新版本见发布验收 |
+| Claude Code | .claude/skills/qiming-user | format-ok；完整行为矩阵 not-run |
+| Gemini CLI | .gemini/skills/qiming-user | format-ok；完整行为矩阵 not-run |
+| Cursor | .cursor/skills/qiming-user | 路径适配测试；真实行为 not-run |
+| OpenCode | .opencode/skills/qiming-user | 单份现场反馈；完整行为矩阵 not-run |
+
+官方资料：[Claude Code](https://code.claude.com/docs/en/skills)、[Gemini CLI](https://geminicli.com/docs/cli/using-agent-skills/)、[OpenCode](https://opencode.ai/docs/skills/)。具体版本可改变发现机制，始终看 binding_status 与真实新会话。
+
+完整状态请求：
+
+```json
+{"protocol":"qiming.tool/1","request_id":"host-1","op":"binding_status","workspace_manifest":"/project/.qiming/workspace.json","args":{"host":"claude"}}
+```
+
+result.status 为 bound / bound-copy 才表示文件绑定就绪；instruction_bytes 表示 AGENTS.md 大小。它没有宣称模型一定遵从。

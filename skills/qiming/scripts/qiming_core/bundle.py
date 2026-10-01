@@ -43,12 +43,16 @@ def bundle(manifest_path: Path, selection: dict[str, object], destination: Path,
     omissions: list[dict[str, object]] = []
     source_root = manifest_path.parent.parent
     control = manifest_path.parent
-    for name in ("workspace.json", str(manifest.get("profile", "profile.json")), str(manifest.get("workspace_entry", "")), str(manifest.get("conventions", "")), str(manifest.get("init_journal", ""))):
+    for name in ("workspace.json", str(manifest.get("profile", "profile.json")), str(manifest.get("workspace_entry", "")), str(manifest.get("conventions", "")), str(manifest.get("init_journal") or ""), str(manifest.get("startup_context", "startup.md")), "project-entrypoints.json", ".gitignore"):
         if not name:
             continue
         path = control / name
         if path.is_file() and not path.is_symlink() and path.resolve().is_relative_to(control):
             selected.append((path, f"workspace/{path.relative_to(source_root)}", "management", None, "workspace"))
+    for name in ("AGENTS.md", "CLAUDE.md", "GEMINI.md"):
+        path=source_root/name
+        if path.is_file() and not path.is_symlink():
+            selected.append((path, f"workspace/{name}", "project-instructions", None, "workspace"))
     instance = manifest.get("instance")
     if isinstance(instance, dict):
         instance_manifest = control / str(instance.get("manifest", ""))

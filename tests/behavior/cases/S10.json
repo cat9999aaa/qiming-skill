@@ -1,0 +1,37 @@
+{
+  "id": "S10",
+  "name": "身份与副本",
+  "fixture": {
+    "files": {
+      "项目A/README.md": "同名项目",
+      "项目B/README.md": "同名项目",
+      "备份/README.md": "同名项目"
+    },
+    "directories": []
+  },
+  "prompt": "对同名项目、相同内容备份和多个工作树分别建稳定身份与角色关系；不要因为名称或哈希相同自动合并。",
+  "authorization": [
+    "read workspace",
+    "write control records"
+  ],
+  "required_capabilities": [
+    "filesystem_read",
+    "filesystem_write",
+    "command_execution"
+  ],
+  "assertions": [
+    {
+      "kind": "path_exists",
+      "path": ".qiming/workspace.json"
+    },
+    {
+      "kind": "path_exists",
+      "path": "项目B/README.md"
+    }
+  ],
+  "trace_requirements": [
+    {
+      "operation": "identity"
+    }
+  ]
+}

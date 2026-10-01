@@ -1,0 +1,41 @@
+{
+  "id": "S12",
+  "name": "故障知识蒸馏",
+  "fixture": {
+    "files": {
+      "app.py": "raise RuntimeError('synthetic failure')\n",
+      "error.log": "RuntimeError: synthetic failure"
+    },
+    "directories": []
+  },
+  "prompt": "修复这个可复现故障，保存经过和带适用条件的经验，并在第二次相似问题中找到已有经验而非重复创建。",
+  "authorization": [
+    "read workspace",
+    "write project and control records"
+  ],
+  "required_capabilities": [
+    "filesystem_read",
+    "filesystem_write",
+    "command_execution",
+    "multi_turn"
+  ],
+  "assertions": [
+    {
+      "kind": "path_exists",
+      "path": ".qiming/workspace.json"
+    },
+    {
+      "kind": "file_not_contains",
+      "path": "app.py",
+      "text": "raise RuntimeError"
+    }
+  ],
+  "trace_requirements": [
+    {
+      "operation": "knowledge-distill"
+    },
+    {
+      "operation": "search"
+    }
+  ]
+}

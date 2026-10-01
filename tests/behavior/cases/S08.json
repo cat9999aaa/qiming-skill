@@ -1,0 +1,37 @@
+{
+  "id": "S08",
+  "name": "入会边界",
+  "fixture": {
+    "files": {
+      "scripts/整理.py": "print('synthetic transform')\n",
+      "临时命令.txt": "一次性命令：打印行数",
+      "依赖.md": "第三方依赖：pytest"
+    },
+    "directories": []
+  },
+  "prompt": "判断持久脚本、临时命令和第三方依赖各自如何记录；只有应维护的能力入会，并写出脚本用途、入口和验证证据。",
+  "authorization": [
+    "read workspace",
+    "write control records"
+  ],
+  "required_capabilities": [
+    "filesystem_read",
+    "filesystem_write",
+    "command_execution"
+  ],
+  "assertions": [
+    {
+      "kind": "path_exists",
+      "path": ".qiming/workspace.json"
+    },
+    {
+      "kind": "path_exists",
+      "path": "scripts/整理.py"
+    }
+  ],
+  "trace_requirements": [
+    {
+      "operation": "membership"
+    }
+  ]
+}

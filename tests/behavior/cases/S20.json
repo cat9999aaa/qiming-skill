@@ -1,0 +1,38 @@
+{
+  "id": "S20",
+  "name": "路径与锁",
+  "fixture": {
+    "files": {
+      "中文 空格/合法.md": "可读",
+      "scenario.txt": "runner 须补充越界、软硬链接、残留锁、只读挂载与大小写冲突。"
+    },
+    "directories": []
+  },
+  "prompt": "验证 ..、绝对路径、符号链接和大小写冲突的拒绝；合法中文空格路径可用，残留锁须核对持有者，受限挂载降级。",
+  "authorization": [
+    "read workspace",
+    "write test control records"
+  ],
+  "required_capabilities": [
+    "filesystem_read",
+    "filesystem_write",
+    "command_execution",
+    "symlink_fixture",
+    "permission_fixture"
+  ],
+  "assertions": [
+    {
+      "kind": "path_exists",
+      "path": "中文 空格/合法.md"
+    },
+    {
+      "kind": "path_absent",
+      "path": "escaped-outside.md"
+    }
+  ],
+  "trace_requirements": [
+    {
+      "operation": "path-check"
+    }
+  ]
+}

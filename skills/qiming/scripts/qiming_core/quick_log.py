@@ -54,16 +54,21 @@ def log_event(
         return _problem("INVALID_INPUT", "event.observed_at needs a timezone", "error")
     if set(event) != {"id", "kind", "summary", "observed_at"}:
         return _problem("INVALID_INPUT", "event has unsupported fields", "error")
+    from .secrets import validate_account_ref
+    issues = validate_account_ref(event)
+    if issues:
+        return {'status':'conflict','result':None,'diagnostics':issues,'changed':[]}
     try:
         manifest, _ = load_record(manifest_path, "json")
         profile_path = manifest_path.parent / manifest["profile"]
         profile, _ = load_record(profile_path, "json")
         work = profile["collections"]["work"]
         if work.get("codec") != "json" or work_ref.get("root") != work.get("root"):
-            return _problem("SCOPE_MISMATCH", "work record is not a writable JSON collection")
+            return _problem("SCOPE_MISMATCH", "This work collection is read-only or has a different root; log requires a mapped JSON work record. Keep Markdown content and map a JSON sidecar explicitly.")
         relative = Path(str(work_ref.get("path", "")))
         directory = Path(str(work["directory"]))
-        if relative.parent != directory or not relative.match(str(work.get("pattern", "*.json"))):
+        from .collections import contains
+        if not contains(profile, work, relative):
             return _problem("SCOPE_MISMATCH", "target is outside the mapped work collection")
         target = resolve_target(manifest_path, work_ref)
         if not target.is_file():
@@ -87,7 +92,7 @@ def log_event(
             return _problem("WRITE_CONFLICT", "work record changed since it was read")
         record["events"] = [*events, event]
         desired = (json.dumps(record, ensure_ascii=False, indent=2) + "\n").encode("utf-8")
-        staging = manifest_path.parent / "staging"
+        staging = manifest_path.parent / ".staging"
         staging.mkdir(exist_ok=True)
         with tempfile.NamedTemporaryFile(prefix="log-", suffix=".json", dir=staging, delete=False) as stream:
             stage = Path(stream.name)

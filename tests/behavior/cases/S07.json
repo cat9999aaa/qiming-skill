@@ -1,0 +1,37 @@
+{
+  "id": "S07",
+  "name": "本地结构迁移",
+  "fixture": {
+    "files": {
+      "records/old.json": "{\"id\":\"member-7\",\"title\":\"初稿\",\"custom_field\":\"保留\"}",
+      "约定.md": "原类型叫作品，准备改叫文稿。"
+    },
+    "directories": []
+  },
+  "prompt": "修改本地类型、目录和字段映射，并执行有记录的迁移；旧 ID、关系与未知字段必须保留，过渡态不能称为 ready。",
+  "authorization": [
+    "read workspace",
+    "write control records"
+  ],
+  "required_capabilities": [
+    "filesystem_read",
+    "filesystem_write",
+    "command_execution"
+  ],
+  "assertions": [
+    {
+      "kind": "file_contains",
+      "path": "records/old.json",
+      "text": "member-7"
+    },
+    {
+      "kind": "path_exists",
+      "path": ".qiming/profile.json"
+    }
+  ],
+  "trace_requirements": [
+    {
+      "operation": "profile-migration"
+    }
+  ]
+}

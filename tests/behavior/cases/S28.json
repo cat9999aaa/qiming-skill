@@ -1,0 +1,37 @@
+{
+  "id": "S28",
+  "name": "旧模板接入",
+  "fixture": {
+    "files": {
+      "legacy/MEMBER.json": "{\"id\":\"legacy-28\",\"status\":\"old\",\"path_history\":[\"/old/location\"],\"custom_note\":\"保留\"}",
+      "legacy/evidence.md": "旧证据，未经当前验证。"
+    },
+    "directories": []
+  },
+  "prompt": "映射旧 MEMBER.json，保留原 ID、权威文件、未知字段和来源；歧义状态保持未知，查询需通过新映射而非无证据覆盖。",
+  "authorization": [
+    "read workspace",
+    "write mapping control records"
+  ],
+  "required_capabilities": [
+    "filesystem_read",
+    "filesystem_write",
+    "command_execution"
+  ],
+  "assertions": [
+    {
+      "kind": "file_contains",
+      "path": "legacy/MEMBER.json",
+      "text": "custom_note"
+    },
+    {
+      "kind": "path_exists",
+      "path": ".qiming/profile.json"
+    }
+  ],
+  "trace_requirements": [
+    {
+      "operation": "legacy-mapping"
+    }
+  ]
+}

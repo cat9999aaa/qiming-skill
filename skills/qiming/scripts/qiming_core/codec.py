@@ -94,7 +94,10 @@ def _restricted_yaml(raw: bytes) -> dict[str, object]:
 
 
 def load_record(path: Path, codec: str) -> tuple[dict[str, object], bytes]:
-    raw = path.read_bytes()
+    return decode_record(path.read_bytes(), codec)
+
+
+def decode_record(raw: bytes, codec: str) -> tuple[dict[str, object], bytes]:
     if codec == "json":
         try:
             value = json.loads(raw.decode("utf-8"), object_pairs_hook=_unique_pairs, parse_constant=_reject_constant)

@@ -1,0 +1,226 @@
+{
+  "zh-CN": {
+    "title": "从“聊过了”到“找得到、接得上”",
+    "before": "接入之前",
+    "after": "接入之后",
+    "before_note": "方案散在聊天里，素材和任务混在一起；隔天换个助手，又要从头说明。",
+    "after_note": "原文件留在原处。项目入口指出当前任务，任务留下证据与下一步；常用工具和经验有自己的归属。",
+    "tree_before": "项目/\n  README.md\n  稿件/\n  素材/",
+    "tree_after": "项目/\n  README.md、稿件/、素材/  ← 保留\n  AGENTS.md               ← 启动入口\n  .qiming/START.md         ← 当前进度\n  .qiming/work/            ← 任务与证据\n  .qiming/knowledge/       ← 可复用经验\n  .qiming/members/         ← 长期维护对象",
+    "flow_title": "下一次会话如何接上",
+    "flow": "你的请求 → 项目指令 → START.md → 当前记录 → 计划与写入 → 验证、日志与下一步",
+    "flow_note": "只预加载少量关键规则，再按任务读取具体档案。JSON 保存结构化记录，Markdown 保存说明，SQLite 只是可重建的索引。不会每次把整个知识库塞进上下文。",
+    "retention_title": "用久了也要能整理",
+    "retention": "START.md 保持 3–5 个当前任务。已完成记录可归档并保留 ID；到期知识在搜索结果中标为待复核。启动摘要超过 3000 字节提醒精简，超过 12000 字节拒绝刷新。升级先比较，保留你改过的规则。",
+    "compare_title": "我自己写 AGENTS.md 不就行了吗？",
+    "compare_headers": [
+      "方式",
+      "适合什么",
+      "需要自己负责什么"
+    ],
+    "compare_rows": [
+      [
+        "AGENTS.md + TODO.md",
+        "任务少、规则简单，起步最快",
+        "历史、冲突、验证证据和恢复方式"
+      ],
+      [
+        "助手内置记忆",
+        "记住偏好与常用上下文",
+        "能力依产品而异，先确认能否导出与换工具"
+      ],
+      [
+        "通用笔记工具",
+        "阅读、编辑、整理资料",
+        "把记录接到 Agent 工作流与实际验证"
+      ],
+      [
+        "启明",
+        "长期项目、跨会话接续、积累工具和经验",
+        "需要有文件权限的助手与 Python；要理解项目入口、确认记录准确"
+      ]
+    ],
+    "prereq": "先准备：一个能打开项目文件夹并执行命令的 AI 助手，以及 Python 3.11+。你可以直接把下面的话给助手；普通网页聊天若不能读写目录，需要先换到有项目权限的环境。",
+    "prompt": "请从 {repo_url} 安装启明到当前项目，并在当前目录启用。先确认项目根和 Python 3.11+，保留已有文件、规则和已接入实例。新项目优先运行安装包的 qiming.py init，建立我的当前目标与下一步；已有项目先读 START.md，不覆盖 profile 或会员 ID。检查搜索、记录追加和宿主绑定后告诉我结果。",
+    "init_title": "安装后，一条命令接入",
+    "init_note": "下面路径以 Skills CLI 安装到 .agents 为例；实际安装位置不同就替换路径。Windows 将 python3 换成 py -3。默认 JSON 不需要额外 Python 库；--dry-run 可先预览。",
+    "upgrade_title": "已经用过旧版？",
+    "upgrade_note": "对 Agent 说：启明已更新，请用新安装包先做 upgrade_preview，保留我改过的规则、原目录和会员 ID，再升级未修改部分。不要删除 .qiming，也不要重新初始化覆盖。",
+    "version_title": "v0.2.0 · 接入与恢复整改",
+    "version_items": [
+      "新增 init、项目宿主绑定、安全升级预览与陈旧锁检查。",
+      "默认 JSON 记录支持递归检索和快速追加；修复凭据检查与普通链接误报。",
+      "公开自动化测试与三系统 CI；实际结果以 Actions 为准，完整 Agent 行为矩阵尚未完成。"
+    ],
+    "smoke_title": "真实新会话测试 · 演示数据",
+    "smoke_body": "2026-10-01，Codex 与 Claude Code 分别在新会话中读取同一个演示项目，回答：“前两节已完成，第三节尚未校对；下一步核对 4 月 12 日与 4 月 15 日的先后顺序。”两者都引用了 START.md 与任务记录，并指出验收证据为空。这只验证接续抽查，不代表完整行为矩阵通过。Gemini 本次需要登录，未验证。"
+  },
+  "zh-TW": {
+    "title": "從「聊過了」到「找得到、接得上」",
+    "before": "接入之前",
+    "after": "接入之後",
+    "before_note": "方案散在聊天裡，素材與任務混在一起；隔天換個助手，又得重新說明。",
+    "after_note": "原檔留在原處。專案入口指向目前任務，記錄證據與下一步，工具和經驗也有歸屬。",
+    "tree_before": "專案/\n  README.md\n  稿件/\n  素材/",
+    "tree_after": "專案/\n  README.md、稿件/、素材/  ← 保留\n  AGENTS.md               ← 啟動入口\n  .qiming/START.md         ← 目前進度\n  .qiming/work/            ← 任務與證據\n  .qiming/knowledge/       ← 可複用經驗\n  .qiming/members/         ← 長期維護對象",
+    "flow_title": "下次對話如何接續",
+    "flow": "你的請求 → 專案指令 → START.md → 目前記錄 → 計畫與寫入 → 驗證、日誌與下一步",
+    "flow_note": "先載入少量重要規則，再按任務讀取檔案。JSON 保存結構化記錄，Markdown 保存說明，SQLite 僅為可重建的索引，不會每次載入整個知識庫。",
+    "retention_title": "長期使用也能整理",
+    "retention": "START.md 保持 3–5 個目前任務。已完成記錄可封存並保留 ID；到期知識在搜尋結果標示待複核。啟動摘要超過 3000 位元組提醒精簡，超過 12000 則拒絕更新。升級先比較並保留你的修改。",
+    "compare_title": "自己寫 AGENTS.md 不就可以了？",
+    "compare_headers": [
+      "方式",
+      "適合什麼",
+      "要自行負責什麼"
+    ],
+    "compare_rows": [
+      [
+        "AGENTS.md + TODO.md",
+        "任務少、規則簡單",
+        "歷史、衝突、驗證與復原"
+      ],
+      [
+        "助手內建記憶",
+        "偏好與常用上下文",
+        "能力依產品而異，確認匯出與轉移方式"
+      ],
+      [
+        "通用筆記工具",
+        "閱讀、編輯、整理資料",
+        "連接 Agent 工作流程與驗證"
+      ],
+      [
+        "啟明",
+        "長期專案、跨對話接續、累積工具與經驗",
+        "需要檔案權限及 Python；理解入口並核對記錄"
+      ]
+    ],
+    "prereq": "先準備能開啟專案資料夾並執行命令的 AI 助手，以及 Python 3.11+。直接把下段話交給助手；無法讀寫目錄的網頁聊天需要先換成具備專案權限的環境。",
+    "prompt": "請從 {repo_url} 安裝啟明到目前專案並啟用。先確認專案根與 Python 3.11+，保留檔案、規則與既有實例。新專案優先執行 qiming.py init，建立目標與下一步；既有專案先讀 START.md，不覆蓋 profile 或會員 ID。檢查搜尋、追加記錄及宿主綁定後回報。",
+    "init_title": "安裝後，一條命令接入",
+    "init_note": "此例使用 .agents 安裝路徑，請替換成實際路徑。Windows 將 python3 改為 py -3。預設 JSON 無須額外 Python 套件；--dry-run 可預覽。",
+    "upgrade_title": "已經使用舊版？",
+    "upgrade_note": "告訴 Agent：使用新安裝包先做 upgrade_preview，保留我的規則、原目錄與會員 ID，再升級未修改部分。不要刪除 .qiming 或覆蓋初始化。",
+    "version_title": "v0.2.0 · 接入與復原整改",
+    "version_items": [
+      "新增 init、專案綁定、安全升級預覽與陳舊鎖檢查。",
+      "預設 JSON 支援遞迴搜尋與快速追加；修正憑據檢查與普通連結誤報。",
+      "公開測試與三系統 CI；結果以 Actions 為準，完整 Agent 行為矩陣尚未完成。"
+    ],
+    "smoke_title": "真實新對話測試 · 示範資料",
+    "smoke_body": "2026-10-01，Codex 與 Claude Code 在新對話讀取同一示範專案，回答：前兩節完成，第三節待校對；下一步核對 4 月 12 日與 4 月 15 日的先後。兩者引用 START.md 與任務記錄，並指出缺少驗收證據。這是接續抽查，完整矩陣仍待測。Gemini 本次需登入，未驗證。"
+  },
+  "en": {
+    "title": "From a conversation to work you can resume",
+    "before": "Before adoption",
+    "after": "After adoption",
+    "before_note": "Decisions live in chats. Drafts and tasks mix together. A new assistant needs the whole story again.",
+    "after_note": "Your files stay where they are. A project entry points to current work, evidence and next steps. Reusable tools and knowledge have an owner.",
+    "tree_before": "project/\n  README.md\n  drafts/\n  assets/",
+    "tree_after": "project/\n  README.md, drafts/, assets/  ← preserved\n  AGENTS.md                   ← startup\n  .qiming/START.md             ← current progress\n  .qiming/work/                ← tasks and evidence\n  .qiming/knowledge/           ← reusable findings\n  .qiming/members/             ← maintained objects",
+    "flow_title": "How the next session continues",
+    "flow": "Your request → project instructions → START.md → current record → plan and apply → verification, journal and next step",
+    "flow_note": "Load a small set of essential rules, then retrieve records for the current task. JSON holds structured records, Markdown explains them, and SQLite is a rebuildable index. The full knowledge base does not load into every session.",
+    "retention_title": "Keep long-running projects readable",
+    "retention": "Keep 3–5 active tasks in START.md. Archive completed records while preserving IDs; search marks knowledge due for review. Startup summaries warn above 3,000 bytes and refuse refresh above 12,000. Preview upgrades and retain local changes.",
+    "compare_title": "Why not just write AGENTS.md?",
+    "compare_headers": [
+      "Approach",
+      "Best fit",
+      "Your responsibility"
+    ],
+    "compare_rows": [
+      [
+        "AGENTS.md + TODO.md",
+        "A few tasks and simple rules",
+        "History, conflicts, evidence and recovery"
+      ],
+      [
+        "Built-in assistant memory",
+        "Preferences and frequent context",
+        "Check export and portability for your product"
+      ],
+      [
+        "General note-taking tools",
+        "Reading, editing and organizing material",
+        "Connect notes to agent actions and verification"
+      ],
+      [
+        "Qiming",
+        "Long projects, session handoffs, reusable tools",
+        "A file-capable assistant and Python; learn the entry points and check record accuracy"
+      ]
+    ],
+    "prereq": "Start with an AI assistant that can open your project folder and run commands, plus Python 3.11+. Paste the request below into that assistant. A web chat without directory access cannot manage local files on its own.",
+    "prompt": "Install Qiming from {repo_url} into this project and enable it here. Confirm the project root and Python 3.11+. Preserve files, rules and any existing instance. For a new project, use qiming.py init and record my current goal and next step. For an existing project, read START.md first; never overwrite profile or member IDs. Check search, event logging and host binding, then report the result.",
+    "init_title": "After installation, initialize with one command",
+    "init_note": "This example assumes the Skills CLI installed into .agents; substitute the actual path. On Windows use py -3 instead of python3. Default JSON requires no extra Python packages. Add --dry-run to preview.",
+    "upgrade_title": "Already using an older version?",
+    "upgrade_note": "Ask your agent to run upgrade_preview from the new package, preserve local rules, paths and member IDs, then upgrade unchanged resources. Do not delete .qiming or overwrite the project with a fresh setup.",
+    "version_title": "v0.2.0 · Onboarding and recovery fixes",
+    "version_items": [
+      "Added init, project bindings, safe upgrade previews and stale-lock inspection.",
+      "Recursive JSON records support search and quick logging; improved credential checks and ordinary URL handling.",
+      "Published automated tests and a three-OS CI matrix. Check Actions for results; the complete agent behavior matrix is still pending."
+    ],
+    "smoke_title": "Real fresh-session check · synthetic records",
+    "smoke_body": "On 2026-10-01, Codex and Claude Code independently read a demo project: sections one and two were recorded as complete; section three still needed checking, specifically the order of April 12 and April 15. Both cited START.md and the task record and noted missing acceptance evidence. This is a continuity smoke check, not the full behavior matrix. Gemini required login and was not verified."
+  },
+  "ja": {
+    "title": "会話の記憶を、再開できる仕事へ",
+    "before": "導入前",
+    "after": "導入後",
+    "before_note": "決定事項はチャットに散らばり、原稿と作業が混在。翌日、別の助手にまた最初から説明する。",
+    "after_note": "元のファイルはそのまま。入口から現在の作業、根拠、次の一手が分かり、再利用するツールや知識にも管理先ができる。",
+    "tree_before": "project/\n  README.md\n  drafts/\n  assets/",
+    "tree_after": "project/\n  README.md, drafts/, assets/  ← 維持\n  AGENTS.md                   ← 起動入口\n  .qiming/START.md             ← 現在の進捗\n  .qiming/work/                ← 作業と根拠\n  .qiming/knowledge/           ← 再利用する知識\n  .qiming/members/             ← 継続管理する対象",
+    "flow_title": "次の会話で再開する仕組み",
+    "flow": "依頼 → プロジェクト指示 → START.md → 現在の記録 → 計画と書き込み → 検証、ログ、次の一手",
+    "flow_note": "重要なルールを少量読み、その仕事に必要な記録を取得します。構造化記録は JSON、説明は Markdown、SQLite は再生成できる索引です。知識庫全体を毎回読み込みません。",
+    "retention_title": "長く使っても整理できる",
+    "retention": "START.md は進行中の 3～5 件に絞ります。完了記録は ID を残して保管し、再確認期限が来た知識を検索で表示します。起動要約は 3000 バイト超で警告、12000 超で更新を拒否。更新前に差分を確認し、独自変更を保持します。",
+    "compare_title": "AGENTS.md を自分で書くだけでは？",
+    "compare_headers": [
+      "方法",
+      "向いている用途",
+      "自分で担うこと"
+    ],
+    "compare_rows": [
+      [
+        "AGENTS.md + TODO.md",
+        "少数の作業と単純なルール",
+        "履歴、競合、検証、復元"
+      ],
+      [
+        "助手の内蔵メモリ",
+        "好みとよく使う文脈",
+        "製品ごとの書き出しと移行方法の確認"
+      ],
+      [
+        "一般的なノートツール",
+        "資料の閲覧、編集、整理",
+        "Agent の実行と検証への接続"
+      ],
+      [
+        "啓明",
+        "長期プロジェクト、引き継ぎ、ツールの蓄積",
+        "ファイル操作できる助手と Python。入口を理解し記録を確認"
+      ]
+    ],
+    "prereq": "プロジェクトフォルダを開きコマンドを実行できる AI 助手と Python 3.11+ を用意します。以下の依頼文を渡してください。フォルダにアクセスできないウェブチャットだけではローカル管理できません。",
+    "prompt": "{repo_url} から啓明をこのプロジェクトにインストールし、有効にしてください。ルートと Python 3.11+ を確認し、既存ファイル、ルール、導入済み環境を保持してください。新規なら qiming.py init で目標と次の一手を記録し、既存なら START.md を先に読み、profile と管理対象 ID を上書きしないでください。検索、ログ追記、ホスト連携を確認して結果を報告してください。",
+    "init_title": "インストール後、1 コマンドで開始",
+    "init_note": "例は .agents への配置です。実際のパスに置き換えてください。Windows は python3 の代わりに py -3。標準 JSON は追加ライブラリ不要。--dry-run で事前確認できます。",
+    "upgrade_title": "旧版を使っている場合",
+    "upgrade_note": "新しいパッケージから upgrade_preview を実行し、独自ルール、元のディレクトリ、管理対象 ID を維持して未変更の資源を更新するよう依頼してください。.qiming の削除や初期化による上書きは行いません。",
+    "version_title": "v0.2.0 · 導入と復旧の改善",
+    "version_items": [
+      "init、プロジェクト連携、安全な更新プレビュー、古いロックの確認を追加。",
+      "JSON 記録の再帰検索と追記を修正。秘密情報検出と通常 URL の処理を改善。",
+      "自動テストと 3 OS の CI を公開。結果は Actions を参照。完全な Agent 動作行列は未完了。"
+    ],
+    "smoke_title": "実際の新規セッション検証 · デモ記録",
+    "smoke_body": "2026-10-01、Codex と Claude Code は同じデモプロジェクトを別々の新規セッションで読み、最初の 2 節は完了、3 節は未校正、次は 4 月 12 日と 15 日の順序を確認と回答しました。両者が START.md と作業記録を引用し、検証根拠の不足も指摘。完全な動作行列ではなく接続確認です。Gemini はログインが必要で未検証です。"
+  }
+}

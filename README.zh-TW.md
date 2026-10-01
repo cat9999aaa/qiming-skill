@@ -1,5 +1,7 @@
 # 啟明 Skill
 
+[![Tests](https://github.com/cat9999aaa/qiming-skill/actions/workflows/tests.yml/badge.svg)](https://github.com/cat9999aaa/qiming-skill/actions/workflows/tests.yml) · Python 3.11+ · [v0.2.0](https://github.com/cat9999aaa/qiming-skill/releases/tag/v0.2.0)
+
 [简体中文](README.zh-CN.md) · [繁體中文](README.zh-TW.md) · [日本語](README.ja.md) · [English](README.en.md)
 
 啟明是面向 AI 新手的專案本地管理 Skill。讓 Agent 從既有資料夾了解現況，再把任務、知識、長期工具與驗證狀態留在專案裡。換 Agent、換對話或換電腦時，都能從專案自己的入口接續。
@@ -27,3 +29,23 @@ npx skills add cat9999aaa/qiming-skill --skill qiming
 既有結構與本地自訂優先保留。跨 Agent 讀取有一份 OpenCode/GLM-5.3 現場報告，完整宿主矩陣仍待驗證。
 
 官網：[開始使用](https://qiming.dashen.wang/zh-TW/start/) · [領域](https://qiming.dashen.wang/zh-TW/domains/) · [案例](https://qiming.dashen.wang/zh-TW/cases/) · [文章](https://qiming.dashen.wang/zh-TW/articles/) · [回饋](https://qiming.dashen.wang/zh-TW/feedback/) · [更新](https://qiming.dashen.wang/zh-TW/updates/)
+
+## 一條命令接入與安全升級
+
+新專案可用以下命令；重複執行不會覆蓋既有規則或資料。Windows 使用 py -3。預設 JSON 無須 PyYAML。
+
+```sh
+python3 .agents/skills/qiming/scripts/qiming.py init --root . --hosts auto
+```
+
+[Quickstart](skills/qiming/references/quickstart.md) · [Profile](skills/qiming/references/profile.md) · [Upgrade](skills/qiming/references/evolve.md) · [Recovery](skills/qiming/references/recover.md) · [Audit remediation](REMEDIATION.md)
+
+| Host | Project binding | Runtime check (2026-10-01) |
+| --- | --- | --- |
+| Codex | .agents/skills/qiming-user | Fresh-session continuity smoke passed |
+| Claude Code | .claude/skills/qiming-user | Fresh-session continuity smoke passed |
+| Gemini CLI | .gemini/skills/qiming-user | Not run: authentication required |
+| Cursor | .cursor/skills/qiming-user | Format / binding tests only |
+| OpenCode | .opencode/skills/qiming-user | One field report; full behavior retest pending |
+
+The two smoke checks used synthetic project records. They are not the complete 34-scenario matrix. CI verifies automated tool tests on three operating systems; consult Actions for the actual run result.

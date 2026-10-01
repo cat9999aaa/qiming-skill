@@ -25,3 +25,13 @@ python3 .qiming/qiming-user/scripts/qiming.py log 'work/incident.json' '服务�
 工具读取本地 profile 决定集合、字段、根和可写范围。调用方先依据当前任务确认授权。密码和密钥值只能交给专用凭据 provider；不放入普通 JSON 请求、日志或记录。
 
 先记录实际宿主能力：文件读写、命令执行、受控写入、关键词搜索、SQLite、网络、服务连接、凭据 provider 与调度。只读能力可以完成理解和检索；没有可验证的受控写入时按单写入者工作，不宣称并发安全。`capability_report` 将格式识别、工具调用、行为通过分别记录，未运行保持 `not-run`。宿主路径与接续方式见[宿主](hosts.md)。
+
+## 新手与维护入口（0.2）
+
+- `init`：不需要 workspace_manifest；args 是 root、preset、name、goal、hosts、dry_run。完整命令与请求见 [quickstart](quickstart.md)。
+- `bind`：args.host，建立本项目可发现入口；不能绑定到用户全局目录。
+- `upgrade_preview` / `upgrade`：先比较再更新，见 [evolve](evolve.md)。
+- `lock_status` / `lock_break`：只清理由已退出的本机进程留下的锁，见 [recover](recover.md)。
+- `scan`：不给 roots 时观察映射集合的文件元数据；指定 roots 时按预算观察目录。不会读取任意业务正文。
+
+状态：ok / ok_with_warnings 返回 0；error 返回 2；conflict 返回 3；partial 返回 4。partial 表示只完成一部分或检索覆盖缺失，不可当作全部通过。diagnostics.hint 提供下一步动作。

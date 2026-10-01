@@ -31,7 +31,7 @@ def _conflict(code: str, message: str, locator: str | None = None) -> dict[str, 
 def _entry(name: str, workspace_id: str) -> bytes:
     return f"""---
 name: {name}
-description: Use for work and 会员 management inside the project owning this local Qiming instance ({workspace_id}), including its ordinary development, writing, operations and retained tools. Other projects use their own instance.
+description: Use for work and 会员 management inside the project owning this local Qiming instance, including its ordinary development, writing, operations and retained tools. Other projects use their own instance.
 ---
 
 # 本项目的启明实例
@@ -103,7 +103,7 @@ def materialize(manifest_path: Path, resource_plan: list[dict[str, object]], ins
         if check["status"] != "ok":
             return _conflict("BROKEN_ENTRY", "Ready instance failed validation")
         connected = ensure_project_entrypoints(manifest_path)
-        if connected["status"] != "ok":
+        if connected["status"] not in {"ok", "ok_with_warnings"}:
             return connected
         return {"status": "ok", "result": {"instance_entry": str(manifest_path.parent / manifest["instance"]["entry"]), "already_materialized": True, "project_entrypoints": connected["result"]["entrypoints"]}, "diagnostics": [], "changed": connected["changed"]}
     if manifest.get("state") != "initializing":
@@ -165,6 +165,9 @@ def materialize(manifest_path: Path, resource_plan: list[dict[str, object]], ins
         return _conflict("WRITE_CONFLICT", "Duplicate instance resource target")
     dependency = [{"name": "Python", "minimum": "3.11", "verification": "python3 --version"}, {"name": "PyYAML", "version": "6.0.3", "optional_for": ["yaml", "markdown-frontmatter"], "verification": "python3 -c 'import yaml; print(yaml.__version__)'"}]
     instance_doc = {"protocol": "qiming.instance/1", "instance_id": instance_id, "instance_version": instance_manifest.get("instance_version", "1.0.0"), "workspace_manifest": "../workspace.json", "resources": resources, "dependencies": instance_manifest.get("dependencies", dependency), "seed_origin": instance_manifest.get("seed_origin", {"name": "qiming", "version": "1"})}
+    from .upgrade import seed_metadata
+    metadata = seed_metadata(seed)
+    instance_doc.update(seed_version=metadata.get("version"), seed_commit=metadata.get("commit"))
     payloads.append((instance_dir / "instance.json", _json(instance_doc)))
     stage = manifest_path.parent / ".materialize" / re.sub(r"[^A-Za-z0-9_-]", "_", initialization_id)
     first = _staged_plan(manifest_path, alias, root, payloads, stage, "resource")
@@ -194,6 +197,6 @@ def materialize(manifest_path: Path, resource_plan: list[dict[str, object]], ins
     journal_path.write_bytes(_json(journal))
     shutil.rmtree(stage, ignore_errors=True)
     connected = ensure_project_entrypoints(manifest_path)
-    if connected["status"] != "ok":
+    if connected["status"] not in {"ok", "ok_with_warnings"}:
         return {"status": "partial", "result": {"instance_entry": str(instance_dir / "SKILL.md"), "instance_manifest": str(instance_dir / "instance.json"), "host_entry_result": connected}, "diagnostics": connected["diagnostics"], "changed": first["changed"] + activated["changed"] + connected["changed"]}
     return {"status": "ok", "result": {"instance_entry": str(instance_dir / "SKILL.md"), "instance_manifest": str(instance_dir / "instance.json"), "validation": check, "project_entrypoints": connected["result"]["entrypoints"]}, "diagnostics": [], "changed": first["changed"] + activated["changed"] + connected["changed"]}

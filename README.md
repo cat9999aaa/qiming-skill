@@ -1,5 +1,7 @@
 # Qiming / 启明
 
+[![Tests](https://github.com/cat9999aaa/qiming-skill/actions/workflows/tests.yml/badge.svg)](https://github.com/cat9999aaa/qiming-skill/actions/workflows/tests.yml) · Python 3.11+ · [v0.2.0](https://github.com/cat9999aaa/qiming-skill/releases/tag/v0.2.0)
+
 Official website / 官网：https://qiming.dashen.wang/
 
 Articles and the Omarchy local AI walkthrough (Simplified Chinese): https://qiming.dashen.wang/articles/organize-your-work/
@@ -47,3 +49,15 @@ Project scope and continuity have automated checks and a targeted Codex trial. T
 The website source and four-language static output are under `site/`. See `site/README.md` for local preview and release configuration.
 
 Explore the separate [getting started](https://qiming.dashen.wang/en/start/), [use cases](https://qiming.dashen.wang/en/domains/), [real cases](https://qiming.dashen.wang/en/cases/), [field feedback](https://qiming.dashen.wang/en/feedback/), and [changelog](https://qiming.dashen.wang/en/updates/) pages.
+
+## Start now / 现在接入
+
+```sh
+python3 .agents/skills/qiming/scripts/qiming.py init --root . --goal "完成当前项目的第一项任务" --hosts auto
+```
+
+默认 JSON 流程只需要 Python 3.11+；Windows 使用 `py -3`。安装路径不同时请替换。旧项目使用新安装包的 `upgrade_preview` / `upgrade`，本地规则、ID 与目录保持独立。
+
+[完整入门](skills/qiming/references/quickstart.md) · [升级](skills/qiming/references/evolve.md) · [整改核验与边界](REMEDIATION.md) · [公开测试](CONTRIBUTING.md)
+
+2026-10-01：Codex 和 Claude Code 的真实新会话接续抽查通过；Gemini CLI 需要登录，本次未验证；Cursor / OpenCode 完整行为矩阵待测。三系统 CI 结果见上方 Actions，不能从文件格式支持推断全部宿主兼容。

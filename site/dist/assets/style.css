@@ -196,3 +196,26 @@ h1,h2,h3,p{overflow-wrap:anywhere}
 .article-series-links strong{font-size:14px}
 @media(max-width:900px){.guide-layout{grid-template-columns:1fr;gap:28px}.guide-toc{position:static;max-height:none}.guide-prose{max-width:100%}}
 @media(max-width:620px){.fit-grid,.article-list,.article-series-links{grid-template-columns:1fr}.fit-card{padding:22px}.guide-link-row{display:grid}.article-index-hero{padding-top:45px;padding-bottom:34px}.article-index-hero h1{font-size:48px}.article-index-hero + .page-section{padding-top:32px}.article-card{min-height:0;padding:24px;gap:17px}.article-card h2{font-size:27px}.article-card p{font-size:15px}.article-heading{margin-bottom:34px}.article-lead{margin-bottom:34px}.guide-title{font-size:clamp(32px,8vw,42px)}.article-summary{font-size:16px;padding-left:14px}.guide-toc{padding:15px}.guide-prose h2{font-size:26px;margin-top:48px}.guide-prose p{font-size:16px;line-height:1.85}.article-series{margin-top:55px}.longform{padding-bottom:100px}}
+
+/* Shared documentation components: long paths remain contained on mobile. */
+.directory-tree { margin: 1.5rem 0 0; padding: 1.25rem; background: var(--bg); overflow-x: auto; font-size: .82rem; line-height: 1.9; max-width: 100%; }
+.flow-path { padding: 1.5rem; border-left: 3px solid var(--green); font-size: clamp(1rem, 2vw, 1.25rem); line-height: 2; }
+.section-copy { max-width: 74ch; line-height: 1.9; margin: 1.5rem 0 2rem; }
+.comparison-scroll { overflow-x: auto; width: 100%; }
+.comparison-table { width: 100%; border-collapse: collapse; font-size: .95rem; line-height: 1.8; }
+.comparison-table th, .comparison-table td { text-align: left; vertical-align: top; padding: 1rem; border-bottom: 1px solid var(--line); }
+.comparison-table th { color: var(--green); }
+.comparison-table th:first-child { width: 24%; }
+.init-panel { margin-top: 1.5rem; }
+.init-panel .command-row { margin: 1.25rem 0; }
+@media (max-width: 640px) {
+  .comparison-table th, .comparison-table td { padding: .75rem .45rem; font-size: .82rem; }
+  .directory-tree { padding: .75rem; font-size: .72rem; }
+}
+.continuity-proof { margin-top: 1.5rem; border-left: 3px solid var(--green); }
+.continuity-proof p { max-width: 90ch; }
+.before-after-card, .continuity-proof, .retention-card, .init-panel { padding: 28px; min-width: 0; }
+.before-after-card h3, .continuity-proof h3 { margin: 0 0 1rem; font-size: 1.3rem; }
+@media (max-width: 640px) {
+  .before-after-card, .continuity-proof, .retention-card, .init-panel { padding: 20px; }
+}

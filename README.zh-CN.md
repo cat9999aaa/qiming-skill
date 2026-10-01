@@ -1,5 +1,7 @@
 # 启明 Skill
 
+[![Tests](https://github.com/cat9999aaa/qiming-skill/actions/workflows/tests.yml/badge.svg)](https://github.com/cat9999aaa/qiming-skill/actions/workflows/tests.yml) · Python 3.11+ · [v0.2.0](https://github.com/cat9999aaa/qiming-skill/releases/tag/v0.2.0)
+
 [简体中文](README.zh-CN.md) · [繁體中文](README.zh-TW.md) · [日本語](README.ja.md) · [English](README.en.md)
 
 启明是面向 AI 新手的项目本地管理 Skill。把已有文件夹交给 Agent，它先理解现场，再把任务、知识、长期维护的工具和验证状态留在项目中。换 Agent、换会话或换电脑时，从项目自己的入口接着做。
@@ -29,3 +31,23 @@ npx skills add cat9999aaa/qiming-skill --skill qiming
 想先看懂它适合什么，可以在[文章栏目](https://qiming.dashen.wang/articles/)读[完整介绍与 Omarchy 本地 AI 实战教程](https://qiming.dashen.wang/articles/organize-your-work/)。
 
 官网：[开始使用](https://qiming.dashen.wang/start/) · [领域](https://qiming.dashen.wang/domains/) · [真实案例](https://qiming.dashen.wang/cases/) · [文章](https://qiming.dashen.wang/articles/) · [用户反馈](https://qiming.dashen.wang/feedback/) · [更新日志](https://qiming.dashen.wang/updates/)
+
+## 一条命令接入与安全升级
+
+新项目使用下面的命令；已有项目重复执行不会覆盖原规则或资料。Windows 用 py -3 代替 python3。默认 JSON 无需 PyYAML。
+
+```sh
+python3 .agents/skills/qiming/scripts/qiming.py init --root . --hosts auto
+```
+
+[Quickstart](skills/qiming/references/quickstart.md) · [Profile](skills/qiming/references/profile.md) · [Upgrade](skills/qiming/references/evolve.md) · [Recovery](skills/qiming/references/recover.md) · [Audit remediation](REMEDIATION.md)
+
+| Host | Project binding | Runtime check (2026-10-01) |
+| --- | --- | --- |
+| Codex | .agents/skills/qiming-user | Fresh-session continuity smoke passed |
+| Claude Code | .claude/skills/qiming-user | Fresh-session continuity smoke passed |
+| Gemini CLI | .gemini/skills/qiming-user | Not run: authentication required |
+| Cursor | .cursor/skills/qiming-user | Format / binding tests only |
+| OpenCode | .opencode/skills/qiming-user | One field report; full behavior retest pending |
+
+The two smoke checks used synthetic project records. They are not the complete 34-scenario matrix. CI verifies automated tool tests on three operating systems; consult Actions for the actual run result.

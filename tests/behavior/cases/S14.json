@@ -1,0 +1,39 @@
+{
+  "id": "S14",
+  "name": "大规模检索",
+  "fixture": {
+    "files": {
+      "index-plan.md": "runner 应生成从 10 条增长到 10000 条合成记录，包含中英文、精确 ID、同分和分页。"
+    },
+    "directories": []
+  },
+  "prompt": "在 runner 扩展后的 10000 条资料上查询已知目标和反例，检查精确 ID、分页不漏重，以及索引快照变化后的 STALE_CURSOR。",
+  "authorization": [
+    "read workspace",
+    "write test records and index"
+  ],
+  "required_capabilities": [
+    "filesystem_read",
+    "filesystem_write",
+    "command_execution",
+    "large_fixture"
+  ],
+  "assertions": [
+    {
+      "kind": "path_exists",
+      "path": ".qiming/workspace.json"
+    },
+    {
+      "kind": "path_exists",
+      "path": "index-plan.md"
+    }
+  ],
+  "trace_requirements": [
+    {
+      "operation": "search"
+    },
+    {
+      "operation": "stale-cursor"
+    }
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "id": "S25",
+  "name": "四领域任务",
+  "fixture": {
+    "files": {
+      "code/app.py": "print('old')\n",
+      "writing/article.md": "旧标题",
+      "site/metrics.csv": "day,views\n2026-09-20,5\n",
+      "system/config.txt": "mode=safe\n"
+    },
+    "directories": []
+  },
+  "prompt": "分别完成软件变更、文章修订、测试网站运营和沙箱系统维护；每类保存合适的真实成果和验收，网站指标注明时间范围，系统改动留恢复信息。",
+  "authorization": [
+    "read workspace",
+    "write four test domains"
+  ],
+  "required_capabilities": [
+    "filesystem_read",
+    "filesystem_write",
+    "command_execution",
+    "sandbox_system",
+    "test_site"
+  ],
+  "assertions": [
+    {
+      "kind": "path_exists",
+      "path": ".qiming/workspace.json"
+    },
+    {
+      "kind": "path_exists",
+      "path": "writing/article.md"
+    },
+    {
+      "kind": "path_exists",
+      "path": "system/config.txt"
+    }
+  ],
+  "trace_requirements": [
+    {
+      "operation": "domain-acceptance"
+    }
+  ]
+}

@@ -41,6 +41,8 @@ def binding_status(manifest_path: Path, host: str) -> dict[str, object]:
     manifest_path = manifest_path.resolve()
     workspace_root = project_root(manifest_path)
     preview = binding_preview(manifest_path, host, workspace_root)
+    instruction = workspace_root / "AGENTS.md"
+    preview["instruction_bytes"] = instruction.stat().st_size if instruction.is_file() else 0
     if preview["status"] != "ok":
         return preview
     binding = Path(preview["binding_path"])
@@ -50,7 +52,7 @@ def binding_status(manifest_path: Path, host: str) -> dict[str, object]:
     if check["status"] != "ok":
         return {**check, "binding_path": str(binding), "instruction_path": preview["instruction_path"], "instance_id": preview["instance_id"]}
     if binding.resolve() == Path(preview["source_directory"]):
-        return {"status": "bound", "binding_path": str(binding), "instance_id": preview["instance_id"], "source_fingerprint": preview["source_fingerprint"]}
+        return {"status": "bound", "instruction_bytes": preview["instruction_bytes"], "method": "symlink", "binding_path": str(binding), "instance_id": preview["instance_id"], "source_fingerprint": preview["source_fingerprint"]}
     copy_manifest = binding / "instance.json"
     if not copy_manifest.is_symlink() and copy_manifest.is_file() and hashlib.sha256(copy_manifest.read_bytes()).hexdigest() == preview["source_fingerprint"]:
         try:
@@ -59,7 +61,43 @@ def binding_status(manifest_path: Path, host: str) -> dict[str, object]:
                 path = _control_path(binding, resource["path"])
                 if not path.is_file() or hashlib.sha256(path.read_bytes()).hexdigest() != resource["sha256"]:
                     raise ValueError("Copied resource differs from its authority")
-            return {"status": "bound-copy", "binding_path": str(binding), "instance_id": preview["instance_id"], "source_fingerprint": preview["source_fingerprint"]}
+            return {"status": "bound-copy", "instruction_bytes": preview["instruction_bytes"], "method": "copy", "binding_path": str(binding), "instance_id": preview["instance_id"], "source_fingerprint": preview["source_fingerprint"]}
         except (OSError, ValueError, KeyError):
             pass
     return {"status": "stale-or-conflicting", "binding_path": str(binding), "instance_id": preview["instance_id"]}
+
+
+def selected_hosts(root: Path, hosts: str) -> list[str]:
+    if hosts == 'auto':
+        return ['codex'] + [host for host, directory in _HOST_DIRS.items() if host != 'codex' and (root / directory).is_dir()]
+    selected = list(dict.fromkeys(hosts.split(',')))
+    if not selected or any(host not in _HOST_DIRS for host in selected):
+        raise ValueError('hosts must be auto or a comma-separated list of codex,claude,gemini,cursor,opencode')
+    return selected
+
+
+def bind(manifest_path: Path, host: str) -> dict:
+    import os
+    import shutil
+    manifest_path=manifest_path.resolve()
+    root=project_root(manifest_path)
+    preview=binding_preview(manifest_path,host,root)
+    if preview['status'] != 'ok':
+        return {'status':preview['status'],'result':preview,'changed':[]}
+    target=Path(preview['binding_path'])
+    current=binding_status(manifest_path,host)
+    if current['status'] in {'bound','bound-copy'}:
+        return {'status':'ok','result':{**current,'host':host,'method':'copy' if current['status']=='bound-copy' else 'symlink'},'changed':[]}
+    if target.exists() or target.is_symlink():
+        return {'status':'conflict','result':current,'diagnostics':[{'code':'BINDING_CONFLICT','message':'Existing binding differs; preserve it and compare with the project instance.','hint':'Do not overwrite local changes. Remove an obsolete binding only after review.'}],'changed':[]}
+    for parent in target.parents:
+        if parent==root: break
+        if parent.is_symlink(): raise ValueError('Binding parent is a symlink')
+    target.parent.mkdir(parents=True,exist_ok=True)
+    method='symlink'
+    try:
+        target.symlink_to(os.path.relpath(preview['source_directory'],target.parent),target_is_directory=True)
+    except OSError:
+        method='copy'
+        shutil.copytree(preview['source_directory'],target,ignore=shutil.ignore_patterns('__pycache__','*.pyc'))
+    return {'status':'ok','result':{**binding_status(manifest_path,host),'host':host,'method':method},'changed':[{'path':str(target),'action':'bound-'+method}]}

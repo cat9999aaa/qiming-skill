@@ -1,5 +1,7 @@
 # Qiming Skill
 
+[![Tests](https://github.com/cat9999aaa/qiming-skill/actions/workflows/tests.yml/badge.svg)](https://github.com/cat9999aaa/qiming-skill/actions/workflows/tests.yml) · Python 3.11+ · [v0.2.0](https://github.com/cat9999aaa/qiming-skill/releases/tag/v0.2.0)
+
 [简体中文](README.zh-CN.md) · [繁體中文](README.zh-TW.md) · [日本語](README.ja.md) · [English](README.en.md)
 
 Qiming is a project-local AI management Skill for people starting with AI. Let an agent read the folder you already use, then keep work, knowledge, long-lived tools, and verification status in that project. A new agent, conversation, or computer can resume from the project's own entry.
@@ -27,3 +29,23 @@ A “member” is a long-lived object you maintain, not a paid subscription. Scr
 Existing files and local conventions take priority. One OpenCode/GLM-5.3 field report supports the value of reading context, but the complete agent and OS matrix remains untested.
 
 Website: [Get started](https://qiming.dashen.wang/en/start/) · [Use cases](https://qiming.dashen.wang/en/domains/) · [Real cases](https://qiming.dashen.wang/en/cases/) · [Articles](https://qiming.dashen.wang/en/articles/) · [Feedback](https://qiming.dashen.wang/en/feedback/) · [Changelog](https://qiming.dashen.wang/en/updates/)
+
+## Initialize once; upgrade without losing local changes
+
+Run this in a new project. Repeating it preserves existing rules and records. On Windows use py -3. Default JSON needs no PyYAML.
+
+```sh
+python3 .agents/skills/qiming/scripts/qiming.py init --root . --hosts auto
+```
+
+[Quickstart](skills/qiming/references/quickstart.md) · [Profile](skills/qiming/references/profile.md) · [Upgrade](skills/qiming/references/evolve.md) · [Recovery](skills/qiming/references/recover.md) · [Audit remediation](REMEDIATION.md)
+
+| Host | Project binding | Runtime check (2026-10-01) |
+| --- | --- | --- |
+| Codex | .agents/skills/qiming-user | Fresh-session continuity smoke passed |
+| Claude Code | .claude/skills/qiming-user | Fresh-session continuity smoke passed |
+| Gemini CLI | .gemini/skills/qiming-user | Not run: authentication required |
+| Cursor | .cursor/skills/qiming-user | Format / binding tests only |
+| OpenCode | .opencode/skills/qiming-user | One field report; full behavior retest pending |
+
+The two smoke checks used synthetic project records. They are not the complete 34-scenario matrix. CI verifies automated tool tests on three operating systems; consult Actions for the actual run result.

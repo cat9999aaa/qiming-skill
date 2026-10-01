@@ -1,0 +1,36 @@
+{
+  "id": "S06",
+  "name": "入口竞争",
+  "fixture": {
+    "files": {
+      "父目录说明.md": "此处有父子工作区，runner 须准备两个入口及一个坏链接。"
+    },
+    "directories": []
+  },
+  "prompt": "在父子入口、重复绑定和坏链接的 fixture 中按发现规则选择或报告冲突；遵守本次显式范围，不能创建第三套实例。",
+  "authorization": [
+    "read workspace",
+    "write control records"
+  ],
+  "required_capabilities": [
+    "filesystem_read",
+    "filesystem_write",
+    "command_execution",
+    "symlink_fixture"
+  ],
+  "assertions": [
+    {
+      "kind": "path_absent",
+      "path": ".qiming/third-instance"
+    },
+    {
+      "kind": "path_exists",
+      "path": "父目录说明.md"
+    }
+  ],
+  "trace_requirements": [
+    {
+      "operation": "discover"
+    }
+  ]
+}

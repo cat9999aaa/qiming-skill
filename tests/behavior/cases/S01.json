@@ -1,0 +1,55 @@
+{
+  "id": "S01",
+  "name": "空目录写作起步",
+  "fixture": {
+    "files": {},
+    "directories": []
+  },
+  "prompt": "在这个空目录开始一篇关于城市步行的文章。建立最小启明实例，写出一段真实初稿，并记录下一步；不要生成开发项目目录。",
+  "authorization": [
+    "read workspace",
+    "write workspace"
+  ],
+  "required_capabilities": [
+    "filesystem_read",
+    "filesystem_write",
+    "command_execution"
+  ],
+  "assertions": [
+    {
+      "kind": "path_exists",
+      "path": ".qiming/workspace.json"
+    },
+    {
+      "kind": "path_exists",
+      "path": "AGENTS.md"
+    },
+    {
+      "kind": "path_exists",
+      "path": "CLAUDE.md"
+    },
+    {
+      "kind": "path_exists",
+      "path": "GEMINI.md"
+    },
+    {
+      "kind": "path_exists",
+      "path": "draft.md"
+    },
+    {
+      "kind": "path_absent",
+      "path": "src"
+    }
+  ],
+  "trace_requirements": [
+    {
+      "operation": "bootstrap"
+    },
+    {
+      "operation": "materialize"
+    },
+    {
+      "operation": "write"
+    }
+  ]
+}

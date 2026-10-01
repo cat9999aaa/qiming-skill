@@ -1,0 +1,38 @@
+{
+  "id": "S23",
+  "name": "跨 Agent 接续",
+  "fixture": {
+    "files": {
+      "current.md": "当前工作：写文章第二节。",
+      "scenario.txt": "runner 第一阶段 Codex，第二阶段另一个实际宿主且不传聊天历史。"
+    },
+    "directories": []
+  },
+  "prompt": "让另一宿主和模型在无原聊天条件下发现实例，查询当前任务，受控更新记录并写出交接证据；记录每个宿主与版本。",
+  "authorization": [
+    "read workspace",
+    "write control records"
+  ],
+  "required_capabilities": [
+    "filesystem_read",
+    "filesystem_write",
+    "command_execution",
+    "cross_host",
+    "fresh_session"
+  ],
+  "assertions": [
+    {
+      "kind": "path_exists",
+      "path": ".qiming/workspace.json"
+    },
+    {
+      "kind": "path_exists",
+      "path": "current.md"
+    }
+  ],
+  "trace_requirements": [
+    {
+      "operation": "host-switch"
+    }
+  ]
+}

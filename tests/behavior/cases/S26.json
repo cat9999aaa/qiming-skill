@@ -1,0 +1,35 @@
+{
+  "id": "S26",
+  "name": "新领域课程筹备",
+  "fixture": {
+    "files": {
+      "课程/目标.md": "课程目标：帮助新手学习城市观察。"
+    },
+    "directories": []
+  },
+  "prompt": "接手未预设的课程筹备领域。从目标与对象建立局部术语和记录，保留通用身份与证据，不强套软件项目目录。",
+  "authorization": [
+    "read workspace",
+    "write course and control records"
+  ],
+  "required_capabilities": [
+    "filesystem_read",
+    "filesystem_write",
+    "command_execution"
+  ],
+  "assertions": [
+    {
+      "kind": "path_exists",
+      "path": ".qiming/profile.json"
+    },
+    {
+      "kind": "path_absent",
+      "path": "src"
+    }
+  ],
+  "trace_requirements": [
+    {
+      "operation": "domain-adaptation"
+    }
+  ]
+}

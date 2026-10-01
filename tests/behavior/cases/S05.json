@@ -1,0 +1,40 @@
+{
+  "id": "S05",
+  "name": "中断初始化重试",
+  "fixture": {
+    "files": {
+      "任务.md": "写作任务：整理访谈。"
+    },
+    "directories": []
+  },
+  "prompt": "以固定初始化 ID 启动；runner 在 bootstrap、资源生成和激活前逐次中断并重试，核对复用与冲突，然后使唯一实例 ready。",
+  "authorization": [
+    "read workspace",
+    "write control records",
+    "inject test interruption"
+  ],
+  "required_capabilities": [
+    "filesystem_read",
+    "filesystem_write",
+    "command_execution",
+    "fault_injection"
+  ],
+  "assertions": [
+    {
+      "kind": "path_exists",
+      "path": ".qiming/workspace.json"
+    },
+    {
+      "kind": "path_exists",
+      "path": ".qiming/instance/SKILL.md"
+    }
+  ],
+  "trace_requirements": [
+    {
+      "operation": "fault-injection"
+    },
+    {
+      "operation": "retry"
+    }
+  ]
+}

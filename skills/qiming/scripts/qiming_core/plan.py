@@ -90,6 +90,10 @@ def plan_changes(manifest_path: Path, changes: list[dict[str, object]], intent_r
                 return _conflict("PATH_ESCAPE", "Staged content must be a control-directory file", content_ref)
             if _sha(staged) != change.get("desired_sha256"):
                 return _conflict("WRITE_CONFLICT", "Staged content fingerprint changed", content_ref)
+            from .secrets import managed_payload_issues
+            issues=managed_payload_issues(manifest_path,change['target'],staged.read_bytes())
+            if issues:
+                return {'status':'conflict','result':None,'diagnostics':issues,'changed':[]}
         parent = target.parent
         while not parent.exists():
             parents.add(str(parent))

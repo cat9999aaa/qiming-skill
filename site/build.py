@@ -222,6 +222,28 @@ def footer(locale: str, p: dict, t: dict) -> str:
             f'<span>© 2026 QIMING</span><span>{e(t["footer_status"])}</span><a href="#top">↑ TOP</a></div></footer>')
 
 
+def onboarding(locale):
+    return json.loads((HERE / 'onboarding.json').read_text(encoding='utf-8'))[locale]
+
+
+def before_after(locale):
+    o=onboarding(locale)
+    columns=''.join(f'<article class="pixel-card before-after-card"><h3>{e(o[key])}</h3><p>{e(o[key+"_note"])}</p><pre class="directory-tree"><code>{e(o["tree_"+key])}</code></pre></article>' for key in ('before','after'))
+    return f'<section class="page-section wrap" id="before-after"><div class="section-heading"><span class="eyebrow">PROJECT / BEFORE + AFTER</span><h2>{e(o["title"])}</h2></div><div class="fit-grid">{columns}</div><aside class="pixel-card continuity-proof"><h3>{e(o["smoke_title"])}</h3><p>{e(o["smoke_body"])}</p></aside></section>'
+
+
+def working_details(locale, article_href, fit):
+    o=onboarding(locale)
+    headings=''.join(f'<th scope="col">{e(x)}</th>' for x in o['compare_headers'])
+    rows=''.join('<tr>'+''.join(f'<td>{e(x)}</td>' for x in row)+'</tr>' for row in o['compare_rows'])
+    return (f'<section class="page-section wrap"><div class="section-heading"><h2>{e(o["flow_title"])}</h2></div>'
+            f'<p class="flow-path">{e(o["flow"])}</p><p class="section-copy">{e(o["flow_note"])}</p>'
+            f'<div class="pixel-card retention-card"><h2>{e(o["retention_title"])}</h2><p>{e(o["retention"])}</p></div>'
+            f'<div class="section-heading"><h2>{e(o["compare_title"])}</h2></div>'
+            f'<div class="comparison-scroll"><table class="comparison-table"><thead><tr>{headings}</tr></thead><tbody>{rows}</tbody></table></div>'
+            f'<p class="guide-link-row" id="full-guide"><a href="{e(article_href)}">{e(fit["long_label"])} ↗</a><span>{e(fit["long_note"])}</span></p></section>')
+
+
 def home(locale: str, t: dict, p: dict, fit: dict, article_href: str) -> str:
     files = "".join(f'<li>{e(item)}</li>' for item in t["panel_files"])
     units = "".join(f'<span>{e(item)}</span>' for item in t["panel_units"])
@@ -237,6 +259,7 @@ def home(locale: str, t: dict, p: dict, fit: dict, article_href: str) -> str:
             f'<div class="terminal-block green"><small>02 / {e(t["panel_instance"])}</small><div class="unit-grid">{units}</div></div>'
             f'</div><div class="terminal-foot">PROJECT-LOCAL · Q/01</div></div></section>'
             f'<section class="statement"><div class="wrap"><span>※</span><p>{e(t["statement"])}</p></div></section>'
+            f'{before_after(locale)}'
             f'{fit_panel(fit, article_href)}'
             f'<section class="page-section wrap"><div class="section-heading"><span class="eyebrow">EXPLORE / 03</span>'
             f'<h2>{e(p["section_more"])}</h2></div><div class="card-grid">{cards}</div></section>')
@@ -245,6 +268,8 @@ def home(locale: str, t: dict, p: dict, fit: dict, article_href: str) -> str:
 def start(locale: str, t: dict, p: dict, repo_url: str | None) -> str:
     steps = "".join(f'<article class="pixel-card step-card"><span class="pixel-index">{e(item["number"])}</span>'
                     f'<h2>{e(item["title"])}</h2><p>{e(item["body"])}</p></article>' for item in t["beginner_steps"])
+    o = onboarding(locale)
+    init_command = 'python3 .agents/skills/qiming/scripts/qiming.py init --root . --hosts auto'
     slug = repo_slug(repo_url)
     if slug:
         command = f"npx skills add {slug} --skill qiming"
@@ -260,6 +285,8 @@ def start(locale: str, t: dict, p: dict, repo_url: str | None) -> str:
             f'<p>{e(t["install_intro"])}</p></div><div class="install-panel"><div class="terminal-top">QIMING / INSTALL</div>'
             f'{install}<div class="prompt-box"><strong>{e(t["install_after"])}</strong><p>{e(t["install_adopt"])}</p>'
             f'{copy_button(t["install_adopt"], t)}</div><p class="install-note">{e(t["install_note"])}</p></div>'
+            f'<div class="pixel-card init-panel"><h2>{e(o["init_title"])}</h2><div class="command-row"><code>{e(init_command)}</code>{copy_button(init_command,t)}</div><p>{e(o["init_note"])}</p></div>'
+            f'<div class="pixel-card init-panel"><h2>{e(o["upgrade_title"])}</h2><p>{e(o["upgrade_note"])}</p></div>'
             f'<p class="scope-note">{e(p["scope_note"])}</p></section>')
 
 
@@ -270,7 +297,7 @@ def how(locale: str, t: dict, fit: dict, article_href: str) -> str:
     return (f'<section class="page-section wrap"><div class="steps-grid">{steps}</div>'
             f'<div class="member-panel"><div class="member-icon">Q+</div><div><span class="eyebrow">{e(t["member_label"])}</span>'
             f'<h2>{e(t["member_title"])}</h2><p>{e(t["member_body"])}</p><div class="chips">{chips}</div></div></div></section>'
-            f'{fit_panel(fit, article_href)}')
+            f'{before_after(locale)}{working_details(locale, article_href, fit)}')
 
 
 def articles_index(locale: str, items: list[dict]) -> str:

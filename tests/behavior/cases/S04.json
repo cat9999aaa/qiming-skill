@@ -1,0 +1,42 @@
+{
+  "id": "S04",
+  "name": "种子删除后接续",
+  "fixture": {
+    "files": {
+      "项目/README.md": "项目目标：整理城市资料。",
+      "seed-removal-instruction.txt": "本案例需要 runner 在首阶段提供种子，生成用户实例后移除种子并开启无历史新会话。"
+    },
+    "directories": []
+  },
+  "prompt": "先建立独立用户实例。请 runner 移除种子并新开无历史会话后，再根据实例查询当前工作、增加一条记录和接入新范围；保存各阶段实际工具轨迹。",
+  "authorization": [
+    "read workspace",
+    "write control records",
+    "remove test seed"
+  ],
+  "required_capabilities": [
+    "filesystem_read",
+    "filesystem_write",
+    "command_execution",
+    "fresh_session",
+    "seed_removal"
+  ],
+  "assertions": [
+    {
+      "kind": "path_exists",
+      "path": ".qiming/instance/SKILL.md"
+    },
+    {
+      "kind": "path_exists",
+      "path": ".qiming/workspace.json"
+    }
+  ],
+  "trace_requirements": [
+    {
+      "operation": "seed-removed"
+    },
+    {
+      "operation": "fresh-session"
+    }
+  ]
+}

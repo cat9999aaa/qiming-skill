@@ -1,0 +1,38 @@
+{
+  "id": "S34",
+  "name": "关系与查询范围",
+  "fixture": {
+    "files": {
+      "members/a.json": "{\"id\":\"A\",\"contains\":[\"B\"]}",
+      "members/b.json": "{\"id\":\"B\",\"contains\":[\"A\"]}",
+      "private/title.md": "SYNTHETIC_PRIVATE_TITLE_34"
+    },
+    "directories": []
+  },
+  "prompt": "检测 contains 环、依赖环及不可访问外部引用；拒绝 contains 环，依赖环说明策略，未授权查询不返回私有标题。",
+  "authorization": [
+    "read member files",
+    "write control records"
+  ],
+  "required_capabilities": [
+    "filesystem_read",
+    "filesystem_write",
+    "command_execution"
+  ],
+  "assertions": [
+    {
+      "kind": "path_exists",
+      "path": ".qiming/workspace.json"
+    },
+    {
+      "kind": "file_not_contains",
+      "path": ".qiming/workspace.json",
+      "text": "SYNTHETIC_PRIVATE_TITLE_34"
+    }
+  ],
+  "trace_requirements": [
+    {
+      "operation": "graph-validation"
+    }
+  ]
+}

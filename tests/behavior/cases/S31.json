@@ -1,0 +1,38 @@
+{
+  "id": "S31",
+  "name": "上下文和管理负担",
+  "fixture": {
+    "files": {
+      "small/notes.md": "一条笔记",
+      "large/fixture-plan.md": "runner 应生成大量合成会员与知识。",
+      "task.md": "当前任务：修正三个标点。"
+    },
+    "directories": []
+  },
+  "prompt": "在小库与大库分别完成同样普通任务，再连续做三个微小编辑。记录实际读取字节与调用数；不要额外产生重复任务、知识或总结。",
+  "authorization": [
+    "read workspace",
+    "write requested edits"
+  ],
+  "required_capabilities": [
+    "filesystem_read",
+    "filesystem_write",
+    "command_execution",
+    "usage_trace"
+  ],
+  "assertions": [
+    {
+      "kind": "path_exists",
+      "path": "task.md"
+    },
+    {
+      "kind": "path_exists",
+      "path": ".qiming/workspace.json"
+    }
+  ],
+  "trace_requirements": [
+    {
+      "operation": "resource-usage"
+    }
+  ]
+}

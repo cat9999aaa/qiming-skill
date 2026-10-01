@@ -82,8 +82,16 @@ def search(manifest_path: Path, request: dict[str, object]) -> dict[str, object]
             continue
         if not (exact or path_match or meta_match or body_match):
             continue
+        from datetime import datetime, timezone
+        review_status='not-scheduled'
+        if row.get('review_after'):
+            try:
+                deadline=datetime.fromisoformat(row['review_after'].replace('Z','+00:00'))
+                if deadline.tzinfo is None: deadline=deadline.replace(tzinfo=timezone.utc)
+                review_status='due' if deadline<=datetime.now(timezone.utc) else 'current'
+            except (ValueError,AttributeError): review_status='invalid-date'
         rank = 0 if exact or path_match else 1 if meta_match else 2
-        matched.append((rank, {"workspace_id": row["ref"]["workspace_id"], "id": row["ref"]["id"], "name": row.get("name"), "summary": row.get("summary"), "type": row.get("type"), "scope": row.get("scope"), "record_locator": locator, "record_fingerprint": row["record_fingerprint"], "match": "exact" if rank == 0 else "metadata" if rank == 1 else "text", "freshness": "source-current"}))
+        matched.append((rank, {"workspace_id": row["ref"]["workspace_id"], "id": row["ref"]["id"], "name": row.get("name"), "summary": row.get("summary"), "type": row.get("type"), "scope": row.get("scope"), "record_locator": locator, "record_fingerprint": row["record_fingerprint"], "match": "exact" if rank == 0 else "metadata" if rank == 1 else "text", "freshness": "source-current", "review_status": review_status}))
     matched.sort(key=lambda item: (item[0], item[1]["workspace_id"], item[1]["id"]))
     items = [item for _, item in matched[offset:offset + limit]]
     next_offset = offset + len(items)

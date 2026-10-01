@@ -28,7 +28,7 @@ from qiming_core.retirement import record_redirect
 from qiming_core.quick_log import log_event
 
 
-EXIT_CODES = {"ok": 0, "error": 2, "conflict": 3, "partial": 4}
+EXIT_CODES = {"ok": 0, "ok_with_warnings": 0, "error": 2, "conflict": 3, "partial": 4}
 
 
 def _inspect(request: dict[str, object]) -> dict[str, object]:
@@ -205,6 +205,38 @@ def _log_event(request: dict[str, object]) -> dict[str, object]:
 register("log_event", _log_event)
 
 
+from qiming_core.initialize import initialize
+from qiming_core.host_binding import bind
+
+def _init(request):
+    args=request['args']
+    return initialize(Path(args['root']),args.get('preset','general'),args.get('name'),args.get('goal'),args.get('hosts','auto'),bool(args.get('dry_run',False)))
+
+register('init', _init)
+register('bind', lambda request: bind(Path(request['workspace_manifest']),request['args']['host']))
+
+from qiming_core.locks import lock_status, lock_break
+from qiming_core.upgrade import upgrade_preview, upgrade
+register('lock_status', lambda r: lock_status(Path(r['workspace_manifest'])))
+register('lock_break', lambda r: lock_break(Path(r['workspace_manifest']),r['args']['run_id'],r['args']['expected_sha256']))
+register('upgrade_preview', lambda r: upgrade_preview(Path(r['workspace_manifest']),Path(r['args']['seed_dir'])))
+register('upgrade', lambda r: upgrade(Path(r['workspace_manifest']),r['args']['preview'],r['args']['plan_id']))
+
+def _short_init(argv):
+    parser=argparse.ArgumentParser(description='Initialize Qiming in this project only')
+    parser.add_argument('--root',type=Path,default=Path.cwd())
+    parser.add_argument('--preset',choices=['general','dev','writing'],default='general')
+    parser.add_argument('--name')
+    parser.add_argument('--goal')
+    parser.add_argument('--hosts',default='auto')
+    parser.add_argument('--dry-run',action='store_true')
+    args=vars(parser.parse_args(argv)); args['root']=str(args['root'])
+    result=dispatch({'protocol':'qiming.tool/1','request_id':'init','op':'init','args':args})
+    print(json.dumps(result,ensure_ascii=False))
+    print('启明接入：'+result['status']+'；详情见 JSON，成功后从 .qiming/START.md 接续。',file=sys.stderr)
+    return EXIT_CODES[result['status']]
+
+
 def _short_log(argv: list[str]) -> int:
     parser = argparse.ArgumentParser(description="Append a Qiming work event")
     parser.add_argument("work_path", help="Existing work JSON path relative to the project root")
@@ -233,6 +265,8 @@ def _short_log(argv: list[str]) -> int:
 
 
 def main() -> int:
+    if sys.argv[1:2] == ["init"]:
+        return _short_init(sys.argv[2:])
     if sys.argv[1:2] == ["log"]:
         return _short_log(sys.argv[2:])
     parser = argparse.ArgumentParser(description="Qiming local tool protocol")

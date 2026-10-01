@@ -149,6 +149,11 @@
     "changelog_title": "更新日志",
     "changes": [
       {
+        "date": "2026-10-01",
+        "title": "v0.2.0 · 接入与恢复整改",
+        "body": "新增 init、项目宿主绑定、安全升级预览与陈旧锁检查。 默认 JSON 记录支持递归检索和快速追加；修复凭据检查与普通链接误报。 公开自动化测试与三系统 CI；实际结果以 Actions 为准，完整 Agent 行为矩阵尚未完成。"
+      },
+      {
         "date": "2026.10.01",
         "title": "实战案例拆成六篇系列文章",
         "body": "将原来密集的长文拆成总览、本机 AI、Pi 子会员、交付边界、研究与运营、官网发布六篇。旧地址保留；每篇说明问题、管理动作、产物和验证边界。"
@@ -186,13 +191,13 @@
     ],
     "install_label": "06 / GET QIMING",
     "install_title": "从你当前的目录开始。",
-    "install_intro": "启明的种子可安装到 AI Agent；真正的接入要在目标项目目录明确发起。首次运行需要 Python 3.11+。安装种子本身不会自动改动你的其他项目。",
+    "install_intro": "先准备：一个能打开项目文件夹并执行命令的 AI 助手，以及 Python 3.11+。你可以直接把下面的话给助手；普通网页聊天若不能读写目录，需要先换到有项目权限的环境。",
     "install_command": "一条命令安装种子",
     "install_prompt": "复制给 Agent 的安装提示词",
     "install_after": "安装后，在目标目录对 Agent 说：",
-    "install_adopt": "$qiming 在当前目录启用启明。先阅读现有资料，保留原结构，建立本项目的独立实例和下一步。",
+    "install_adopt": "在当前项目启用启明，先使用 init 建立可用入口；已接入则读取 START.md 接续，不覆盖旧规则。",
     "install_pending": "公开仓库发布后显示真实安装命令。当前可在本项目源码中使用，官网不会展示失效地址。",
-    "install_agent_template": "请从启明的官方 GitHub 仓库 {repo_url} 安装 qiming Skill 到当前项目，先检查 Python 3.11+。保留已有文件与项目指令；安装后不要自动接入，等我明确说“在当前目录启用启明”再执行首次适配。",
+    "install_agent_template": "请从 {repo_url} 安装启明到当前项目，并在当前目录启用。先确认项目根和 Python 3.11+，保留已有文件、规则和已接入实例。新项目优先运行安装包的 qiming.py init，建立我的当前目标与下一步；已有项目先读 START.md，不覆盖 profile 或会员 ID。检查搜索、记录追加和宿主绑定后告诉我结果。",
     "install_source": "查看官方源码",
     "install_note": "安装命令使用 Skills CLI 的项目安装方式；实际加载能力取决于所用 Agent。Claude Code、Gemini CLI、Cursor、OpenCode 等组合仍需逐项实测。",
     "footer_line": "让工作从真实目录继续生长。",
@@ -440,6 +445,11 @@
     "changelog_title": "更新紀錄",
     "changes": [
       {
+        "date": "2026-10-01",
+        "title": "v0.2.0 · 接入與復原整改",
+        "body": "新增 init、專案綁定、安全升級預覽與陳舊鎖檢查。 預設 JSON 支援遞迴搜尋與快速追加；修正憑據檢查與普通連結誤報。 公開測試與三系統 CI；結果以 Actions 為準，完整 Agent 行為矩陣尚未完成。"
+      },
+      {
         "date": "2026.10.01",
         "title": "實戰案例改為六篇系列文章",
         "body": "原本密集的長文拆為總覽、本機 AI、Pi 子會員、交付邊界、研究與營運、官網發布。原網址保留；每篇分別交代問題、管理動作、產物及驗證範圍。"
@@ -477,13 +487,13 @@
     ],
     "install_label": "06 / GET QIMING",
     "install_title": "從你目前的目錄開始。",
-    "install_intro": "啟明種子可安裝到 AI Agent；真正的接入需在目標專案目錄明確發起。首次執行需要 Python 3.11+。安裝種子不會自動改動其他專案。",
+    "install_intro": "先準備能開啟專案資料夾並執行命令的 AI 助手，以及 Python 3.11+。直接把下段話交給助手；無法讀寫目錄的網頁聊天需要先換成具備專案權限的環境。",
     "install_command": "一行指令安裝種子",
     "install_prompt": "複製給 Agent 的安裝提示詞",
     "install_after": "安裝後，在目標目錄對 Agent 說：",
-    "install_adopt": "$qiming 在目前目錄啟用啟明。先閱讀現有資料，保留原結構，建立本專案的獨立實例與下一步。",
+    "install_adopt": "在目前專案啟用啟明，先用 init 建立入口；已接入則讀取 START.md 接續，不覆蓋既有規則。",
     "install_pending": "公開儲存庫發布後顯示真實安裝指令。目前可在本專案原始碼中使用，官網不展示失效網址。",
-    "install_agent_template": "請從啟明的官方 GitHub 儲存庫 {repo_url} 安裝 qiming Skill 到目前專案，先檢查 Python 3.11+。保留現有檔案與專案指令；安裝後不要自動接入，等我明確說「在目前目錄啟用啟明」再執行首次適配。",
+    "install_agent_template": "請從 {repo_url} 安裝啟明到目前專案並啟用。先確認專案根與 Python 3.11+，保留檔案、規則與既有實例。新專案優先執行 qiming.py init，建立目標與下一步；既有專案先讀 START.md，不覆蓋 profile 或會員 ID。檢查搜尋、追加記錄及宿主綁定後回報。",
     "install_source": "查看官方原始碼",
     "install_note": "安裝指令使用 Skills CLI 的專案安裝方式；實際載入能力取決於所用 Agent。Claude Code、Gemini CLI、Cursor、OpenCode 等組合仍需逐項實測。",
     "footer_line": "讓工作從真實目錄繼續成長。",
@@ -731,6 +741,11 @@
     "changelog_title": "更新履歴",
     "changes": [
       {
+        "date": "2026-10-01",
+        "title": "v0.2.0 · 導入と復旧の改善",
+        "body": "init、プロジェクト連携、安全な更新プレビュー、古いロックの確認を追加。 JSON 記録の再帰検索と追記を修正。秘密情報検出と通常 URL の処理を改善。 自動テストと 3 OS の CI を公開。結果は Actions を参照。完全な Agent 動作行列は未完了。"
+      },
+      {
         "date": "2026.10.01",
         "title": "実践記事を六本のシリーズに分割",
         "body": "長い一本の記事を概要、ローカル AI、Pi 子メンバー、納品、調査と運用、公式サイト公開の六本に分割。旧 URL を残し、各記事で問題、対応、成果物、検証範囲を示します。"
@@ -768,13 +783,13 @@
     ],
     "install_label": "06 / GET QIMING",
     "install_title": "今いるディレクトリから始める。",
-    "install_intro": "啓明の種は AI Agent にインストールできます。実際の導入は対象プロジェクトで明示的に依頼します。初回実行には Python 3.11+ が必要です。",
+    "install_intro": "プロジェクトフォルダを開きコマンドを実行できる AI 助手と Python 3.11+ を用意します。以下の依頼文を渡してください。フォルダにアクセスできないウェブチャットだけではローカル管理できません。",
     "install_command": "一つのコマンドで種を導入",
     "install_prompt": "Agent に渡す導入プロンプト",
     "install_after": "インストール後、対象ディレクトリで Agent に伝えること：",
-    "install_adopt": "$qiming このディレクトリで啓明を有効にしてください。既存資料と構造を保ち、このプロジェクト専用のインスタンスを作ってください。",
+    "install_adopt": "このプロジェクトで啓明を有効にし、init で入口を作成してください。導入済みなら START.md から再開し、既存ルールを保持してください。",
     "install_pending": "公開リポジトリの公開後に実際のインストールコマンドを表示します。現在はプロジェクトのソースから利用できます。",
-    "install_agent_template": "啓明の公式 GitHub リポジトリ {repo_url} から qiming Skill を現在のプロジェクトにインストールしてください。Python 3.11+ を確認し、既存ファイルと指示を保護してください。私が明示的に依頼するまで初回適応は行わないでください。",
+    "install_agent_template": "{repo_url} から啓明をこのプロジェクトにインストールし、有効にしてください。ルートと Python 3.11+ を確認し、既存ファイル、ルール、導入済み環境を保持してください。新規なら qiming.py init で目標と次の一手を記録し、既存なら START.md を先に読み、profile と管理対象 ID を上書きしないでください。検索、ログ追記、ホスト連携を確認して結果を報告してください。",
     "install_source": "公式ソースを見る",
     "install_note": "コマンドは Skills CLI のプロジェクト導入方式を使います。実際の読み込みは Agent ごとに異なります。Claude Code、Gemini CLI、Cursor、OpenCode などは個別検証が必要です。",
     "footer_line": "仕事を実際のディレクトリから続ける。",
@@ -1022,6 +1037,11 @@
     "changelog_title": "Changelog",
     "changes": [
       {
+        "date": "2026-10-01",
+        "title": "v0.2.0 · Onboarding and recovery fixes",
+        "body": "Added init, project bindings, safe upgrade previews and stale-lock inspection. Recursive JSON records support search and quick logging; improved credential checks and ordinary URL handling. Published automated tests and a three-OS CI matrix. Check Actions for results; the complete agent behavior matrix is still pending."
+      },
+      {
         "date": "2026.10.01",
         "title": "Six focused field guides replace one long article",
         "body": "The original guide is now a six-part series covering the overview, local AI, a Pi child member, delivery boundaries, research and operations, and site release. The old URL remains; each article states the problem, actions, artifacts, and verification limits."
@@ -1059,13 +1079,13 @@
     ],
     "install_label": "06 / GET QIMING",
     "install_title": "Begin in the directory you're in.",
-    "install_intro": "Install the Qiming seed into your AI agent, then explicitly adopt it in the target project. First use requires Python 3.11+. Installing the seed does not change your other projects.",
+    "install_intro": "Start with an AI assistant that can open your project folder and run commands, plus Python 3.11+. Paste the request below into that assistant. A web chat without directory access cannot manage local files on its own.",
     "install_command": "Install the seed with one command",
     "install_prompt": "Copy this installation prompt to your agent",
     "install_after": "After installation, tell your agent in the target directory:",
-    "install_adopt": "$qiming Enable Qiming in this directory. Preserve the existing material and structure, then create an independent instance and the next step for this project.",
+    "install_adopt": "Enable Qiming in this project with init. If already adopted, resume from START.md and preserve existing rules.",
     "install_pending": "A real installation command will appear after the public repository is published. The source is currently usable within this project; the site will not show a dead link.",
-    "install_agent_template": "Install the qiming Skill from the official GitHub repository {repo_url} into the current project. Check Python 3.11+ first. Preserve existing files and project instructions. Do not adopt the project until I explicitly ask you to enable Qiming here.",
+    "install_agent_template": "Install Qiming from {repo_url} into this project and enable it here. Confirm the project root and Python 3.11+. Preserve files, rules and any existing instance. For a new project, use qiming.py init and record my current goal and next step. For an existing project, read START.md first; never overwrite profile or member IDs. Check search, event logging and host binding, then report the result.",
     "install_source": "View official source",
     "install_note": "The command uses project installation through the Skills CLI. Actual loading depends on the agent. Claude Code, Gemini CLI, Cursor, OpenCode, and other combinations still need individual real-world verification.",
     "footer_line": "Let work continue from the directory where it lives.",

@@ -1,0 +1,39 @@
+{
+  "id": "S16",
+  "name": "二十轮演化与回退",
+  "fixture": {
+    "files": {
+      "规则.md": "初始局部规则：文章标题使用中文。"
+    },
+    "directories": []
+  },
+  "prompt": "runner 执行 20 次含真实更正、重复问题和单次例外的交互；让规则落在合适作用域、重复合并，并演练一次错误改动回退。",
+  "authorization": [
+    "read workspace",
+    "write control records"
+  ],
+  "required_capabilities": [
+    "filesystem_read",
+    "filesystem_write",
+    "command_execution",
+    "multi_turn"
+  ],
+  "assertions": [
+    {
+      "kind": "path_exists",
+      "path": ".qiming/profile.json"
+    },
+    {
+      "kind": "path_exists",
+      "path": "规则.md"
+    }
+  ],
+  "trace_requirements": [
+    {
+      "operation": "rule-evolution"
+    },
+    {
+      "operation": "rollback"
+    }
+  ]
+}

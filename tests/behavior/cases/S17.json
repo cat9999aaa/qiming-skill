@@ -1,0 +1,37 @@
+{
+  "id": "S17",
+  "name": "上游材料差异",
+  "fixture": {
+    "files": {
+      "本地约定.md": "用户已定制：只存当前任务相关摘要。",
+      "upstream-note.md": "新种子建议：添加额外分类。"
+    },
+    "directories": []
+  },
+  "prompt": "比较新种子与本地实例，先只形成有来源的差异，不采纳时本地字节不变；随后仅按明确的测试授权采纳兼容部分。",
+  "authorization": [
+    "read workspace",
+    "write control records"
+  ],
+  "required_capabilities": [
+    "filesystem_read",
+    "filesystem_write",
+    "command_execution"
+  ],
+  "assertions": [
+    {
+      "kind": "path_exists",
+      "path": ".qiming/workspace.json"
+    },
+    {
+      "kind": "file_contains",
+      "path": "本地约定.md",
+      "text": "只存当前任务相关摘要"
+    }
+  ],
+  "trace_requirements": [
+    {
+      "operation": "upstream-diff"
+    }
+  ]
+}

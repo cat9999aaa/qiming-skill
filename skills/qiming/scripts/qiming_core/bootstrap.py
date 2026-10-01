@@ -24,6 +24,8 @@ def bootstrap(root: Path, control_dir: Path, manifest: dict[str, object], profil
         raise ValueError("invalid initialization id or protocol")
     if manifest.get("state") != "initializing":
         raise ValueError("bootstrap requires initializing state")
+    from .profile import validate_profile
+    validate_profile(profile, manifest)
     original_manifest = manifest
     manifest = dict(manifest)
     declared = manifest.get("project_root")
@@ -45,7 +47,7 @@ def bootstrap(root: Path, control_dir: Path, manifest: dict[str, object], profil
         path = Path(relative)
         if path.is_absolute() or ".." in path.parts:
             raise ValueError("bootstrap path must remain in control directory")
-    journal = {"protocol": "qiming.initialization/1", "initialization_id": initialization_id, "workspace_id": manifest.get("workspace_id"), "stage": "discovered", "completed": ["bootstrap"]}
+    journal = {"protocol": "qiming.initialization/1", "initialization_id": initialization_id, "workspace_id": manifest.get("workspace_id"), "stage": "discovered", "completed": ["bootstrap"], "initial_manifest": manifest, "initial_profile": profile}
     expected = {control / "workspace.json": _bytes(manifest), control / profile_path: _bytes(profile), control / journal_path: _bytes(journal)}
     if len(expected) != 3:
         raise ValueError("bootstrap paths must be distinct")

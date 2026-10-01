@@ -146,8 +146,9 @@ def ensure_startup(manifest_path: Path) -> dict[str, object]:
         _, alias, registered_root = max(roots)
     except (OSError, ValueError, KeyError, UnicodeError) as error:
         return {"status": "conflict", "result": None, "diagnostics": [{"code": "WRITE_CONFLICT", "message": str(error), "locator": str(manifest_path)}], "changed": []}
+    warnings = ([{'code':'STARTUP_BUDGET','message':'Startup summary exceeds the 3000-byte soft budget','hint':'Keep decisions and 3–5 current task links; move details into referenced records.'}] if len(raw)>3000 else [])
     if not payloads:
-        return {"status": "ok", "result": {"entrypoints": sorted(blocks)}, "diagnostics": [], "changed": []}
+        return {"status": "ok_with_warnings" if warnings else "ok", "result": {"entrypoints": sorted(blocks)}, "diagnostics": warnings, "changed": []}
     stage = control / ".host-entry-staging"
     stage.mkdir(parents=True, exist_ok=True)
     changes = []
@@ -162,6 +163,9 @@ def ensure_startup(manifest_path: Path) -> dict[str, object]:
     applied = apply_plan(manifest_path, planned["result"])
     if applied["status"] == "ok":
         applied["result"]["entrypoints"] = sorted(blocks)
+        if warnings:
+            applied["status"] = "ok_with_warnings"
+            applied["diagnostics"] = warnings
     return applied
 
 

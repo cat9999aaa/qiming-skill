@@ -1,0 +1,40 @@
+{
+  "id": "S15",
+  "name": "索引丢失重建",
+  "fixture": {
+    "files": {
+      "source/知识.md": "旧结论：先检查路径。",
+      "fixture-note.md": "runner 应先建立缓存，再损坏缓存并改写源文件。"
+    },
+    "directories": []
+  },
+  "prompt": "在缓存删除或损坏且源内容变化后检索；权威源文件必须保留，新内容可见，旧摘要标为陈旧。",
+  "authorization": [
+    "read workspace",
+    "write control records and derived index"
+  ],
+  "required_capabilities": [
+    "filesystem_read",
+    "filesystem_write",
+    "command_execution",
+    "fault_injection"
+  ],
+  "assertions": [
+    {
+      "kind": "path_exists",
+      "path": "source/知识.md"
+    },
+    {
+      "kind": "path_exists",
+      "path": ".qiming/workspace.json"
+    }
+  ],
+  "trace_requirements": [
+    {
+      "operation": "index-rebuild"
+    },
+    {
+      "operation": "search"
+    }
+  ]
+}

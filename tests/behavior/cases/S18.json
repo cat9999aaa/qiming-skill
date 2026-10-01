@@ -1,0 +1,41 @@
+{
+  "id": "S18",
+  "name": "并发覆盖",
+  "fixture": {
+    "files": {
+      "record.json": "{\"id\":\"r-18\",\"title\":\"original\"}",
+      "scenario.txt": "两个 writer 使用同一原始指纹。"
+    },
+    "directories": []
+  },
+  "prompt": "让两个合作进程基于同一指纹修改同一记录；核查只有一个成功、另一个冲突，同计划重试不重复写，不同计划重用 ID 被拒绝。",
+  "authorization": [
+    "read workspace",
+    "write test record",
+    "run concurrent workers"
+  ],
+  "required_capabilities": [
+    "filesystem_read",
+    "filesystem_write",
+    "command_execution",
+    "concurrent_processes"
+  ],
+  "assertions": [
+    {
+      "kind": "path_exists",
+      "path": "record.json"
+    },
+    {
+      "kind": "path_exists",
+      "path": ".qiming/workspace.json"
+    }
+  ],
+  "trace_requirements": [
+    {
+      "operation": "concurrent-write"
+    },
+    {
+      "operation": "conflict"
+    }
+  ]
+}

@@ -78,7 +78,9 @@ def log_event(
             return _problem("SCHEMA_INVALID", "work events must be a list")
         for existing in events:
             if isinstance(existing, dict) and existing.get("id") == event_id:
-                if existing == event:
+                # The short CLI supplies the current time on every invocation.  A retry
+                # with the same event ID and factual content keeps the first timestamp.
+                if existing.get("kind") == kind and existing.get("summary") == summary:
                     return {"status": "ok", "result": {"event_id": event_id, "already_recorded": True}, "diagnostics": [], "changed": []}
                 return _problem("WRITE_CONFLICT", "event id already has different content")
         if expected_sha256 is not None and expected_sha256 != old_sha:

@@ -23,3 +23,8 @@ document.addEventListener("click", async (event) => {
     button.setAttribute("aria-label", button.getAttribute("data-default-label"));
   }, 2200);
 });
+
+const articleToc = document.querySelector(".guide-toc");
+if (articleToc && window.matchMedia("(max-width: 900px)").matches) {
+  articleToc.open = false;
+}

@@ -1,5 +1,7 @@
 # Qiming website
 
+Article layout and release checks: [ARTICLE_STYLE.md](ARTICLE_STYLE.md).
+
 Live site: https://qiming.dashen.wang/
 
 The official site is a dependency-free static build. `content.json` retains the four existing localized editions; `page_content.json` contains topic-level metadata, navigation, the self-managed site case, and the sanitized field report. `fit_content.json` provides plain-language fit and non-fit boundaries in all four languages. `articles/catalog.json` is the article index; `articles/why-qiming.zh-CN.md` is the full Simplified Chinese introduction, rendered at `/articles/organize-your-work/`. The four localized `/articles/` pages list available articles and state the language of each full text. Simplified Chinese uses the root URL; Traditional Chinese uses `/zh-TW/`, Japanese `/ja/`, and English `/en/`. Each locale has separate pages for getting started, how it works, domains, cases, articles, prompts, feedback, story, updates, FAQ, and a More menu. `assets/` contains the Qiming logo, favicon, pixel-inspired styles, and copy interaction.

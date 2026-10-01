@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import html
 import json
 import re
@@ -24,6 +25,14 @@ OG_LOCALES = {"zh-CN": "zh_CN", "zh-TW": "zh_TW", "ja": "ja_JP", "en": "en_US"}
 
 def e(value: object) -> str:
     return html.escape(str(value), quote=True)
+
+
+def asset_url(name: str) -> str:
+    """Give changed static files a new URL so cached CSS/JS cannot outlive HTML."""
+    if name not in {"style.css", "app.js"}:
+        raise ValueError("unsupported versioned asset")
+    digest = hashlib.sha256((HERE / "assets" / name).read_bytes()).hexdigest()[:12]
+    return f"/assets/{name}?v={digest}"
 
 
 def route(locale: str, page: str = "home") -> str:
@@ -164,8 +173,11 @@ def longform_article(item: dict, locale: str, labels: dict) -> str:
     return (f'<section class="page-section wrap longform"><div class="article-heading">'
             f'<a href="{route(locale, "articles")}">← {e(labels["articles"])}</a>'
             f'<time datetime="{e(item["published"])}">{e(item["published"])}</time></div>'
-            f'<h1 class="guide-title">{e(title)}</h1><div class="guide-layout">'
-            f'<nav class="guide-toc" aria-label="文章目录"><span class="eyebrow">阅读目录</span>{toc}</nav>'
+            f'<header class="article-lead"><span class="eyebrow">QIMING / FIELD NOTES</span>'
+            f'<h1 class="guide-title">{e(title)}</h1>'
+            f'<p class="article-summary">{e(item["summary"][locale])}</p></header><div class="guide-layout">'
+            f'<details class="guide-toc" open><summary>阅读目录 <span>{len(headings)} 节</span></summary>'
+            f'<nav class="toc-links" aria-label="文章目录">{toc}</nav></details>'
             f'<article class="guide-prose">{"".join(sections)}</article></div></section>')
 
 
@@ -328,7 +340,8 @@ def page_body(locale: str, page: str, t: dict, p: dict, fit: dict, repo_url: str
     featured_href = article_route(articles[0]["default_locale"], articles[0]["slug"])
     if page == "home":
         return home(locale, t, p, fit, featured_href)
-    intro = (f'<section class="page-hero wrap"><span class="eyebrow">QIMING / {e(page.upper())}</span>'
+    intro_class = "page-hero wrap article-index-hero" if page == "articles" else "page-hero wrap"
+    intro = (f'<section class="{intro_class}"><span class="eyebrow">QIMING / {e(page.upper())}</span>'
              f'<h1>{e(p["labels"][page])}</h1><p>{e(p["lead"][page])}</p></section>')
     contents = {"start": lambda: start(locale, t, p, repo_url), "how": lambda: how(locale, t, fit, featured_href),
                 "domains": lambda: domains(t), "cases": lambda: cases(t, p), "prompts": lambda: prompts(t),
@@ -403,11 +416,11 @@ def render(locale: str, t: dict, repo_url: str | None, site_url: str, page: str 
   <title>{e(title)}</title>
   <link rel="icon" href="/assets/favicon.ico" sizes="any">
   <link rel="icon" href="/assets/logo.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="/assets/style.css">
+  <link rel="stylesheet" href="{asset_url('style.css')}">
   <script type="application/ld+json">{structured}</script>
-  <script src="/assets/app.js" defer></script>
+  <script src="{asset_url('app.js')}" defer></script>
 </head>
-<body>
+<body{f' class="article-page"' if article else ''}>
   <a class="skip-link" href="#main">{e(t['skip'])}</a>
   {header(locale, page, p)}
   <main id="main">{longform_article(article, locale, p['labels']) if article else page_body(locale, page, t, p, fit, repo_url, articles)}</main>

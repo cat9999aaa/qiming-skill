@@ -150,6 +150,11 @@
     "changes": [
       {
         "date": "2026.10.01",
+        "title": "文章排版与缓存修复",
+        "body": "文章页统一标题、边框、正文宽度和手机目录；静态资源随内容生成新地址，避免新版页面继续使用旧样式。"
+      },
+      {
+        "date": "2026.10.01",
         "title": "独立文章栏目与适用边界",
         "body": "四语言首页与原理页说明启明适合与不适合的工作；新增独立文章栏目，简体中文实战长文在文章详情页讲本地 AI 管理和脱敏项目案例。"
       },
@@ -429,6 +434,11 @@
     "changelog_label": "05 / CHANGELOG",
     "changelog_title": "更新紀錄",
     "changes": [
+      {
+        "date": "2026.10.01",
+        "title": "文章排版與快取修復",
+        "body": "文章頁統一標題、邊框、正文寬度和手機目錄；靜態資源隨內容產生新網址，避免新版頁面沿用舊樣式。"
+      },
       {
         "date": "2026.10.01",
         "title": "獨立文章欄目與適用邊界",
@@ -712,6 +722,11 @@
     "changes": [
       {
         "date": "2026.10.01",
+        "title": "記事の組版とキャッシュを改善",
+        "body": "見出し、枠線、本文幅、モバイルの目次を統一。CSS と JavaScript の URL は内容に応じて変わり、古いスタイルの再利用を防ぎます。"
+      },
+      {
+        "date": "2026.10.01",
         "title": "記事ページと適用範囲",
         "body": "四言語のトップと仕組みページに向き不向きを追加。独立した記事一覧から、ローカル AI 管理と匿名化した事例を説明する簡体字中国語の全文を読めます。"
       },
@@ -991,6 +1006,11 @@
     "changelog_label": "05 / CHANGELOG",
     "changelog_title": "Changelog",
     "changes": [
+      {
+        "date": "2026.10.01",
+        "title": "Article layout and cache fix",
+        "body": "Article headings, borders, reading width, and the mobile contents menu now follow one layout. CSS and JavaScript URLs change with their content to avoid stale styles."
+      },
       {
         "date": "2026.10.01",
         "title": "A dedicated Articles section",

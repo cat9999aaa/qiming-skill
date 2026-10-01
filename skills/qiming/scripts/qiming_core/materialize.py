@@ -160,7 +160,7 @@ def materialize(manifest_path: Path, resource_plan: list[dict[str, object]], ins
         if not path.resolve(strict=False).is_relative_to(instance_dir):
             return _conflict("PATH_ESCAPE", "Resource target escapes instance")
         payloads.append((path, data))
-        resources.append({"path": str(relative_target), "purpose": item.get("purpose", "runtime"), "required": bool(item.get("required", True)), "sha256": _sha(data), "origin": {"source": str(relative_source), "license": item.get("license")}})
+        resources.append({"path": relative_target.as_posix(), "purpose": item.get("purpose", "runtime"), "required": bool(item.get("required", True)), "sha256": _sha(data), "origin": {"source": relative_source.as_posix(), "license": item.get("license")}})
     if len({str(path) for path, _ in payloads}) != len(payloads):
         return _conflict("WRITE_CONFLICT", "Duplicate instance resource target")
     dependency = [{"name": "Python", "minimum": "3.11", "verification": "python3 --version"}, {"name": "PyYAML", "version": "6.0.3", "optional_for": ["yaml", "markdown-frontmatter"], "verification": "python3 -c 'import yaml; print(yaml.__version__)'"}]

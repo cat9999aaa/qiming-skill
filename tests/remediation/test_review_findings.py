@@ -73,3 +73,20 @@ def test_upgrade_detects_late_change_to_preserved_file(tmp_path,monkeypatch):
     result=upgrade(manifest,preview,preview['plan_id'])
     assert result['status']=='conflict',result
     assert (root/'.qiming/qiming-user/instance.json').read_bytes()==before
+
+
+def test_upgrade_understands_legacy_windows_resource_separators(tmp_path):
+    root=tmp_path/'project';root.mkdir();assert initialize(root)['status']=='ok'
+    manifest=root/'.qiming/workspace.json'
+    instance=root/'.qiming/qiming-user/instance.json'
+    doc=json.loads(instance.read_text())
+    for row in doc['resources']:
+        row['path']=row['path'].replace('/',chr(92))
+    instance.write_text(json.dumps(doc))
+    import qiming
+    seed=Path(qiming.__file__).parents[1]
+    preview=upgrade_preview(manifest,seed)['result']
+    assert all(row['state']=='unchanged' for row in preview['resources'])
+    result=upgrade(manifest,preview,preview['plan_id'])
+    assert result['status']=='ok',result
+    assert all(chr(92) not in row['path'] for row in json.loads(instance.read_text())['resources'])

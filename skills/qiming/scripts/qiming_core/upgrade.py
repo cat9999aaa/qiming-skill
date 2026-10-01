@@ -25,6 +25,17 @@ def _new_resources(seed, name, workspace_id):
     return values
 
 
+def _resource_map(resources):
+    """Older Windows instances serialized native separators in resource keys."""
+    result = {}
+    for row in resources:
+        name = row['path'].replace('\\', '/')
+        if name in result:
+            raise ValueError('Duplicate instance resource after path normalization')
+        result[name] = {**row, 'path': name}
+    return result
+
+
 def upgrade_preview(manifest_path: Path, seed_dir: Path):
     manifest_path=manifest_path.resolve(); seed_dir=seed_dir.resolve()
     manifest,_=load_record(manifest_path,'json')
@@ -33,7 +44,7 @@ def upgrade_preview(manifest_path: Path, seed_dir: Path):
     instance,raw=load_record(instance_path,'json')
     if not (seed_dir/'scripts/qiming.py').is_file() or not (seed_dir/'SKILL.md').is_file():
         raise ValueError('seed_dir must point to a complete Qiming package')
-    current={row['path']:row for row in instance['resources']}
+    current=_resource_map(instance['resources'])
     target=instance_path.parent
     new=_new_resources(seed_dir,target.name,manifest['workspace_id'])
     rows=[]
@@ -73,7 +84,7 @@ def upgrade(manifest_path: Path, preview: dict, plan_id: str):
     instance,raw=load_record(instance_path,'json')
     target=instance_path.parent
     new=_new_resources(Path(fresh['seed_dir']),target.name,manifest['workspace_id'])
-    old={r['path']:r for r in instance['resources']}
+    old=_resource_map(instance['resources'])
     alias,root=_root_alias(manifest_path,manifest)
     resources=[];payloads=[];preserved=[]
     for row in fresh['resources']:

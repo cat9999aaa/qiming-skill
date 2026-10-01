@@ -63,6 +63,81 @@ def link_card(locale: str, page: str, p: dict, index: int) -> str:
             f'<span class="link-arrow" aria-hidden="true">↗</span></a>')
 
 
+def fit_panel(fit: dict) -> str:
+    columns = []
+    for key, section_id in (("fit", "fit-boundary"), ("not_fit", "not-fit-boundary")):
+        points = "".join(f'<li>{e(item)}</li>' for item in fit[key + "_points"])
+        columns.append(f'<article class="pixel-card fit-card" id="{section_id}"><h2>{e(fit[key + "_title"])}</h2>'
+                       f'<p>{e(fit[key + "_body"])}</p><ul>{points}</ul></article>')
+    return (f'<section class="page-section wrap fit-section"><div class="fit-grid">{"".join(columns)}</div>'
+            f'<p class="guide-link-row"><a href="/how/#full-guide">{e(fit["long_label"])} ↗</a>'
+            f'<span>{e(fit["long_note"])}</span></p></section>')
+
+
+def article_inline(value: str) -> str:
+    pieces = re.split(r"(`[^`]+`|https://[^\s，。]+)", value)
+    return "".join(f'<code>{e(piece[1:-1])}</code>' if piece.startswith("`") and piece.endswith("`") else
+                   f'<a href="{e(piece)}" rel="noopener noreferrer">{e(piece)}</a>'
+                   if piece.startswith("https://") else e(piece) for piece in pieces)
+
+
+def longform_article() -> str:
+    """Render the project's controlled, plain Markdown article without a runtime dependency."""
+    source = (HERE / "articles" / "why-qiming.zh-CN.md").read_text(encoding="utf-8")
+    lines = source.splitlines()
+    headings: list[tuple[str, str]] = []
+    section_number = 0
+    for line in lines:
+        if line.startswith("## "):
+            section_number += 1
+            heading = line[3:]
+            heading_id = ("guide-omarchy-ai" if "Omarchy" in heading else
+                          "guide-pi-submember" if "Pi Agent" in heading else f"guide-section-{section_number}")
+            headings.append((heading_id, heading))
+    sections: list[str] = []
+    paragraph: list[str] = []
+    code: list[str] | None = None
+    current_section = 0
+
+    def flush() -> None:
+        if paragraph:
+            sections.append(f'<p>{article_inline(" ".join(paragraph))}</p>')
+            paragraph.clear()
+
+    for line in lines:
+        if code is not None:
+            if line.startswith("```"):
+                sections.append(f'<pre><code>{e(chr(10).join(code))}</code></pre>')
+                code = None
+            else:
+                code.append(line)
+        elif line.startswith("```"):
+            flush()
+            code = []
+        elif not line.strip():
+            flush()
+        elif line.startswith("### "):
+            flush()
+            sections.append(f'<h3>{e(line[4:])}</h3>')
+        elif line.startswith("## "):
+            flush()
+            heading_id, heading = headings[current_section]
+            current_section += 1
+            sections.append(f'<h2 id="{heading_id}">{e(heading)}</h2>')
+        elif line.startswith("# "):
+            flush()
+            sections.append(f'<h2 class="guide-title">{e(line[2:])}</h2>')
+        else:
+            paragraph.append(line)
+    flush()
+    if code is not None:
+        raise ValueError("unfinished code fence in longform article")
+    toc = "".join(f'<a href="#{heading_id}">{e(heading)}</a>' for heading_id, heading in headings)
+    return (f'<section class="page-section wrap longform" id="full-guide"><div class="guide-layout">'
+            f'<nav class="guide-toc" aria-label="文章目录"><span class="eyebrow">阅读目录</span>{toc}</nav>'
+            f'<article class="guide-prose">{"".join(sections)}</article></div></section>')
+
+
 def header(locale: str, page: str, p: dict) -> str:
     desktop = "".join(f'<a href="{route(locale, key)}"{(" aria-current=" + chr(34) + "page" + chr(34)) if key == page else ""}>{e(p["labels"][key])}</a>' for key in MAIN_NAV)
     icons = ("⌂", "✦", "▦", "▣", "···")
@@ -93,7 +168,7 @@ def footer(locale: str, p: dict, t: dict) -> str:
             f'<span>© 2026 QIMING</span><span>{e(t["footer_status"])}</span><a href="#top">↑ TOP</a></div></footer>')
 
 
-def home(locale: str, t: dict, p: dict) -> str:
+def home(locale: str, t: dict, p: dict, fit: dict) -> str:
     files = "".join(f'<li>{e(item)}</li>' for item in t["panel_files"])
     units = "".join(f'<span>{e(item)}</span>' for item in t["panel_units"])
     cards = "".join(link_card(locale, key, p, i) for i, key in enumerate(("how", "domains", "cases"), 1))
@@ -108,6 +183,7 @@ def home(locale: str, t: dict, p: dict) -> str:
             f'<div class="terminal-block green"><small>02 / {e(t["panel_instance"])}</small><div class="unit-grid">{units}</div></div>'
             f'</div><div class="terminal-foot">PROJECT-LOCAL · Q/01</div></div></section>'
             f'<section class="statement"><div class="wrap"><span>※</span><p>{e(t["statement"])}</p></div></section>'
+            f'{fit_panel(fit)}'
             f'<section class="page-section wrap"><div class="section-heading"><span class="eyebrow">EXPLORE / 03</span>'
             f'<h2>{e(p["section_more"])}</h2></div><div class="card-grid">{cards}</div></section>')
 
@@ -133,13 +209,14 @@ def start(locale: str, t: dict, p: dict, repo_url: str | None) -> str:
             f'<p class="scope-note">{e(p["scope_note"])}</p></section>')
 
 
-def how(t: dict) -> str:
+def how(locale: str, t: dict, fit: dict) -> str:
     steps = "".join(f'<article class="pixel-card step-card"><span class="pixel-index">{e(item["number"])}</span>'
                     f'<h2>{e(item["title"])}</h2><p>{e(item["body"])}</p></article>' for item in t["methods"])
     chips = "".join(f'<span>{e(item)}</span>' for item in t["member_chips"])
     return (f'<section class="page-section wrap"><div class="steps-grid">{steps}</div>'
             f'<div class="member-panel"><div class="member-icon">Q+</div><div><span class="eyebrow">{e(t["member_label"])}</span>'
-            f'<h2>{e(t["member_title"])}</h2><p>{e(t["member_body"])}</p><div class="chips">{chips}</div></div></div></section>')
+            f'<h2>{e(t["member_title"])}</h2><p>{e(t["member_body"])}</p><div class="chips">{chips}</div></div></div></section>'
+            f'{fit_panel(fit)}' + (longform_article() if locale == "zh-CN" else ""))
 
 
 def domains(t: dict) -> str:
@@ -201,25 +278,28 @@ def more(locale: str, p: dict) -> str:
     return f'<section class="page-section wrap"><div class="card-grid">{cards}</div></section>'
 
 
-def page_body(locale: str, page: str, t: dict, p: dict, repo_url: str | None) -> str:
+def page_body(locale: str, page: str, t: dict, p: dict, fit: dict, repo_url: str | None) -> str:
     if page == "home":
-        return home(locale, t, p)
+        return home(locale, t, p, fit)
     intro = (f'<section class="page-hero wrap"><span class="eyebrow">QIMING / {e(page.upper())}</span>'
              f'<h1>{e(p["labels"][page])}</h1><p>{e(p["lead"][page])}</p></section>')
-    contents = {"start": lambda: start(locale, t, p, repo_url), "how": lambda: how(t),
+    contents = {"start": lambda: start(locale, t, p, repo_url), "how": lambda: how(locale, t, fit),
                 "domains": lambda: domains(t), "cases": lambda: cases(t, p), "prompts": lambda: prompts(t),
                 "feedback": lambda: feedback(p), "story": lambda: story(t), "updates": lambda: updates(t),
                 "faq": lambda: faq(t), "more": lambda: more(locale, p)}
     return intro + contents[page]()
 
 
-def render(locale: str, t: dict, repo_url: str | None, site_url: str, page: str = "home", p: dict | None = None) -> str:
+def render(locale: str, t: dict, repo_url: str | None, site_url: str, page: str = "home", p: dict | None = None,
+           fit: dict | None = None) -> str:
     validate_site_url(site_url)
     repo_slug(repo_url)
     if page not in PAGES:
         raise ValueError("unsupported page")
     if p is None:
         p = json.loads((HERE / "page_content.json").read_text(encoding="utf-8"))[locale]
+    if fit is None:
+        fit = json.loads((HERE / "fit_content.json").read_text(encoding="utf-8"))[locale]
     canonical = site_url + route(locale, page)
     title = t["title"] if page == "home" else f'{p["labels"][page]} | Qiming Skill'
     description = p["summary"][page]
@@ -267,7 +347,7 @@ def render(locale: str, t: dict, repo_url: str | None, site_url: str, page: str 
 <body>
   <a class="skip-link" href="#main">{e(t['skip'])}</a>
   {header(locale, page, p)}
-  <main id="main">{page_body(locale, page, t, p, repo_url)}</main>
+  <main id="main">{page_body(locale, page, t, p, fit, repo_url)}</main>
   {footer(locale, p, t)}
 </body>
 </html>
@@ -291,13 +371,14 @@ def build(out: Path, repo_url: str | None, site_url: str) -> None:
     validate_site_url(site_url)
     content = json.loads((HERE / "content.json").read_text(encoding="utf-8"))
     pages = json.loads((HERE / "page_content.json").read_text(encoding="utf-8"))
-    if set(content) != set(LOCALES) or set(pages) != set(LOCALES):
+    fits = json.loads((HERE / "fit_content.json").read_text(encoding="utf-8"))
+    if set(content) != set(LOCALES) or set(pages) != set(LOCALES) or set(fits) != set(LOCALES):
         raise ValueError("site content must contain exactly four supported locales")
     for locale in LOCALES:
         for page in PAGES:
             target = out / route(locale, page).lstrip("/")
             target.mkdir(parents=True, exist_ok=True)
-            (target / "index.html").write_text(render(locale, content[locale], repo_url, site_url, page, pages[locale]), encoding="utf-8")
+            (target / "index.html").write_text(render(locale, content[locale], repo_url, site_url, page, pages[locale], fits[locale]), encoding="utf-8")
     assets = out / "assets"
     assets.mkdir(parents=True, exist_ok=True)
     for name in ("style.css", "app.js", "logo.svg", "favicon.ico"):

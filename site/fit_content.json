@@ -1,0 +1,42 @@
+{
+  "zh-CN": {
+    "fit_title": "什么情况适合启明？",
+    "fit_body": "你有一件会持续变化的事，资料分散、经常换 Agent 或电脑，并希望下次能从已有成果继续。开发、写作、网站和本地 AI 都可以从一个目录开始。",
+    "fit_points": ["需要找回上次做到哪一步", "有项目、服务、作品或工具要长期维护", "想分清已经做过与真正验证过"],
+    "not_fit_title": "什么情况先不用？",
+    "not_fit_body": "一次性问答、翻译或找文件，直接做通常更快。启明不能自动接管其他目录，不能代替专业工具、真实验收或你对高风险操作的授权。",
+    "not_fit_points": ["只做一次、没有后续维护", "希望安装后自动扫描和控制所有设备", "想把任务记录当作备份、监控或专业结论"],
+    "long_label": "阅读完整介绍与 Omarchy 实战教程（简体中文，约一万字）",
+    "long_note": "下方长文包含真实项目、管理原则、本地 AI 会员与 Pi 子会员的具体做法。"
+  },
+  "zh-TW": {
+    "fit_title": "什麼情況適合啟明？",
+    "fit_body": "你有一件會持續變化的事，資料分散、經常更換 Agent 或電腦，並希望下次能從已有成果繼續。開發、寫作、網站和本機 AI 都能從一個目錄開始。",
+    "fit_points": ["需要找回上次做到哪一步", "有專案、服務、作品或工具要長期維護", "想分清已完成與實際驗證"],
+    "not_fit_title": "什麼情況先不用？",
+    "not_fit_body": "一次性問答、翻譯或找檔案，直接完成通常更快。啟明不會自動接管其他目錄，也不能代替專業工具、真實驗收或你的授權。",
+    "not_fit_points": ["只做一次，沒有後續維護", "希望安裝後自動控制所有裝置", "把工作記錄當作備份、監控或專業結論"],
+    "long_label": "閱讀完整介紹與 Omarchy 實戰教學（簡體中文）",
+    "long_note": "完整長文目前提供簡體中文；本頁的適用邊界已用繁體中文說明。"
+  },
+  "ja": {
+    "fit_title": "Qiming が向いている仕事",
+    "fit_body": "何度も続く仕事があり、資料が散らばり、Agent やパソコンを替えても前回の続きから始めたい場合に向いています。開発、執筆、Web サイト、ローカル AI の管理にも使えます。",
+    "fit_points": ["前回の進捗と次の一歩を残したい", "プロジェクトやツールを継続して管理する", "完了と実際の検証を区別したい"],
+    "not_fit_title": "使わなくてもよい場合",
+    "not_fit_body": "一度きりの質問、翻訳、ファイル探しなら、そのまま作業する方が簡単です。Qiming は他のフォルダーを自動管理せず、専門ツールや実地検証、権限確認の代わりにもなりません。",
+    "not_fit_points": ["一回だけの作業で後続の管理がない", "インストールだけで全端末を自動操作したい", "記録をバックアップや監視結果と同一視する"],
+    "long_label": "詳しい紹介と Omarchy 実践ガイドを読む（簡体字中国語）",
+    "long_note": "長文は現在、簡体字中国語で公開しています。このページの適用範囲は日本語で説明しています。"
+  },
+  "en": {
+    "fit_title": "When Qiming helps",
+    "fit_body": "Use it for work that continues over time: scattered material, changing agents or computers, and a need to resume from real progress. A software project, manuscript, website, or local AI setup can each start in one folder.",
+    "fit_points": ["You need to recover the last verified state", "You maintain projects, services, works, or tools", "You want to separate completion from real verification"],
+    "not_fit_title": "When to keep it simple",
+    "not_fit_body": "For a one-off answer, translation, or file lookup, just do the task. Qiming does not automatically control other folders and does not replace specialist tools, real acceptance, or your authorization for risky actions.",
+    "not_fit_points": ["The task ends after one answer", "You expect installation to control every device", "You would treat records as backups or monitoring"],
+    "long_label": "Read the full guide and Omarchy walkthrough (Simplified Chinese)",
+    "long_note": "The full article is currently in Simplified Chinese; this page explains the fit and limits in English."
+  }
+}

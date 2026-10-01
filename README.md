@@ -2,6 +2,8 @@
 
 Official website / 官网：https://qiming.dashen.wang/
 
+Plain-language introduction and Omarchy local AI walkthrough (Simplified Chinese): https://qiming.dashen.wang/how/#full-guide
+
 **Read in your language:** [简体中文](README.zh-CN.md) · [繁體中文](README.zh-TW.md) · [日本語](README.ja.md) · [English](README.en.md)
 
 Qiming is a project-local AI management Skill for people starting with AI and people continuing complex work. It reads the working directory you choose, preserves existing files and conventions, and creates a self-contained instance for that project. Work, managed objects (“会员”), knowledge, and reusable tools remain yours.

@@ -150,6 +150,11 @@
     "changes": [
       {
         "date": "2026.10.01",
+        "title": "说清启明适合什么",
+        "body": "四语言首页与原理页增加适用和不适用边界；简中原理页发布约一万字的介绍、Omarchy 本地 AI 管理教程与真实项目案例。"
+      },
+      {
+        "date": "2026.10.01",
         "title": "多页官网与快速记录",
         "body": "官网按主题拆成四语言独立页面，加入脱敏的 OpenCode 现场反馈。Skill 新增受控快速记录入口；OpenCode 的完整行为仍待复测。"
       },
@@ -424,6 +429,11 @@
     "changelog_label": "05 / CHANGELOG",
     "changelog_title": "更新紀錄",
     "changes": [
+      {
+        "date": "2026.10.01",
+        "title": "說清啟明適合什麼",
+        "body": "四語首頁與原理頁補上適用和不適用邊界；簡體中文原理頁發佈長篇介紹、Omarchy 本機 AI 管理教學與真實案例。"
+      },
       {
         "date": "2026.10.01",
         "title": "多頁官網與快速記錄",
@@ -702,6 +712,11 @@
     "changes": [
       {
         "date": "2026.10.01",
+        "title": "Qiming の向き不向きを説明",
+        "body": "四言語のトップと仕組みページに適用範囲を追加。簡体字中国語の長文では Omarchy 上のローカル AI 管理と実例を説明します。"
+      },
+      {
+        "date": "2026.10.01",
         "title": "複数ページの公式サイトと簡易記録",
         "body": "公式サイトを四言語のテーマ別ページに分け、匿名化した OpenCode の現場報告を追加。Skill に安全な短い記録入口を追加しました。OpenCode の全面的な動作確認はまだです。"
       },
@@ -976,6 +991,11 @@
     "changelog_label": "05 / CHANGELOG",
     "changelog_title": "Changelog",
     "changes": [
+      {
+        "date": "2026.10.01",
+        "title": "Explaining when Qiming helps",
+        "body": "All four home and how-it-works pages now state fit and limits in plain language. A full Simplified Chinese guide covers Omarchy local AI management and real projects."
+      },
       {
         "date": "2026.10.01",
         "title": "Topic pages and quick logging",

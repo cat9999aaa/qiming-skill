@@ -26,4 +26,6 @@ npx skills add cat9999aaa/qiming-skill --skill qiming
 
 已有项目结构和自定义优先保留。跨 Agent 读取有一份 OpenCode/GLM-5.3 现场报告，完整宿主矩阵仍待验证；不要把“安装成功”当作“所有场景通过”。
 
+想先看懂它适合什么，可以读[完整介绍与 Omarchy 本地 AI 实战教程](https://qiming.dashen.wang/how/#full-guide)。
+
 官网：[开始使用](https://qiming.dashen.wang/start/) · [领域](https://qiming.dashen.wang/domains/) · [真实案例](https://qiming.dashen.wang/cases/) · [用户反馈](https://qiming.dashen.wang/feedback/) · [更新日志](https://qiming.dashen.wang/updates/)

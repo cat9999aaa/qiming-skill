@@ -14,7 +14,13 @@ from .host_binding import ensure_project_entrypoints
 
 def seed_metadata(seed):
     version=seed/'assets/contracts/version.json'
-    return load_record(version,'json')[0] if version.is_file() else {'version':'legacy','commit':None}
+    metadata = load_record(version,'json')[0] if version.is_file() else {'version':'legacy','commit':None}
+    digest = hashlib.sha256()
+    paths = {seed/'SKILL.md'} | {seed/row['source'] for row in _default_resources(seed)}
+    for path in sorted(paths):
+        if path.is_file():
+            digest.update(path.relative_to(seed).as_posix().encode()+b'\0'+hashlib.sha256(path.read_bytes()).digest())
+    return {**metadata, 'package_sha256': digest.hexdigest()}
 
 
 def _new_resources(seed, name, workspace_id):
@@ -102,7 +108,7 @@ def upgrade(manifest_path: Path, preview: dict, plan_id: str):
         data,origin=new[name]
         resources.append({'path':name,'purpose':old.get(name,{}).get('purpose','runtime'),'required':old.get(name,{}).get('required',True),'origin':origin,'sha256':row['incoming_sha256'],'seed_sha256':row['incoming_sha256']})
         if state in {'added','upgrade'}: payloads.append((path,data,row['current_sha256']))
-    updated={**instance,'resources':resources,'seed_version':fresh['seed'].get('version'),'seed_commit':fresh['seed'].get('commit'),'upgrade_preserved':preserved}
+    updated={**instance,'resources':resources,'seed_version':fresh['seed'].get('version'),'seed_commit':fresh['seed'].get('commit'),'seed_commit_kind':fresh['seed'].get('commit_kind'),'seed_package_sha256':fresh['seed']['package_sha256'],'upgrade_preserved':preserved}
     if _json(updated)!=raw: payloads.append((instance_path,_json(updated),_sha(raw)))
     binding_conflicts=[]
     for binding in fresh['bindings']:
@@ -141,6 +147,8 @@ def upgrade(manifest_path: Path, preview: dict, plan_id: str):
     planned['result']['guards']=guards
     applied=apply_plan(manifest_path,planned['result'])
     if applied['status']!='ok': return applied
+    from .staging import finish_stage
+    applied=finish_stage(stage,applied)
     context=ensure_project_entrypoints(manifest_path)
     check=validate(manifest_path,[],False)
     status='ok_with_warnings' if preserved or binding_conflicts else 'ok'

@@ -38,3 +38,7 @@ Additional review fixes cover the earliest interrupted initialization, user-modi
 Codex and Claude Code independently recovered a synthetic task and its next step in real fresh CLI sessions on 2026-10-01. Both noted missing acceptance evidence. Gemini CLI required authentication and was not verified. Cursor and OpenCode full behavior runs remain pending. The complete 34-scenario real-agent matrix has not been run.
 
 The public CI result verifies automated tool behavior for each listed OS/Python job. It does not prove universal model or host compatibility. Consult [Actions](https://github.com/cat9999aaa/qiming-skill/actions/workflows/tests.yml) for the actual run state.
+
+## v0.2.1 follow-up
+
+A user relayed a Claude web review of v0.2.0. We reproduced local-edit validation errors, successful-operation staging leftovers, missing embedded source provenance and the mandatory quick-log intent option. The short init command already had a stderr summary; it now explains the project, binding and next step. Local edits warn without claiming verified behavior; missing files and identity errors still fail. Only successful operation-owned staging is removed. Log defaults to the selected work record ID. Release metadata records the source commit before the provenance-only stamp, plus a byte fingerprint for installed copies.

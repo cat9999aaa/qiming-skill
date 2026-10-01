@@ -345,11 +345,14 @@ def prompts(t: dict) -> str:
 
 def feedback(p: dict) -> str:
     f = p["feedback"]
+    followup = p.get("followup_feedback")
+    report = (f'<section class="page-section wrap"><article class="pixel-card feedback-card">'
+              f'<h2>{e(followup["credit"])}</h2><p>{e(followup["body"])}</p></article></section>') if followup else ""
     cards = "".join(f'<article class="pixel-card feedback-card"><span class="pixel-index">0{i}</span>'
                     f'<h2>{e(f[key + "_title"])}</h2><p>{e(f[key])}</p></article>'
                     for i, key in enumerate(("worked", "friction", "boundary"), 1))
     return (f'<section class="page-section wrap"><div class="source-banner"><span class="eyebrow">{e(p["evidence"])}</span>'
-            f'<p>{e(f["credit"])}</p></div><div class="steps-grid">{cards}</div></section>')
+            f'<p>{e(f["credit"])}</p></div><div class="steps-grid">{cards}</div></section>' + report)
 
 
 def story(t: dict) -> str:

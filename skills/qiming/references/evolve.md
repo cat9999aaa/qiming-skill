@@ -19,3 +19,9 @@
 `result.resources` 区分 unchanged、upgrade、local_modified、conflict、added、removed。检查后将完整 result 传回 upgrade 的 `args.preview`，同一结果的 plan_id 传入 `args.plan_id`。预览后任一相关文件改变会拒绝执行，必须重新预览。
 
 未修改的运行资源通过 plan/apply 升级，用户修改的文件保留并列出。缺失的用户文件仍需修复；不以升级掩盖缺失。profile、任务、会员 ID 不在升级中改写，目录迁移另走 plan_migration。升级后检查 validate 和 refresh_context；有副本绑定时比较后重建，不能覆盖用户改过的副本。未提供新安装包时不联网猜测最新版本。
+
+## 本地修改与版本追溯
+
+实例属于本项目，可以修改。`validate` 对文件指纹变化返回 `ok_with_warnings` / `LOCAL_MODIFICATION`，保留修改并提示内容尚未经验证；文件缺失、身份错误和非法路径仍是错误。宿主副本必须与实际权威文件一致，陈旧副本仍报冲突。修改后需实际检查功能，不能把警告状态当作运行验证通过。
+
+`seed_commit` 是发行时记录的源码提交，`seed_commit_kind: release-source` 表示它指向写入发行元数据之前的源码提交，不是包含自身哈希的最终提交。最终发布提交见 Release。`seed_package_sha256` 标识安装包实际字节；Git 换行设置或本地修改会改变它。通过 npx 安装即使没有 `.git` 也保留这些信息。未标记的开发包可没有 commit，但仍有包指纹，不虚构来源。

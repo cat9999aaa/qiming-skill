@@ -150,6 +150,11 @@
     "changes": [
       {
         "date": "2026-10-01",
+        "title": "v0.2.1 · 本地定制与新手体验",
+        "body": "本地修改改为可追踪警告，缺失文件仍报错；成功后清理本次暂存。补全源码版本与包指纹、中文接入摘要；快速记录默认关联目标任务 ID。"
+      },
+      {
+        "date": "2026-10-01",
         "title": "v0.2.0 · 接入与恢复整改",
         "body": "新增 init、项目宿主绑定、安全升级预览与陈旧锁检查。 默认 JSON 记录支持递归检索和快速追加；修复凭据检查与普通链接误报。 公开自动化测试与三系统 CI；实际结果以 Actions 为准，完整 Agent 行为矩阵尚未完成。"
       },
@@ -444,6 +449,11 @@
     "changelog_label": "05 / CHANGELOG",
     "changelog_title": "更新紀錄",
     "changes": [
+      {
+        "date": "2026-10-01",
+        "title": "v0.2.1 · 本地自訂與新手體驗",
+        "body": "本地修改改為可追蹤警告，缺少檔案仍報錯；成功後清理本次暫存。補上原始碼版本與套件指紋、中文接入摘要；快速記錄預設關聯目標任務 ID。"
+      },
       {
         "date": "2026-10-01",
         "title": "v0.2.0 · 接入與復原整改",
@@ -742,6 +752,11 @@
     "changes": [
       {
         "date": "2026-10-01",
+        "title": "v0.2.1 · ローカル編集と導入体験",
+        "body": "ローカル編集は追跡可能な警告となり、必須ファイルの欠落は引き続きエラーです。成功した処理の一時ファイルを削除し、ソース情報・パッケージ指紋・導入概要を改善。記録時は対象タスクの ID を既定で使います。"
+      },
+      {
+        "date": "2026-10-01",
         "title": "v0.2.0 · 導入と復旧の改善",
         "body": "init、プロジェクト連携、安全な更新プレビュー、古いロックの確認を追加。 JSON 記録の再帰検索と追記を修正。秘密情報検出と通常 URL の処理を改善。 自動テストと 3 OS の CI を公開。結果は Actions を参照。完全な Agent 動作行列は未完了。"
       },
@@ -1036,6 +1051,11 @@
     "changelog_label": "05 / CHANGELOG",
     "changelog_title": "Changelog",
     "changes": [
+      {
+        "date": "2026-10-01",
+        "title": "v0.2.1 · Local edits and onboarding polish",
+        "body": "Local edits now produce traceable warnings; missing files still fail. Successful operations clean their own staging. Source provenance, package fingerprints and init summaries are clearer; quick logging defaults to the selected work ID."
+      },
       {
         "date": "2026-10-01",
         "title": "v0.2.0 · Onboarding and recovery fixes",

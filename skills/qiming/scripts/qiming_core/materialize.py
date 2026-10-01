@@ -100,7 +100,7 @@ def materialize(manifest_path: Path, resource_plan: list[dict[str, object]], ins
         if instance_manifest.get("instance_id") and instance_manifest["instance_id"] != manifest.get("instance", {}).get("id"):
             return _conflict("WRITE_CONFLICT", "Existing instance ID differs")
         check = validate(manifest_path, [], False)
-        if check["status"] != "ok":
+        if check["status"] not in {"ok", "ok_with_warnings"}:
             return _conflict("BROKEN_ENTRY", "Ready instance failed validation")
         connected = ensure_project_entrypoints(manifest_path)
         if connected["status"] not in {"ok", "ok_with_warnings"}:
@@ -167,7 +167,7 @@ def materialize(manifest_path: Path, resource_plan: list[dict[str, object]], ins
     instance_doc = {"protocol": "qiming.instance/1", "instance_id": instance_id, "instance_version": instance_manifest.get("instance_version", "1.0.0"), "workspace_manifest": "../workspace.json", "resources": resources, "dependencies": instance_manifest.get("dependencies", dependency), "seed_origin": instance_manifest.get("seed_origin", {"name": "qiming", "version": "1"})}
     from .upgrade import seed_metadata
     metadata = seed_metadata(seed)
-    instance_doc.update(seed_version=metadata.get("version"), seed_commit=metadata.get("commit"))
+    instance_doc.update(seed_version=metadata.get("version"), seed_commit=metadata.get("commit"), seed_commit_kind=metadata.get("commit_kind"), seed_package_sha256=metadata["package_sha256"])
     payloads.append((instance_dir / "instance.json", _json(instance_doc)))
     stage = manifest_path.parent / ".materialize" / re.sub(r"[^A-Za-z0-9_-]", "_", initialization_id)
     first = _staged_plan(manifest_path, alias, root, payloads, stage, "resource")
@@ -190,7 +190,7 @@ def materialize(manifest_path: Path, resource_plan: list[dict[str, object]], ins
     if activated["status"] != "ok":
         return activated
     check = validate(manifest_path, [], False)
-    if check["status"] != "ok":
+    if check["status"] not in {"ok", "ok_with_warnings"}:
         return {"status": "partial", "result": {"instance_entry": str(instance_dir / "SKILL.md"), "validation": check}, "diagnostics": check["diagnostics"], "changed": first["changed"] + activated["changed"]}
     journal["stage"] = "active"
     journal["completed"] = ["bootstrap", "materialize", "validate", "activate"]

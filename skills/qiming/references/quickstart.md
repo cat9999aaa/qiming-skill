@@ -36,7 +36,7 @@ AGENTS.md / CLAUDE.md / GEMINI.md  项目启动入口，保留用户原文
 ## 记下来、找回来
 
 ```sh
-python3 .qiming/qiming-user/scripts/qiming.py log .qiming/work/w-0001.json "第一章初稿完成；校对尚未运行" --workspace-manifest .qiming/workspace.json --intent-ref w-0001 --event-id chapter-draft-1
+python3 .qiming/qiming-user/scripts/qiming.py log .qiming/work/w-0001.json "第一章初稿完成；校对尚未运行" --workspace-manifest .qiming/workspace.json --event-id chapter-draft-1
 ```
 
 重复发送同一个 event-id 与事实不会重复追加。不同事实必须用新 ID。完整检索请求：
@@ -52,3 +52,5 @@ python3 .qiming/qiming-user/scripts/qiming.py log .qiming/work/w-0001.json "第�
 再次 `init` 不会覆盖 profile、任务、ID 或本地规则。先读取 START.md，再从当前任务接续。旧实例升级请使用新安装包的 `upgrade_preview`，核对后再 `upgrade`；详见 [升级](evolve.md)。不要用新项目的默认 profile 覆盖旧项目。
 
 Skills CLI 可能生成 `.agents/`、`.claude/`、`agent/`、`skills-lock.json` 等安装记录；这些不全由启明产生。种子 `qiming` 仅用于接入与升级；日常使用 `qiming-user`。保留种子便于升级，也可在检查归属后自行删除项目内种子。工具不会自动删除用户目录。
+
+`log` 省略 `--intent-ref` 时，使用已选任务记录的 `id`；任务无 ID 时明确报错，也可显式指定。`init` 的 stdout 保持单条 JSON；stderr 显示项目目录、是否已接入、宿主绑定和下一步，方便人读与脚本解析同时使用。

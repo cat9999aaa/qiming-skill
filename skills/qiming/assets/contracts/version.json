@@ -1,5 +1,6 @@
 {
-  "version": "0.2.0",
+  "version": "0.2.1",
   "commit": null,
-  "release": "https://github.com/cat9999aaa/qiming-skill/releases/tag/v0.2.0"
+  "commit_kind": "release-source",
+  "release": "https://github.com/cat9999aaa/qiming-skill/releases/tag/v0.2.1"
 }

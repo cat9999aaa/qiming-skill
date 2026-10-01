@@ -31,12 +31,12 @@ def log_event(
     manifest_path: Path,
     work_ref: dict[str, object],
     event: dict[str, object],
-    intent_ref: str,
+    intent_ref: str | None,
     expected_sha256: str | None = None,
 ) -> dict[str, object]:
     """Append an idempotent event to an existing mapped work JSON record."""
     manifest_path = manifest_path.resolve()
-    if not isinstance(intent_ref, str) or not intent_ref.strip():
+    if intent_ref is not None and (not isinstance(intent_ref, str) or not intent_ref.strip()):
         return _problem("INVALID_INPUT", "intent_ref is required", "error")
     if not isinstance(event, dict):
         return _problem("INVALID_INPUT", "event must be an object", "error")
@@ -79,6 +79,10 @@ def log_event(
         record = json.loads(original)
         if not isinstance(record, dict) or record.get("type") != "work":
             return _problem("SCHEMA_INVALID", "target is not a work record")
+        if intent_ref is None:
+            intent_ref = record.get("id")
+            if not isinstance(intent_ref, str) or not intent_ref.strip():
+                return _problem("INVALID_INPUT", "Work record has no id; provide --intent-ref explicitly", "error")
         events = record.get("events", [])
         if not isinstance(events, list):
             return _problem("SCHEMA_INVALID", "work events must be a list")

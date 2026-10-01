@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import uuid
 from pathlib import Path
 
 from .codec import load_record
@@ -149,7 +150,7 @@ def ensure_startup(manifest_path: Path) -> dict[str, object]:
     warnings = ([{'code':'STARTUP_BUDGET','message':'Startup summary exceeds the 3000-byte soft budget','hint':'Keep decisions and 3–5 current task links; move details into referenced records.'}] if len(raw)>3000 else [])
     if not payloads:
         return {"status": "ok_with_warnings" if warnings else "ok", "result": {"entrypoints": sorted(blocks)}, "diagnostics": warnings, "changed": []}
-    stage = control / ".host-entry-staging"
+    stage = control / ".host-entry-staging" / str(uuid.uuid4())
     stage.mkdir(parents=True, exist_ok=True)
     changes = []
     for path, data, previous in payloads:
@@ -166,7 +167,8 @@ def ensure_startup(manifest_path: Path) -> dict[str, object]:
         if warnings:
             applied["status"] = "ok_with_warnings"
             applied["diagnostics"] = warnings
-    return applied
+    from .staging import finish_stage
+    return finish_stage(stage, applied)
 
 
 def startup_status(manifest_path: Path, host: str, instruction_name: str) -> dict:

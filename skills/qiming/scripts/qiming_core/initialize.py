@@ -53,7 +53,9 @@ def write_payloads(manifest_path, payloads, intent):
         path.write_bytes(data)
         changes.append({'action':'create' if previous is None else 'replace','target':ref,'expected_sha256':None if previous is None else hashlib.sha256(previous).hexdigest(),'content_ref':str(path.relative_to(manifest_path.parent)),'desired_sha256':hashlib.sha256(data).hexdigest()})
     planned=plan_changes(manifest_path,changes,intent,hashlib.sha256((manifest_path.parent/manifest['profile']).read_bytes()).hexdigest())
-    return apply_plan(manifest_path,planned['result']) if planned['status']=='ok' else planned
+    result = apply_plan(manifest_path,planned['result']) if planned['status']=='ok' else planned
+    from .staging import finish_stage
+    return finish_stage(stage, result)
 
 
 def initialize(root: Path, preset='general', name=None, goal=None, hosts='auto', dry_run=False):
@@ -153,4 +155,4 @@ def initialize(root: Path, preset='general', name=None, goal=None, hosts='auto',
     check=validate(path,[],False)
     if check['status'] not in {'ok','ok_with_warnings'}: return check
     manifest,_=load_record(path,'json')
-    return {'status':'ok','result':{'workspace_id':manifest['workspace_id'],'instance_id':manifest['instance']['id'],'already_initialized':ready,'created':not exists,'bound_hosts':bound,'warnings':(['Writing preset leaves your manuscripts untouched; map existing drafts explicitly as read-only.'] if preset=='writing' else []),'next_steps':['Read .qiming/START.md. Daily work uses qiming-user.','Keep project-local seed for future upgrades or remove it yourself after backing up; never remove the user instance.']},'changed':changed,'diagnostics':[]}
+    return {'status':check['status'],'result':{'workspace_id':manifest['workspace_id'],'instance_id':manifest['instance']['id'],'already_initialized':ready,'created':not exists,'bound_hosts':bound,'warnings':(['Writing preset leaves your manuscripts untouched; map existing drafts explicitly as read-only.'] if preset=='writing' else []),'next_steps':['Read .qiming/START.md. Daily work uses qiming-user.','Keep project-local seed for future upgrades or remove it yourself after backing up; never remove the user instance.']},'changed':changed,'diagnostics':check['diagnostics']}

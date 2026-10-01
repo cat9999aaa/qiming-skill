@@ -25,6 +25,7 @@ def _control_path(base: Path, relative: str) -> Path:
 
 def validate(manifest_path: Path, targets: list[dict[str, object]], include_references: bool) -> dict[str, object]:
     diagnostics: list[dict[str, object]] = []
+    warnings: list[dict[str, object]] = []
     records: list[dict[str, object]] = []
     reference_coverage: dict[str, object] | None = None
     try:
@@ -58,7 +59,7 @@ def validate(manifest_path: Path, targets: list[dict[str, object]], include_refe
                         if not path.is_file():
                             diagnostics.append(_diag("BROKEN_ENTRY", f"Missing required resource: {resource.get('path')}", str(path)))
                         elif hashlib.sha256(path.read_bytes()).hexdigest() != resource.get("sha256"):
-                            diagnostics.append(_diag("BROKEN_ENTRY", f"Resource fingerprint mismatch: {resource.get('path')}", str(path)))
+                            warnings.append({**_diag("LOCAL_MODIFICATION", f"Resource differs from its recorded fingerprint: {resource.get('path')}", str(path)), "severity": "warning", "hint": "Local customization is preserved; this does not verify the changed content. Review it before execution or upgrade.", "details": {"expected_sha256": resource.get("sha256"), "actual_sha256": hashlib.sha256(path.read_bytes()).hexdigest()}})
     except (OSError, ValueError) as exc:
         diagnostics.append(_diag("SCHEMA_INVALID", str(exc), str(manifest_path)))
     for target in targets:
@@ -98,4 +99,4 @@ def validate(manifest_path: Path, targets: list[dict[str, object]], include_refe
                 diagnostics.append(_diag("COVERAGE_INCOMPLETE", "Reference validation did not inspect every authority record", str(reference_coverage["errors"])))
         except (OSError, ValueError, KeyError, RecursionError) as exc:
             diagnostics.append(_diag("COVERAGE_INCOMPLETE", str(exc), str(manifest_path)))
-    return {"status": "error" if diagnostics else "ok", "result": {"records": records, "include_references": include_references, "reference_coverage": reference_coverage}, "diagnostics": diagnostics, "changed": []}
+    return {"status": "error" if diagnostics else "ok_with_warnings" if warnings else "ok", "result": {"records": records, "include_references": include_references, "reference_coverage": reference_coverage}, "diagnostics": diagnostics + warnings, "changed": []}

@@ -29,12 +29,12 @@ def binding_preview(manifest_path: Path, host: str, host_root: Path) -> dict[str
     if manifest.get("state") != "ready" or not isinstance(manifest.get("instance"), dict):
         return {"status": "partial", "source_path": None, "binding_path": None, "reason": "user-instance-not-ready"}
     check = validate(manifest_path, [], False)
-    if check["status"] != "ok":
+    if check["status"] not in {"ok", "ok_with_warnings"}:
         return {"status": "conflict", "source_path": None, "binding_path": None, "reason": "instance-validation-failed", "diagnostics": check["diagnostics"]}
     source = (manifest_path.parent / str(manifest["instance"]["entry"])).resolve()
     instance_manifest = (manifest_path.parent / str(manifest["instance"]["manifest"])).resolve()
     binding = host_root.resolve() / _HOST_DIRS[host] / "skills" / source.parent.name
-    return {"status": "ok", "host": host, "workspace_manifest": str(manifest_path), "instance_id": manifest["instance"]["id"], "source_path": str(source), "source_directory": str(source.parent), "binding_path": str(binding), "instruction_path": str(host_root.resolve() / _INSTRUCTION_FILES[host]), "source_fingerprint": hashlib.sha256(instance_manifest.read_bytes()).hexdigest(), "method": "symlink-or-copy", "note": "Binding contains only discoverability; keep authority in the user instance"}
+    return {"status": "ok", "host": host, "workspace_manifest": str(manifest_path), "instance_id": manifest["instance"]["id"], "source_path": str(source), "source_directory": str(source.parent), "binding_path": str(binding), "instruction_path": str(host_root.resolve() / _INSTRUCTION_FILES[host]), "source_fingerprint": hashlib.sha256(instance_manifest.read_bytes()).hexdigest(), "validation_diagnostics": check["diagnostics"], "method": "symlink-or-copy", "note": "Binding contains only discoverability; keep authority in the user instance"}
 
 
 def binding_status(manifest_path: Path, host: str) -> dict[str, object]:
@@ -49,19 +49,19 @@ def binding_status(manifest_path: Path, host: str) -> dict[str, object]:
     if not binding.exists():
         return {"status": "not-bound", "binding_path": str(binding), "instance_id": preview["instance_id"]}
     check = startup_status(manifest_path.resolve(), host, _INSTRUCTION_FILES[host])
-    if check["status"] != "ok":
+    if check["status"] not in {"ok", "ok_with_warnings"}:
         return {**check, "binding_path": str(binding), "instruction_path": preview["instruction_path"], "instance_id": preview["instance_id"]}
     if binding.resolve() == Path(preview["source_directory"]):
-        return {"status": "bound", "instruction_bytes": preview["instruction_bytes"], "method": "symlink", "binding_path": str(binding), "instance_id": preview["instance_id"], "source_fingerprint": preview["source_fingerprint"]}
+        return {"status": "bound", "instruction_bytes": preview["instruction_bytes"], "method": "symlink", "binding_path": str(binding), "instance_id": preview["instance_id"], "source_fingerprint": preview["source_fingerprint"], "validation_diagnostics": preview["validation_diagnostics"]}
     copy_manifest = binding / "instance.json"
     if not copy_manifest.is_symlink() and copy_manifest.is_file() and hashlib.sha256(copy_manifest.read_bytes()).hexdigest() == preview["source_fingerprint"]:
         try:
             instance, _ = load_record(copy_manifest, "json")
             for resource in instance["resources"]:
                 path = _control_path(binding, resource["path"])
-                if not path.is_file() or hashlib.sha256(path.read_bytes()).hexdigest() != resource["sha256"]:
+                if not path.is_file() or path.read_bytes() != _control_path(Path(preview["source_directory"]), resource["path"]).read_bytes():
                     raise ValueError("Copied resource differs from its authority")
-            return {"status": "bound-copy", "instruction_bytes": preview["instruction_bytes"], "method": "copy", "binding_path": str(binding), "instance_id": preview["instance_id"], "source_fingerprint": preview["source_fingerprint"]}
+            return {"status": "bound-copy", "instruction_bytes": preview["instruction_bytes"], "method": "copy", "binding_path": str(binding), "instance_id": preview["instance_id"], "source_fingerprint": preview["source_fingerprint"], "validation_diagnostics": preview["validation_diagnostics"]}
         except (OSError, ValueError, KeyError):
             pass
     return {"status": "stale-or-conflicting", "binding_path": str(binding), "instance_id": preview["instance_id"]}

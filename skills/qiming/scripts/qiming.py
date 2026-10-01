@@ -233,7 +233,19 @@ def _short_init(argv):
     args=vars(parser.parse_args(argv)); args['root']=str(args['root'])
     result=dispatch({'protocol':'qiming.tool/1','request_id':'init','op':'init','args':args})
     print(json.dumps(result,ensure_ascii=False))
-    print('启明接入：'+result['status']+'；详情见 JSON，成功后从 .qiming/START.md 接续。',file=sys.stderr)
+    info=result.get('result') or {}
+    print('启明接入：'+result['status'],file=sys.stderr)
+    print('项目目录：'+str(Path(args['root']).resolve()),file=sys.stderr)
+    if info.get('dry_run'):
+        print('仅预览，未写入文件。下一步：去掉 --dry-run 执行接入。',file=sys.stderr)
+    elif result['status'] in {'ok','ok_with_warnings'}:
+        print('已有实例已保留。' if info.get('already_initialized') else '已建立本项目的启明实例。',file=sys.stderr)
+        print('宿主绑定：'+', '.join(row['host'] for row in info.get('bound_hosts',[])),file=sys.stderr)
+        print('下一步：读取 .qiming/START.md，接续当前任务。',file=sys.stderr)
+    else:
+        for diagnostic in result.get('diagnostics',[]):
+            print('需要处理：'+diagnostic.get('message',''),file=sys.stderr)
+        print('下一步：核对上方诊断；保留现有目录后重试。',file=sys.stderr)
     return EXIT_CODES[result['status']]
 
 
@@ -243,7 +255,7 @@ def _short_log(argv: list[str]) -> int:
     parser.add_argument("summary", help="One-line event summary")
     parser.add_argument("--workspace-manifest", type=Path, required=True)
     parser.add_argument("--kind", choices=("observation", "decision", "action", "handoff"), default="observation")
-    parser.add_argument("--intent-ref", required=True)
+    parser.add_argument("--intent-ref", default=None, help="Defaults to the target work record id")
     parser.add_argument("--event-id", default=None, help="Stable ID for safe retries")
     options = parser.parse_args(argv)
     event = {"id": options.event_id or f"evt-{uuid.uuid4()}", "kind": options.kind,

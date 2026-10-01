@@ -113,7 +113,7 @@ def article_inline(value: str) -> str:
                    if piece.startswith("https://") else e(piece) for piece in pieces)
 
 
-def longform_article(item: dict, locale: str, labels: dict) -> str:
+def longform_article(item: dict, locale: str, labels: dict, articles: list[dict]) -> str:
     """Render one catalogued Markdown article without a runtime dependency."""
     source = (HERE / "articles" / item["source"][locale]).read_text(encoding="utf-8")
     lines = source.splitlines()
@@ -170,6 +170,14 @@ def longform_article(item: dict, locale: str, labels: dict) -> str:
     if title is None:
         raise ValueError("longform article needs a title")
     toc = "".join(f'<a href="#{heading_id}">{e(heading)}</a>' for heading_id, heading in headings)
+    series_links = []
+    for index, other in enumerate(articles, 1):
+        current = ' aria-current="page"' if other["slug"] == item["slug"] else ""
+        series_links.append(
+            f'<a href="{article_route(other["default_locale"], other["slug"])}"{current}>'
+            f'<span>{index:02d}</span><strong>{e(other["title"]["zh-CN"])}</strong><span aria-hidden="true">↗</span></a>'
+        )
+    series = "".join(series_links)
     return (f'<section class="page-section wrap longform"><div class="article-heading">'
             f'<a href="{route(locale, "articles")}">← {e(labels["articles"])}</a>'
             f'<time datetime="{e(item["published"])}">{e(item["published"])}</time></div>'
@@ -178,7 +186,10 @@ def longform_article(item: dict, locale: str, labels: dict) -> str:
             f'<p class="article-summary">{e(item["summary"][locale])}</p></header><div class="guide-layout">'
             f'<details class="guide-toc" open><summary>阅读目录 <span>{len(headings)} 节</span></summary>'
             f'<nav class="toc-links" aria-label="文章目录">{toc}</nav></details>'
-            f'<article class="guide-prose">{"".join(sections)}</article></div></section>')
+            f'<article class="guide-prose">{"".join(sections)}</article></div>'
+            f'<nav class="article-series" aria-label="系列文章"><h2>系列文章</h2>'
+            f'<p>按主题继续读。每篇都标出管理动作与实际验证的边界。</p>'
+            f'<div class="article-series-links">{series}</div></nav></section>')
 
 
 def header(locale: str, page: str, p: dict) -> str:
@@ -264,10 +275,11 @@ def how(locale: str, t: dict, fit: dict, article_href: str) -> str:
 
 def articles_index(locale: str, items: list[dict]) -> str:
     cards = []
-    for item in items:
+    for index, item in enumerate(items, 1):
         available_locale = locale if locale in item["source"] else item["default_locale"]
         href = article_route(available_locale, item["slug"])
         cards.append(f'<article class="pixel-card article-card"><div class="case-top">'
+                     f'<span class="article-number">{index:02d} / {len(items):02d}</span>'
                      f'<time datetime="{e(item["published"])}">{e(item["published"])}</time>'
                      f'<span>{e(item["availability"][locale])}</span></div>'
                      f'<h2>{e(item["title"][locale])}</h2><p>{e(item["summary"][locale])}</p>'
@@ -423,7 +435,7 @@ def render(locale: str, t: dict, repo_url: str | None, site_url: str, page: str 
 <body{f' class="article-page"' if article else ''}>
   <a class="skip-link" href="#main">{e(t['skip'])}</a>
   {header(locale, page, p)}
-  <main id="main">{longform_article(article, locale, p['labels']) if article else page_body(locale, page, t, p, fit, repo_url, articles)}</main>
+  <main id="main">{longform_article(article, locale, p['labels'], articles) if article else page_body(locale, page, t, p, fit, repo_url, articles)}</main>
   {footer(locale, p, t)}
 </body>
 </html>

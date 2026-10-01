@@ -389,4 +389,29 @@
     <xhtml:link rel="alternate" hreflang="zh-CN" href="https://qiming.dashen.wang/articles/organize-your-work/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://qiming.dashen.wang/articles/organize-your-work/"/>
   </url>
+  <url>
+    <loc>https://qiming.dashen.wang/articles/omarchy-local-ai/</loc>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://qiming.dashen.wang/articles/omarchy-local-ai/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://qiming.dashen.wang/articles/omarchy-local-ai/"/>
+  </url>
+  <url>
+    <loc>https://qiming.dashen.wang/articles/pi-agent-submember/</loc>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://qiming.dashen.wang/articles/pi-agent-submember/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://qiming.dashen.wang/articles/pi-agent-submember/"/>
+  </url>
+  <url>
+    <loc>https://qiming.dashen.wang/articles/delivery-boundaries/</loc>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://qiming.dashen.wang/articles/delivery-boundaries/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://qiming.dashen.wang/articles/delivery-boundaries/"/>
+  </url>
+  <url>
+    <loc>https://qiming.dashen.wang/articles/research-and-operations/</loc>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://qiming.dashen.wang/articles/research-and-operations/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://qiming.dashen.wang/articles/research-and-operations/"/>
+  </url>
+  <url>
+    <loc>https://qiming.dashen.wang/articles/qiming-site-release/</loc>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://qiming.dashen.wang/articles/qiming-site-release/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://qiming.dashen.wang/articles/qiming-site-release/"/>
+  </url>
 </urlset>

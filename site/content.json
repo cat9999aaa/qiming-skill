@@ -150,6 +150,11 @@
     "changes": [
       {
         "date": "2026.10.01",
+        "title": "实战案例拆成六篇系列文章",
+        "body": "将原来密集的长文拆成总览、本机 AI、Pi 子会员、交付边界、研究与运营、官网发布六篇。旧地址保留；每篇说明问题、管理动作、产物和验证边界。"
+      },
+      {
+        "date": "2026.10.01",
         "title": "文章排版与缓存修复",
         "body": "文章页统一标题、边框、正文宽度和手机目录；静态资源随内容生成新地址，避免新版页面继续使用旧样式。"
       },
@@ -434,6 +439,11 @@
     "changelog_label": "05 / CHANGELOG",
     "changelog_title": "更新紀錄",
     "changes": [
+      {
+        "date": "2026.10.01",
+        "title": "實戰案例改為六篇系列文章",
+        "body": "原本密集的長文拆為總覽、本機 AI、Pi 子會員、交付邊界、研究與營運、官網發布。原網址保留；每篇分別交代問題、管理動作、產物及驗證範圍。"
+      },
       {
         "date": "2026.10.01",
         "title": "文章排版與快取修復",
@@ -722,6 +732,11 @@
     "changes": [
       {
         "date": "2026.10.01",
+        "title": "実践記事を六本のシリーズに分割",
+        "body": "長い一本の記事を概要、ローカル AI、Pi 子メンバー、納品、調査と運用、公式サイト公開の六本に分割。旧 URL を残し、各記事で問題、対応、成果物、検証範囲を示します。"
+      },
+      {
+        "date": "2026.10.01",
         "title": "記事の組版とキャッシュを改善",
         "body": "見出し、枠線、本文幅、モバイルの目次を統一。CSS と JavaScript の URL は内容に応じて変わり、古いスタイルの再利用を防ぎます。"
       },
@@ -1006,6 +1021,11 @@
     "changelog_label": "05 / CHANGELOG",
     "changelog_title": "Changelog",
     "changes": [
+      {
+        "date": "2026.10.01",
+        "title": "Six focused field guides replace one long article",
+        "body": "The original guide is now a six-part series covering the overview, local AI, a Pi child member, delivery boundaries, research and operations, and site release. The old URL remains; each article states the problem, actions, artifacts, and verification limits."
+      },
       {
         "date": "2026.10.01",
         "title": "Article layout and cache fix",

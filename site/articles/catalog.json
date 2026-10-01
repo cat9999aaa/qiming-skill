@@ -4,7 +4,9 @@
       "slug": "organize-your-work",
       "published": "2026-10-01",
       "default_locale": "zh-CN",
-      "source": {"zh-CN": "why-qiming.zh-CN.md"},
+      "source": {
+        "zh-CN": "why-qiming.zh-CN.md"
+      },
       "title": {
         "zh-CN": "启明怎样把混乱的目录变成能继续工作的项目",
         "zh-TW": "啟明如何讓混亂目錄變成可以接續的專案",
@@ -12,10 +14,170 @@
         "en": "How Qiming turns a scattered folder into work you can resume"
       },
       "summary": {
-        "zh-CN": "从本机 AI、Pi 子会员、客户交付和网站运营等脱敏实战，看清启明怎样确认范围、建立入口、归属长期对象、验证结果并留下下一步。",
-        "zh-TW": "以本機 AI、Pi 子會員、客戶交付與網站營運等匿名實例，說明啟明如何確定範圍、留下入口與驗證。",
-        "ja": "ローカル AI、Pi の管理対象、納品、サイト運営の匿名化した実例で、Qiming の引き継ぎと検証を説明します。",
-        "en": "Sanitized examples from local AI, Pi, delivery work, and site operations show how Qiming records scope, ownership, evidence, and the next step."
+        "zh-CN": "从我和 Dark源的管理模板出发，讲清启明如何给混乱目录划边界、建立短入口、归属会员、记录证据并留下下一步。",
+        "zh-TW": "從我與 Dark源的管理模板出發，說明啟明如何為混亂目錄確定範圍、建立入口、記錄證據與下一步。",
+        "ja": "Dark源と育てた管理テンプレートから、Qiming が作業範囲、入口、管理対象、証拠、次の一歩をどう整理するか説明します。",
+        "en": "From the management template I built with Dark源, learn how Qiming sets scope, records ownership and evidence, and leaves a clear next step."
+      },
+      "availability": {
+        "zh-CN": "简体中文全文",
+        "zh-TW": "全文為簡體中文",
+        "ja": "本文は簡体字中国語",
+        "en": "Full article in Simplified Chinese"
+      },
+      "read_label": {
+        "zh-CN": "阅读全文",
+        "zh-TW": "閱讀簡體中文全文",
+        "ja": "中国語の全文を読む",
+        "en": "Read the Chinese article"
+      }
+    },
+    {
+      "slug": "omarchy-local-ai",
+      "published": "2026-10-01",
+      "default_locale": "zh-CN",
+      "source": {
+        "zh-CN": "omarchy-local-ai.zh-CN.md"
+      },
+      "title": {
+        "zh-CN": "在 Omarchy 管理本地 AI：服务、模型和重装后的接续",
+        "zh-TW": "在 Omarchy 管理本機 AI：服務、模型與重裝後接續",
+        "ja": "Omarchy のローカル AI を管理する：サービス、モデル、再構築",
+        "en": "Managing local AI on Omarchy: services, models, and recovery"
+      },
+      "summary": {
+        "zh-CN": "用 ComfyUI 与图像模型的真实部署、出图和性能任务，展示如何从空目录开始，并在重装后继续工作。",
+        "zh-TW": "從 ComfyUI 與圖像模型的部署和驗證，看如何從空目錄開始並保留重裝後的接續線索。",
+        "ja": "ComfyUI と画像モデルの導入・検証から、空のフォルダーで始めて再構築に備える方法を示します。",
+        "en": "A real ComfyUI and image model case shows how to start from an empty folder, test output, and prepare for reinstall."
+      },
+      "availability": {
+        "zh-CN": "简体中文全文",
+        "zh-TW": "全文為簡體中文",
+        "ja": "本文は簡体字中国語",
+        "en": "Full article in Simplified Chinese"
+      },
+      "read_label": {
+        "zh-CN": "阅读全文",
+        "zh-TW": "閱讀簡體中文全文",
+        "ja": "中国語の全文を読む",
+        "en": "Read the Chinese article"
+      }
+    },
+    {
+      "slug": "pi-agent-submember",
+      "published": "2026-10-01",
+      "default_locale": "zh-CN",
+      "source": {
+        "zh-CN": "pi-agent-submember.zh-CN.md"
+      },
+      "title": {
+        "zh-CN": "Pi Agent 子会员：让 AI 管理 AI 也有边界和证据",
+        "zh-TW": "Pi Agent 子會員：讓 AI 管理 AI 也有邊界與證據",
+        "ja": "Pi Agent の子メンバー：AI による AI 運用の範囲と証拠",
+        "en": "Pi Agent as a child member: scope and evidence for AI operations"
+      },
+      "summary": {
+        "zh-CN": "视频工作流怎样长出 Pi 项目 Skill、只读脚本与子会员；哪些入口已验证，哪些实际调用仍待测。",
+        "zh-TW": "影片工作流程如何衍生 Pi 專案 Skill、唯讀腳本與子會員，並區分已驗證與待測功能。",
+        "ja": "動画ワークフローから生まれた Pi 用 Skill と読み取り専用ツールの検証範囲を示します。",
+        "en": "How a video workflow gained a Pi project Skill, read-only script, and child member, with clear limits of testing."
+      },
+      "availability": {
+        "zh-CN": "简体中文全文",
+        "zh-TW": "全文為簡體中文",
+        "ja": "本文は簡体字中国語",
+        "en": "Full article in Simplified Chinese"
+      },
+      "read_label": {
+        "zh-CN": "阅读全文",
+        "zh-TW": "閱讀簡體中文全文",
+        "ja": "中国語の全文を読む",
+        "en": "Read the Chinese article"
+      }
+    },
+    {
+      "slug": "delivery-boundaries",
+      "published": "2026-10-01",
+      "default_locale": "zh-CN",
+      "source": {
+        "zh-CN": "delivery-boundaries.zh-CN.md"
+      },
+      "title": {
+        "zh-CN": "两个交付现场：先找对主项目，再分清测试与验收",
+        "zh-TW": "兩個交付現場：先找對主專案，再分清測試與驗收",
+        "ja": "納品現場の二例：正しいプロジェクトを見つけ、テストと受け入れを分ける",
+        "en": "Two delivery cases: find the right project and separate tests from acceptance"
+      },
+      "summary": {
+        "zh-CN": "客户项目的旧开发线与驾校系统的旧生产环境，说明启明如何避免在错误目录工作、把局部测试误写成最终验收。",
+        "zh-TW": "客戶舊開發線與駕校舊生產環境，說明如何避免在錯誤目錄工作及誤報最終驗收。",
+        "ja": "旧開発ラインと稼働中の旧システムを例に、作業範囲と受け入れ確認を分けます。",
+        "en": "A customer release and a training system show how Qiming keeps historical code, production, tests, and acceptance distinct."
+      },
+      "availability": {
+        "zh-CN": "简体中文全文",
+        "zh-TW": "全文為簡體中文",
+        "ja": "本文は簡体字中国語",
+        "en": "Full article in Simplified Chinese"
+      },
+      "read_label": {
+        "zh-CN": "阅读全文",
+        "zh-TW": "閱讀簡體中文全文",
+        "ja": "中国語の全文を読む",
+        "en": "Read the Chinese article"
+      }
+    },
+    {
+      "slug": "research-and-operations",
+      "published": "2026-10-01",
+      "default_locale": "zh-CN",
+      "source": {
+        "zh-CN": "research-and-operations.zh-CN.md"
+      },
+      "title": {
+        "zh-CN": "硬件研究与网络故障：把未知和现场时间留在记录里",
+        "zh-TW": "硬體研究與網路故障：記下未知與現場時間",
+        "ja": "ハードウェア調査とネットワーク障害：不明点と観測時刻を残す",
+        "en": "Hardware research and network incidents: record unknowns and observation time"
+      },
+      "summary": {
+        "zh-CN": "从资料来源、SHA-256 到 OpenCode 现场反馈，展示为什么未知、观察时间和写入体验都是管理事实。",
+        "zh-TW": "從資料來源、SHA-256 到 OpenCode 現場回饋，看未知與觀測時間如何成為管理事實。",
+        "ja": "資料の出所とハッシュ、OpenCode の現場報告から、未確認事項と観測時刻を扱います。",
+        "en": "Source status, SHA-256, and an OpenCode field report show how to preserve unknowns and time-bound observations."
+      },
+      "availability": {
+        "zh-CN": "简体中文全文",
+        "zh-TW": "全文為簡體中文",
+        "ja": "本文は簡体字中国語",
+        "en": "Full article in Simplified Chinese"
+      },
+      "read_label": {
+        "zh-CN": "阅读全文",
+        "zh-TW": "閱讀簡體中文全文",
+        "ja": "中国語の全文を読む",
+        "en": "Read the Chinese article"
+      }
+    },
+    {
+      "slug": "qiming-site-release",
+      "published": "2026-10-01",
+      "default_locale": "zh-CN",
+      "source": {
+        "zh-CN": "qiming-site-release.zh-CN.md"
+      },
+      "title": {
+        "zh-CN": "启明官网怎样管理自己的文章、发布和验证",
+        "zh-TW": "啟明官網如何管理文章、發布與驗證",
+        "ja": "Qiming 公式サイトが記事・公開・検証を管理する方法",
+        "en": "How the Qiming site manages articles, release, and verification"
+      },
+      "summary": {
+        "zh-CN": "启明官网自己的发布任务：四语言栏目、文章脱敏、公开包、GitHub、正式域名与手机阅读分别验收。",
+        "zh-TW": "啟明官網自己的發布任務：四語言欄目、文章去識別、GitHub、正式網域與手機閱讀分別驗收。",
+        "ja": "多言語ページ、記事の匿名化、GitHub、正式ドメイン、モバイル表示を別々に確認します。",
+        "en": "The site itself tracks localized pages, sanitized articles, GitHub, production deployment, and mobile reading separately."
       },
       "availability": {
         "zh-CN": "简体中文全文",

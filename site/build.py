@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build the multilingual, dependency-free Qiming site."""
+"""Build the four-language, multi-page Qiming website with the standard library."""
 
 from __future__ import annotations
 
@@ -13,12 +13,22 @@ from xml.sax.saxutils import escape as xml_escape
 
 
 HERE = Path(__file__).resolve().parent
-LOCALES = {"zh-CN": "/", "zh-TW": "/zh-TW/", "ja": "/ja/", "en": "/en/"}
-SECTION_IDS = ("method", "beginner", "examples", "prompts", "story", "changelog", "install")
+LOCALES = {"zh-CN": "", "zh-TW": "zh-TW", "ja": "ja", "en": "en"}
+PAGES = ("home", "start", "how", "domains", "cases", "prompts", "feedback", "story", "updates", "faq", "more")
+MAIN_NAV = ("home", "start", "how", "domains", "cases", "prompts", "feedback")
+MOBILE_NAV = ("home", "start", "domains", "cases", "more")
+MORE_NAV = ("prompts", "feedback", "story", "updates", "faq")
+LANG_LABELS = {"zh-CN": "简中", "zh-TW": "繁中", "ja": "日本語", "en": "EN"}
+OG_LOCALES = {"zh-CN": "zh_CN", "zh-TW": "zh_TW", "ja": "ja_JP", "en": "en_US"}
 
 
-def esc(value: str) -> str:
-    return html.escape(value, quote=True)
+def e(value: object) -> str:
+    return html.escape(str(value), quote=True)
+
+
+def route(locale: str, page: str = "home") -> str:
+    parts = ([LOCALES[locale]] if LOCALES[locale] else []) + ([page] if page != "home" else [])
+    return "/" + "/".join(parts) + ("/" if parts else "")
 
 
 def repo_slug(url: str | None) -> str | None:
@@ -30,236 +40,270 @@ def repo_slug(url: str | None) -> str | None:
     return match.group(1)
 
 
-def copy_button(value: str, label: str, copied: str, extra_class: str = "") -> str:
-    return (
-        f'<button class="copy-button {extra_class}" type="button" '
-        f'data-copy="{esc(value)}" data-default-label="{esc(label)}" '
-        f'data-copied-label="{esc(copied)}" aria-label="{esc(label)}">'
-        f'<span class="copy-symbol" aria-hidden="true">⧉</span><span>{esc(label)}</span></button>'
-    )
-
-
 def validate_site_url(site_url: str) -> str:
     if not re.fullmatch(r"https://[A-Za-z0-9.-]+", site_url):
         raise ValueError("site URL must be an HTTPS origin without a path")
     return site_url
 
 
-def render(locale: str, t: dict, repo_url: str | None, site_url: str) -> str:
-    root = LOCALES[locale]
-    canonical = site_url + root
-    asset = "assets" if root == "/" else "../assets"
-    nav = "".join(
-        f'<a href="#{section}">{esc(label)}</a>'
-        for section, label in zip(SECTION_IDS, t["nav"], strict=True)
-    )
-    langs = "".join(
-        f'<a href="{url}" hreflang="{code}" lang="{code}" '
-        f'{"aria-current=\"page\"" if code == locale else ""}>{esc({"zh-CN": "简中", "zh-TW": "繁中", "ja": "日本語", "en": "EN"}[code])}</a>'
-        for code, url in LOCALES.items()
-    )
-    alternate = "".join(
-        f'<link rel="alternate" hreflang="{code}" href="{esc(site_url + url)}">'
-        for code, url in LOCALES.items()
-    ) + f'<link rel="alternate" hreflang="x-default" href="{esc(site_url)}/">'
-    methods = "".join(
-        f'<article class="method-card"><span class="step-index">{esc(item["number"])}</span>'
-        f'<div class="step-mark" aria-hidden="true">↳</div><h3>{esc(item["title"])}</h3>'
-        f'<p>{esc(item["body"])}</p></article>'
-        for item in t["methods"]
-    )
-    beginner_steps = "".join(
-        f'<article class="beginner-step"><span class="step-index">{esc(item["number"])}</span>'
-        f'<h3>{esc(item["title"])}</h3><p>{esc(item["body"])}</p></article>'
-        for item in t["beginner_steps"]
-    )
-    real_cases = "".join(
-        f'<article class="real-case"><div class="real-case-head"><span>{esc(item["category"])}</span>'
-        f'<span class="real-status">{esc(item["status"])}</span></div>'
-        f'<h3>{esc(item["title"])}</h3>'
-        + "".join(
-            f'<div class="real-fact"><b>{esc(label)}</b><p>{esc(fact)}</p></div>'
-            for label, fact in zip(t["real_field_labels"], item["facts"], strict=True)
-        )
-        + f'<div class="real-prompt"><b>{esc(t["real_prompt_label"])}</b><p>{esc(item["prompt"])}</p>'
-        f'{copy_button(item["prompt"], t["prompt_copy"], t["prompt_copied"])}</div></article>'
-        for item in t["real_cases"]
-    )
-    chips = "".join(f"<span>{esc(chip)}</span>" for chip in t["member_chips"])
-    examples = "".join(
-        f'<article class="example-card"><div class="card-top"><span class="tiny-number">0{i}</span>'
-        f'<span class="card-category">{esc(item["category"])}</span></div>'
-        f'<h3>{esc(item["title"])}</h3>'
-        f'<div class="example-quote"><span>{esc(t["example_prompt"])}</span><p>{esc(item["prompt"])}</p></div>'
-        f'<div class="example-result"><b>{esc(t["example_result"])}</b><p>{esc(item["result"])}</p></div>'
-        f'{copy_button(item["prompt"], t["prompt_copy"], t["prompt_copied"])}</article>'
-        for i, item in enumerate(t["examples"], start=1)
-    )
-    prompts = "".join(
-        f'<article class="prompt-row"><div><span class="tiny-number">0{i}</span>'
-        f'<h3>{esc(item["title"])}</h3></div><p>{esc(item["body"])}</p>'
-        f'{copy_button(item["body"], t["prompt_copy"], t["prompt_copied"])}</article>'
-        for i, item in enumerate(t["prompts"], start=1)
-    )
-    story = "".join(f"<p>{esc(p)}</p>" for p in t["story_paragraphs"])
-    faq = "".join(
-        f'<article class="faq-item"><h3>{esc(item["question"])}</h3><p>{esc(item["answer"])}</p></article>'
-        for item in t["faq_items"]
-    )
-    changes = "".join(
-        f'<article class="change-row"><time datetime="{item["date"].replace(".", "-")}">{esc(item["date"])}</time>'
-        f'<div><h3>{esc(item["title"])}</h3><p>{esc(item["body"])}</p></div></article>'
-        for item in t["changes"]
-    )
+def copy_button(value: str, t: dict) -> str:
+    label, copied = t["prompt_copy"], t["prompt_copied"]
+    return (f'<button class="copy-button" type="button" data-copy="{e(value)}" '
+            f'data-default-label="{e(label)}" data-copied-label="{e(copied)}" '
+            f'aria-label="{e(label)}"><span aria-hidden="true">⧉</span><span>{e(label)}</span></button>')
+
+
+def link(locale: str, page: str, label: str, css: str = "") -> str:
+    return f'<a class="{e(css)}" href="{route(locale, page)}">{e(label)} <span aria-hidden="true">↗</span></a>'
+
+
+def link_card(locale: str, page: str, p: dict, index: int) -> str:
+    return (f'<a class="pixel-card link-card" href="{route(locale, page)}"><span class="pixel-index">0{index}</span>'
+            f'<h2>{e(p["labels"][page])}</h2><p>{e(p["summary"][page])}</p>'
+            f'<span class="link-arrow" aria-hidden="true">↗</span></a>')
+
+
+def header(locale: str, page: str, p: dict) -> str:
+    desktop = "".join(f'<a href="{route(locale, key)}"{(" aria-current=" + chr(34) + "page" + chr(34)) if key == page else ""}>{e(p["labels"][key])}</a>' for key in MAIN_NAV)
+    icons = ("⌂", "✦", "▦", "▣", "···")
+    mobile = "".join(
+        f'<a href="{route(locale, key)}"{(" aria-current=" + chr(34) + "page" + chr(34)) if key == page else ""}>'
+        f'<span class="mobile-icon" aria-hidden="true">{icon}</span><span>{e(p["labels"][key])}</span></a>'
+        for key, icon in zip(MOBILE_NAV, icons, strict=True))
+    languages = "".join(
+        f'<a href="{route(code, page)}" lang="{code}" hreflang="{code}"'
+        f'{(" aria-current=" + chr(34) + "page" + chr(34)) if code == locale else ""}>{e(label)}</a>'
+        for code, label in LANG_LABELS.items())
+    return (f'<div class="top-signal"><span>QIMING // YOUR WORKSPACE, CONTINUED</span><span>● LOCAL FIRST</span></div>'
+            f'<header class="site-header" id="top"><div class="wrap header-inner">'
+            f'<a class="brand" href="{route(locale)}"><img src="/assets/logo.svg" width="42" height="42" alt="">'
+            f'<span><b>启明</b><small>QIMING SKILL</small></span></a>'
+            f'<nav class="desktop-nav" aria-label="Primary">{desktop}</nav>'
+            f'<div class="language-menu" aria-label="Languages">{languages}</div>'
+            f'{link(locale, "start", p["labels"]["start"], "header-cta")}</div></header>'
+            f'<nav class="mobile-nav" aria-label="Mobile">{mobile}</nav>')
+
+
+def footer(locale: str, p: dict, t: dict) -> str:
+    links = "".join(link(locale, key, p["labels"][key]) for key in ("start", "how", "domains", "cases", *MORE_NAV))
+    return (f'<footer class="site-footer"><div class="wrap footer-grid"><div>'
+            f'<a class="brand" href="{route(locale)}"><img src="/assets/logo.svg" width="42" height="42" alt="">'
+            f'<span><b>启明</b><small>QIMING SKILL</small></span></a><p>{e(t["footer_line"])}</p></div>'
+            f'<nav aria-label="Footer">{links}</nav></div><div class="wrap footer-bottom">'
+            f'<span>© 2026 QIMING</span><span>{e(t["footer_status"])}</span><a href="#top">↑ TOP</a></div></footer>')
+
+
+def home(locale: str, t: dict, p: dict) -> str:
+    files = "".join(f'<li>{e(item)}</li>' for item in t["panel_files"])
+    units = "".join(f'<span>{e(item)}</span>' for item in t["panel_units"])
+    cards = "".join(link_card(locale, key, p, i) for i, key in enumerate(("how", "domains", "cases"), 1))
+    return (f'<section class="hero wrap"><div class="hero-copy"><span class="eyebrow">✦ {e(t["hero_tag"])}</span>'
+            f'<h1>{e(" ".join(t["hero_lines"]))}</h1><p class="hero-lead">{e(t["hero_lead"])}</p>'
+            f'<div class="hero-actions">{link(locale, "start", t["hero_primary"], "button primary")}'
+            f'{link(locale, "cases", t["hero_secondary"], "button secondary")}</div>'
+            f'<p class="scope-note">{e(p["scope_note"])}</p></div>'
+            f'<div class="terminal"><div class="terminal-top"><span>QIMING / WORKSPACE</span><span>● READY</span></div>'
+            f'<div class="terminal-body"><div class="terminal-block"><small>01 / {e(t["panel_source"])}</small><ul>{files}</ul></div>'
+            f'<div class="terminal-transfer">↓ {e(t["panel_arrow"])}</div>'
+            f'<div class="terminal-block green"><small>02 / {e(t["panel_instance"])}</small><div class="unit-grid">{units}</div></div>'
+            f'</div><div class="terminal-foot">PROJECT-LOCAL · Q/01</div></div></section>'
+            f'<section class="statement"><div class="wrap"><span>※</span><p>{e(t["statement"])}</p></div></section>'
+            f'<section class="page-section wrap"><div class="section-heading"><span class="eyebrow">EXPLORE / 03</span>'
+            f'<h2>{e(p["section_more"])}</h2></div><div class="card-grid">{cards}</div></section>')
+
+
+def start(locale: str, t: dict, p: dict, repo_url: str | None) -> str:
+    steps = "".join(f'<article class="pixel-card step-card"><span class="pixel-index">{e(item["number"])}</span>'
+                    f'<h2>{e(item["title"])}</h2><p>{e(item["body"])}</p></article>' for item in t["beginner_steps"])
     slug = repo_slug(repo_url)
     if slug:
         command = f"npx skills add {slug} --skill qiming"
-        agent_prompt = t["install_agent_template"].replace("{repo_url}", repo_url)
-        install_content = (
-            f'<div class="install-part"><span class="install-kicker">{esc(t["install_command"])}</span>'
-            f'<div class="command-line"><code>{esc(command)}</code>'
-            f'{copy_button(command, t["prompt_copy"], t["prompt_copied"])}</div></div>'
-            f'<div class="install-part"><span class="install-kicker">{esc(t["install_prompt"])}</span>'
-            f'<div class="prompt-install"><p>{esc(agent_prompt)}</p>'
-            f'{copy_button(agent_prompt, t["prompt_copy"], t["prompt_copied"])}</div></div>'
-            f'<a class="source-link" href="{esc(repo_url)}" target="_blank" rel="noopener noreferrer">'
-            f'{esc(t["install_source"])} <span aria-hidden="true">↗</span></a>'
-        )
+        prompt = t["install_agent_template"].replace("{repo_url}", repo_url)
+        install = (f'<div class="command-row"><code>{e(command)}</code>{copy_button(command, t)}</div>'
+                   f'<div class="prompt-box"><strong>{e(t["install_prompt"])}</strong><p>{e(prompt)}</p>'
+                   f'{copy_button(prompt, t)}</div><a class="source-link" href="{e(repo_url)}" rel="noopener noreferrer">'
+                   f'{e(t["install_source"])} ↗</a>')
     else:
-        install_content = f'<div class="install-pending" role="status"><span class="status-dot"></span>{esc(t["install_pending"])}</div>'
-    footer_links = "".join(
-        f'<a href="#{section}">{esc(label)}</a>'
-        for section, label in zip(("method", "examples", "story", "changelog", "install"), t["footer_links"], strict=True)
-    )
-    title_lines = "<br>".join(esc(line) for line in t["hero_lines"][:2])
-    title_lines += f'<br><em>{esc(t["hero_lines"][2])}</em>'
-    panel_files = "".join(f"<li>{esc(item)}</li>" for item in t["panel_files"])
-    panel_units = "".join(f"<span>{esc(item)}</span>" for item in t["panel_units"])
+        install = f'<p class="pending">{e(t["install_pending"])}</p>'
+    return (f'<section class="page-section wrap"><div class="steps-grid">{steps}</div>'
+            f'<div class="section-heading"><span class="eyebrow">INSTALL / 01</span><h2>{e(t["install_title"])}</h2>'
+            f'<p>{e(t["install_intro"])}</p></div><div class="install-panel"><div class="terminal-top">QIMING / INSTALL</div>'
+            f'{install}<div class="prompt-box"><strong>{e(t["install_after"])}</strong><p>{e(t["install_adopt"])}</p>'
+            f'{copy_button(t["install_adopt"], t)}</div><p class="install-note">{e(t["install_note"])}</p></div>'
+            f'<p class="scope-note">{e(p["scope_note"])}</p></section>')
+
+
+def how(t: dict) -> str:
+    steps = "".join(f'<article class="pixel-card step-card"><span class="pixel-index">{e(item["number"])}</span>'
+                    f'<h2>{e(item["title"])}</h2><p>{e(item["body"])}</p></article>' for item in t["methods"])
+    chips = "".join(f'<span>{e(item)}</span>' for item in t["member_chips"])
+    return (f'<section class="page-section wrap"><div class="steps-grid">{steps}</div>'
+            f'<div class="member-panel"><div class="member-icon">Q+</div><div><span class="eyebrow">{e(t["member_label"])}</span>'
+            f'<h2>{e(t["member_title"])}</h2><p>{e(t["member_body"])}</p><div class="chips">{chips}</div></div></div></section>')
+
+
+def domains(t: dict) -> str:
+    cards = "".join(f'<article class="pixel-card domain-card"><span class="eyebrow">{e(item["category"])}</span>'
+                    f'<h2>{e(item["title"])}</h2><div class="quote"><b>{e(t["example_prompt"])}</b><p>{e(item["prompt"])}</p></div>'
+                    f'<div class="result"><b>{e(t["example_result"])}</b><p>{e(item["result"])}</p></div>'
+                    f'{copy_button(item["prompt"], t)}</article>' for item in t["examples"])
+    return f'<section class="page-section wrap"><div class="domain-grid">{cards}</div></section>'
+
+
+def cases(t: dict, p: dict) -> str:
+    cards = []
+    for i, item in enumerate([*t["real_cases"], p["self_case"]]):
+        facts = "".join(f'<div class="case-fact"><b>{e(t["real_field_labels"][j]) if j < len(t["real_field_labels"]) else ""}</b>'
+                        f'<p>{e(fact)}</p></div>' for j, fact in enumerate(item["facts"]))
+        case_id = ' id="real-case-self"' if i == 2 else ""
+        cards.append(f'<article class="pixel-card case-card"{case_id}><div class="case-top"><span>{e(item["category"])}</span>'
+                     f'<span>{e(item["status"])}</span></div><h2>{e(item["title"])}</h2>{facts}'
+                     f'<div class="prompt-box"><b>{e(t["real_prompt_label"])}</b><p>{e(item["prompt"])}</p>'
+                     f'{copy_button(item["prompt"], t)}</div></article>')
+    return f'<section class="page-section wrap"><div class="cases-grid">{"".join(cards)}</div></section>'
+
+
+def prompts(t: dict) -> str:
+    rows = "".join(f'<article class="prompt-row"><div><span class="pixel-index">0{i}</span><h2>{e(item["title"])}</h2></div>'
+                   f'<p>{e(item["body"])}</p>{copy_button(item["body"], t)}</article>'
+                   for i, item in enumerate(t["prompts"], 1))
+    return f'<section class="page-section wrap"><div class="prompt-list">{rows}</div></section>'
+
+
+def feedback(p: dict) -> str:
+    f = p["feedback"]
+    cards = "".join(f'<article class="pixel-card feedback-card"><span class="pixel-index">0{i}</span>'
+                    f'<h2>{e(f[key + "_title"])}</h2><p>{e(f[key])}</p></article>'
+                    for i, key in enumerate(("worked", "friction", "boundary"), 1))
+    return (f'<section class="page-section wrap"><div class="source-banner"><span class="eyebrow">{e(p["evidence"])}</span>'
+            f'<p>{e(f["credit"])}</p></div><div class="steps-grid">{cards}</div></section>')
+
+
+def story(t: dict) -> str:
+    paragraphs = "".join(f'<p>{e(item)}</p>' for item in t["story_paragraphs"])
+    return f'<section class="page-section wrap story-layout"><div class="story-mark" aria-hidden="true">Q<span>✦</span></div><div class="story-prose">{paragraphs}</div></section>'
+
+
+def updates(t: dict) -> str:
+    rows = "".join(f'<article class="update-row"><time datetime="{e(item["date"].replace(".", "-"))}">{e(item["date"])}</time>'
+                   f'<div><h2>{e(item["title"])}</h2><p>{e(item["body"])}</p></div></article>' for item in t["changes"])
+    return f'<section class="page-section wrap"><div class="updates-list">{rows}</div></section>'
+
+
+def faq(t: dict) -> str:
+    cards = "".join(f'<article class="pixel-card faq-card"><h2>{e(item["question"])}</h2><p>{e(item["answer"])}</p></article>'
+                    for item in t["faq_items"])
+    return f'<section class="page-section wrap"><div class="faq-grid">{cards}</div></section>'
+
+
+def more(locale: str, p: dict) -> str:
+    cards = "".join(link_card(locale, key, p, i) for i, key in enumerate(MORE_NAV, 1))
+    return f'<section class="page-section wrap"><div class="card-grid">{cards}</div></section>'
+
+
+def page_body(locale: str, page: str, t: dict, p: dict, repo_url: str | None) -> str:
+    if page == "home":
+        return home(locale, t, p)
+    intro = (f'<section class="page-hero wrap"><span class="eyebrow">QIMING / {e(page.upper())}</span>'
+             f'<h1>{e(p["labels"][page])}</h1><p>{e(p["lead"][page])}</p></section>')
+    contents = {"start": lambda: start(locale, t, p, repo_url), "how": lambda: how(t),
+                "domains": lambda: domains(t), "cases": lambda: cases(t, p), "prompts": lambda: prompts(t),
+                "feedback": lambda: feedback(p), "story": lambda: story(t), "updates": lambda: updates(t),
+                "faq": lambda: faq(t), "more": lambda: more(locale, p)}
+    return intro + contents[page]()
+
+
+def render(locale: str, t: dict, repo_url: str | None, site_url: str, page: str = "home", p: dict | None = None) -> str:
+    validate_site_url(site_url)
+    repo_slug(repo_url)
+    if page not in PAGES:
+        raise ValueError("unsupported page")
+    if p is None:
+        p = json.loads((HERE / "page_content.json").read_text(encoding="utf-8"))[locale]
+    canonical = site_url + route(locale, page)
+    title = t["title"] if page == "home" else f'{p["labels"][page]} | Qiming Skill'
+    description = p["summary"][page]
+    alternate = "".join(f'<link rel="alternate" hreflang="{code}" href="{e(site_url + route(code, page))}">' for code in LOCALES)
+    alternate += f'<link rel="alternate" hreflang="x-default" href="{e(site_url + route("zh-CN", page))}">'
     graph = [
-        {"@type": "WebPage", "@id": canonical + "#webpage", "url": canonical,
-         "name": t["title"], "description": t["description"], "inLanguage": locale,
-         "isPartOf": {"@id": site_url + "/#website"}},
-        {"@type": "WebSite", "@id": site_url + "/#website", "url": site_url + "/",
-         "name": "启明 Qiming", "inLanguage": list(LOCALES)},
+        {"@type": "WebPage", "@id": canonical + "#webpage", "url": canonical, "name": title,
+         "description": description, "inLanguage": locale, "isPartOf": {"@id": site_url + "/#website"}},
+        {"@type": "WebSite", "@id": site_url + "/#website", "url": site_url + "/", "name": "启明 Qiming", "inLanguage": list(LOCALES)},
     ]
     if repo_url:
-        graph.append({"@type": "SoftwareSourceCode", "@id": site_url + "/#skill",
-                      "name": "启明 Qiming Skill", "description": t["description"],
-                      "url": site_url + "/", "codeRepository": repo_url,
-                      "license": repo_url + "/blob/main/LICENSE",
-                      "programmingLanguage": ["Python", "Markdown"],
+        graph.append({"@type": "SoftwareSourceCode", "@id": site_url + "/#skill", "name": "Qiming Skill",
+                      "description": t["description"], "url": site_url + "/", "codeRepository": repo_url,
+                      "license": repo_url + "/blob/main/LICENSE", "programmingLanguage": ["Python", "Markdown"],
                       "isAccessibleForFree": True})
         graph[0]["about"] = {"@id": site_url + "/#skill"}
-    structured_data = json.dumps({"@context": "https://schema.org", "@graph": graph}, ensure_ascii=False).replace("<", "\\u003c")
-    return f"""<!doctype html>
+    if page != "home":
+        graph.append({"@type": "BreadcrumbList", "itemListElement": [
+            {"@type": "ListItem", "position": 1, "name": p["labels"]["home"], "item": site_url + route(locale)},
+            {"@type": "ListItem", "position": 2, "name": p["labels"][page], "item": canonical}]})
+    structured = json.dumps({"@context": "https://schema.org", "@graph": graph}, ensure_ascii=False).replace("<", "\\u003c")
+    return f'''<!doctype html>
 <html lang="{locale}">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#120f16">
-  <meta name="description" content="{esc(t['description'])}">
+  <meta name="theme-color" content="#10131b">
+  <meta name="description" content="{e(description)}">
   <meta name="robots" content="index, follow, max-image-preview:large">
-  <link rel="canonical" href="{esc(canonical)}">
+  <link rel="canonical" href="{e(canonical)}">
+  {alternate}
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="启明 Qiming">
-  <meta property="og:title" content="{esc(t['title'])}">
-  <meta property="og:description" content="{esc(t['description'])}">
-  <meta property="og:url" content="{esc(canonical)}">
-  <meta property="og:locale" content="{ {'zh-CN': 'zh_CN', 'zh-TW': 'zh_TW', 'ja': 'ja_JP', 'en': 'en_US'}[locale] }">
-  <title>{esc(t['title'])}</title>
-  <link rel="icon" href="{asset}/favicon.ico" sizes="any">
-  <link rel="icon" href="{asset}/logo.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="{asset}/style.css">
-  {alternate}
-  <script type="application/ld+json">{structured_data}</script>
-  <script src="{asset}/app.js" defer></script>
+  <meta property="og:title" content="{e(title)}">
+  <meta property="og:description" content="{e(description)}">
+  <meta property="og:url" content="{e(canonical)}">
+  <meta property="og:locale" content="{OG_LOCALES[locale]}">
+  <title>{e(title)}</title>
+  <link rel="icon" href="/assets/favicon.ico" sizes="any">
+  <link rel="icon" href="/assets/logo.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/assets/style.css">
+  <script type="application/ld+json">{structured}</script>
+  <script src="/assets/app.js" defer></script>
 </head>
 <body>
-  <a class="skip-link" href="#main">{esc(t['skip'])}</a>
-  <div class="signal-strip"><span>QIMING // PROJECT SYSTEM</span><span>001 <i></i> READY</span></div>
-  <header class="site-header" id="top">
-    <div class="header-inner wrap">
-      <a class="brand" href="/" aria-label="Qiming"><img src="{asset}/logo.svg" width="42" height="42" alt=""><span><b>启明</b><small>QIMING</small></span></a>
-      <nav class="main-nav" aria-label="Main">{nav}</nav>
-      <div class="header-right"><div class="language-menu"><span>{esc(t['language'])}</span><div>{langs}</div></div><a class="header-cta" href="#install">{esc(t['header_cta'])}<span aria-hidden="true">↗</span></a></div>
-    </div>
-  </header>
-  <main id="main">
-    <section class="hero wrap">
-      <div class="hero-copy">
-        <div class="eyebrow"><span class="signal-dot"></span>{esc(t['hero_tag'])}</div>
-        <h1>{title_lines}</h1>
-        <p class="hero-lead">{esc(t['hero_lead'])}</p>
-        <div class="hero-actions"><a class="button button-primary" href="#install">{esc(t['hero_primary'])}<span aria-hidden="true">↗</span></a><a class="button button-outline" href="#examples">{esc(t['hero_secondary'])}<span aria-hidden="true">↘</span></a></div>
-        <p class="hero-note"><span aria-hidden="true">▸</span> {esc(t['hero_note'])}</p>
-      </div>
-      <div class="hero-diagram" aria-label="Qiming workspace diagram">
-        <div class="diagram-top"><span>{esc(t['panel_top'])}</span><b><span class="signal-dot"></span>{esc(t['panel_status'])}</b></div>
-        <div class="diagram-body">
-          <div class="diagram-source"><span class="diagram-index">01 / INPUT</span><h2>{esc(t['panel_source'])}</h2><ul>{panel_files}</ul></div>
-          <div class="diagram-flow"><i></i><span>{esc(t['panel_arrow'])}</span><i></i></div>
-          <div class="diagram-instance"><span class="diagram-index">02 / OUTPUT</span><h2>{esc(t['panel_instance'])}</h2><div class="diagram-units">{panel_units}</div></div>
-        </div>
-        <div class="diagram-footer"><span>{esc(t['panel_footer'])}</span><span>Q/01</span></div>
-      </div>
-    </section>
-    <section class="statement"><div class="wrap"><span class="statement-glyph" aria-hidden="true">※</span><p>{esc(t['statement'])}</p><span class="statement-arrow" aria-hidden="true">↗</span></div></section>
-    <section class="section method-section" id="method"><div class="wrap">
-      <div class="section-head"><span class="section-label">{esc(t['method_label'])}</span><div><h2>{esc(t['method_title'])}</h2><p>{esc(t['method_intro'])}</p></div></div>
-      <div class="method-grid">{methods}</div>
-      <div class="member-panel"><div class="member-mark" aria-hidden="true">Q<span>+</span></div><div><span class="section-label">{esc(t['member_label'])}</span><h3>{esc(t['member_title'])}</h3><p>{esc(t['member_body'])}</p><div class="member-chips">{chips}</div></div></div>
-    </div></section>
-    <section class="section beginner-section" id="beginner"><div class="wrap"><div class="section-head"><span class="section-label">{esc(t['beginner_label'])}</span><div><h2>{esc(t['beginner_title'])}</h2><p>{esc(t['beginner_intro'])}</p></div></div><div class="beginner-grid">{beginner_steps}</div><div class="beginner-prompt"><div><b>{esc(t['beginner_prompt_label'])}</b><p>{esc(t['beginner_prompt'])}</p></div>{copy_button(t['beginner_prompt'], t['prompt_copy'], t['prompt_copied'])}</div></div></section>
-    <section class="section examples-section" id="examples"><div class="wrap"><div class="section-head"><span class="section-label">{esc(t['examples_label'])}</span><div><h2>{esc(t['examples_title'])}</h2><p>{esc(t['examples_intro'])}</p></div></div><div class="real-case-grid">{real_cases}</div><div class="example-grid">{examples}</div></div></section>
-    <section class="section prompts-section" id="prompts"><div class="wrap"><div class="section-head"><span class="section-label">{esc(t['prompts_label'])}</span><div><h2>{esc(t['prompts_title'])}</h2><p>{esc(t['prompts_intro'])}</p></div></div><div class="prompt-list">{prompts}</div></div></section>
-    <section class="section faq-section" id="faq"><div class="wrap"><div class="section-head"><span class="section-label">{esc(t['faq_label'])}</span><div><h2>{esc(t['faq_title'])}</h2><p>{esc(t['faq_intro'])}</p></div></div><div class="faq-grid">{faq}</div></div></section>
-    <section class="section story-section" id="story"><div class="wrap story-layout"><div><span class="section-label">{esc(t['story_label'])}</span><h2>{esc(t['story_title'])}</h2><div class="story-symbol" aria-hidden="true"><span>Q</span><i></i></div></div><div class="story-text">{story}</div></div></section>
-    <section class="section changelog-section" id="changelog"><div class="wrap"><div class="section-head"><span class="section-label">{esc(t['changelog_label'])}</span><div><h2>{esc(t['changelog_title'])}</h2></div></div><div class="change-list">{changes}</div></div></section>
-    <section class="section install-section" id="install"><div class="wrap install-layout"><div class="install-intro"><span class="section-label">{esc(t['install_label'])}</span><h2>{esc(t['install_title'])}</h2><p>{esc(t['install_intro'])}</p><div class="install-glyph" aria-hidden="true">↘</div></div><div class="install-box"><div class="install-box-head"><span>QIMING / INSTALL TERMINAL</span><span class="status-dot"></span></div>{install_content}<div class="install-adopt"><span>{esc(t['install_after'])}</span><p>{esc(t['install_adopt'])}</p>{copy_button(t['install_adopt'], t['prompt_copy'], t['prompt_copied'])}</div><p class="install-note">{esc(t['install_note'])}</p></div></div></section>
-  </main>
-  <footer class="site-footer"><div class="wrap footer-main"><div><a class="brand" href="/"><img src="{asset}/logo.svg" width="42" height="42" alt=""><span><b>启明</b><small>QIMING</small></span></a><p>{esc(t['footer_line'])}</p></div><nav aria-label="Footer">{footer_links}</nav></div><div class="wrap footer-bottom"><span>© 2026 QIMING</span><span>{esc(t['footer_status'])}</span><a href="#top">↑ TOP</a></div></footer>
+  <a class="skip-link" href="#main">{e(t['skip'])}</a>
+  {header(locale, page, p)}
+  <main id="main">{page_body(locale, page, t, p, repo_url)}</main>
+  {footer(locale, p, t)}
 </body>
 </html>
-"""
+'''
 
 
 def sitemap(site_url: str) -> str:
-    alternates = "".join(
-        f'    <xhtml:link rel="alternate" hreflang="{code}" href="{xml_escape(site_url + route)}"/>\n'
-        for code, route in LOCALES.items()
-    ) + f'    <xhtml:link rel="alternate" hreflang="x-default" href="{xml_escape(site_url)}/"/>\n'
-    entries = "".join(
-        f'  <url>\n    <loc>{xml_escape(site_url + route)}</loc>\n{alternates}  </url>\n'
-        for route in LOCALES.values()
-    )
+    entries = []
+    for page in PAGES:
+        alternates = "".join(f'    <xhtml:link rel="alternate" hreflang="{code}" href="{xml_escape(site_url + route(code, page))}"/>\n' for code in LOCALES)
+        alternates += f'    <xhtml:link rel="alternate" hreflang="x-default" href="{xml_escape(site_url + route("zh-CN", page))}"/>\n'
+        for locale in LOCALES:
+            entries.append(f'  <url>\n    <loc>{xml_escape(site_url + route(locale, page))}</loc>\n{alternates}  </url>\n')
     return ('<?xml version="1.0" encoding="UTF-8"?>\n'
             '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" '
-            'xmlns:xhtml="http://www.w3.org/1999/xhtml">\n'
-            f'{entries}</urlset>\n')
+            'xmlns:xhtml="http://www.w3.org/1999/xhtml">\n' + "".join(entries) + '</urlset>\n')
 
 
 def build(out: Path, repo_url: str | None, site_url: str) -> None:
     repo_slug(repo_url)
     validate_site_url(site_url)
     content = json.loads((HERE / "content.json").read_text(encoding="utf-8"))
-    if set(content) != set(LOCALES):
+    pages = json.loads((HERE / "page_content.json").read_text(encoding="utf-8"))
+    if set(content) != set(LOCALES) or set(pages) != set(LOCALES):
         raise ValueError("site content must contain exactly four supported locales")
-    for locale, route in LOCALES.items():
-        page = out if route == "/" else out / locale
-        page.mkdir(parents=True, exist_ok=True)
-        (page / "index.html").write_text(render(locale, content[locale], repo_url, site_url), encoding="utf-8")
+    for locale in LOCALES:
+        for page in PAGES:
+            target = out / route(locale, page).lstrip("/")
+            target.mkdir(parents=True, exist_ok=True)
+            (target / "index.html").write_text(render(locale, content[locale], repo_url, site_url, page, pages[locale]), encoding="utf-8")
     assets = out / "assets"
     assets.mkdir(parents=True, exist_ok=True)
     for name in ("style.css", "app.js", "logo.svg", "favicon.ico"):
         shutil.copyfile(HERE / "assets" / name, assets / name)
-    (out / "release.json").write_text(
-        json.dumps({"repo_url": repo_url, "site_url": site_url, "published": bool(repo_url)}, ensure_ascii=False, indent=2) + "\n",
-        encoding="utf-8",
-    )
-    (out / "robots.txt").write_text(
-        f"User-agent: *\nAllow: /\n\nUser-agent: OAI-SearchBot\nAllow: /\n\nSitemap: {site_url}/sitemap.xml\n",
-        encoding="utf-8",
-    )
+    (out / "release.json").write_text(json.dumps({"repo_url": repo_url, "site_url": site_url, "published": bool(repo_url)}, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    (out / "robots.txt").write_text(f"User-agent: *\nAllow: /\n\nUser-agent: OAI-SearchBot\nAllow: /\n\nSitemap: {site_url}/sitemap.xml\n", encoding="utf-8")
     (out / "sitemap.xml").write_text(sitemap(site_url), encoding="utf-8")
 
 

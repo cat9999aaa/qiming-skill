@@ -3,8 +3,10 @@
 
 import argparse
 import json
+from datetime import datetime, timezone
 from pathlib import Path
 import sys
+import uuid
 
 from qiming_core.protocol import dispatch, response, register
 from qiming_core.discovery import discover, scope_check
@@ -23,6 +25,7 @@ from qiming_core.capabilities import capability_report
 from qiming_core.host_binding import binding_preview, binding_status, ensure_project_entrypoints
 from qiming_core.deletion import deletion_preview, apply_deletion
 from qiming_core.retirement import record_redirect
+from qiming_core.quick_log import log_event
 
 
 EXIT_CODES = {"ok": 0, "error": 2, "conflict": 3, "partial": 4}
@@ -194,7 +197,44 @@ register("delete_member", _delete_member)
 register("record_redirect", _record_redirect)
 
 
+def _log_event(request: dict[str, object]) -> dict[str, object]:
+    args = request["args"]
+    return log_event(Path(request["workspace_manifest"]), args["work_ref"], args["event"], args["intent_ref"], args.get("expected_sha256"))
+
+
+register("log_event", _log_event)
+
+
+def _short_log(argv: list[str]) -> int:
+    parser = argparse.ArgumentParser(description="Append a Qiming work event")
+    parser.add_argument("work_path", help="Existing work JSON path relative to the project root")
+    parser.add_argument("summary", help="One-line event summary")
+    parser.add_argument("--workspace-manifest", type=Path, required=True)
+    parser.add_argument("--kind", choices=("observation", "decision", "action", "handoff"), default="observation")
+    parser.add_argument("--intent-ref", required=True)
+    parser.add_argument("--event-id", default=None, help="Stable ID for safe retries")
+    options = parser.parse_args(argv)
+    event = {"id": options.event_id or f"evt-{uuid.uuid4()}", "kind": options.kind,
+             "summary": options.summary, "observed_at": datetime.now(timezone.utc).isoformat()}
+    try:
+        manifest = json.loads(options.workspace_manifest.read_text(encoding="utf-8"))
+        profile = json.loads((options.workspace_manifest.parent / manifest["profile"]).read_text(encoding="utf-8"))
+        work_root = profile["collections"]["work"]["root"]
+        output = log_event(options.workspace_manifest,
+                           {"kind": "file", "root": work_root, "path": options.work_path},
+                           event, options.intent_ref)
+    except (OSError, ValueError, KeyError, TypeError) as exc:
+        output = {"status": "error", "result": None, "diagnostics": [
+            {"code": "INVALID_INPUT", "message": str(exc), "locator": None, "retryable": False, "details": {}}], "changed": []}
+    sys.stdout.write(json.dumps(response("log", output["status"], output.get("result"),
+                                         output.get("diagnostics", []), output.get("changed", []),
+                                         output.get("run_id")), ensure_ascii=False, separators=(",", ":")) + "\n")
+    return EXIT_CODES[output["status"]]
+
+
 def main() -> int:
+    if sys.argv[1:2] == ["log"]:
+        return _short_log(sys.argv[2:])
     parser = argparse.ArgumentParser(description="Qiming local tool protocol")
     source = parser.add_mutually_exclusive_group(required=True)
     source.add_argument("--request", type=Path)

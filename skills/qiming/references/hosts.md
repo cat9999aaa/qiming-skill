@@ -2,6 +2,8 @@
 
 用户实例是本项目的权威入口。种子仅在用户明确接入或修复时调用；Codex 种子设置 `allow_implicit_invocation: false`，项目实例保留自动调用。其他宿主不一定识别此策略，按该宿主支持的项目安装方式接入，不承诺全局种子在所有宿主都被同样隐藏。
 
+路径角色：`.qiming/workspace.json` 定义项目身份和权威资料；`.qiming/qiming-user/` 保存本项目实例的规则与脚本；`.agents/skills/qiming-user`、`.claude/skills/qiming-user` 等是宿主发现用链接或可重建副本。调用工具始终传权威清单路径，不能从宿主副本位置猜测项目根。
+
 `materialize` 在本项目根建立 `AGENTS.md`、`CLAUDE.md` 与 `GEMINI.md`。AGENTS 正文预载本项目范围、会员判断、衍生产物和收尾规则，以及本地 `startup.md` 摘要；Claude/Gemini 入口导入它。Markdown 普通链接不会自动把详细文件全部注入上下文。详细本地规则和目标记录在开始工作前按入口读取。
 
 已有文件的手写内容保留；`refresh_context` 用 `.qiming/project-entrypoints.json` 核对生成区块指纹，仅更新未被用户改过的区块。摘要变更后刷新，不能只改来源文件就声称新会话已经读到更新。启动摘要上限为 12000 字节，超出时把细节留在原文；这只是本工具摘要上限，宿主的总上下文限制另行核对。

@@ -149,6 +149,11 @@
     "changelog_title": "更新日志",
     "changes": [
       {
+        "date": "2026.10.01",
+        "title": "多页官网与快速记录",
+        "body": "官网按主题拆成四语言独立页面，加入脱敏的 OpenCode 现场反馈。Skill 新增受控快速记录入口；OpenCode 的完整行为仍待复测。"
+      },
+      {
         "date": "2026.09.28",
         "title": "官网域名与搜索入口",
         "body": "启明官网启用 qiming.dashen.wang，使用 Cloudflare Pages 直接托管并开启橙云。四语言页面增加独立索引信息、站点地图和可见问答。"
@@ -419,6 +424,11 @@
     "changelog_label": "05 / CHANGELOG",
     "changelog_title": "更新紀錄",
     "changes": [
+      {
+        "date": "2026.10.01",
+        "title": "多頁官網與快速記錄",
+        "body": "官網分成四語獨立主題頁，加入脫敏的 OpenCode 現場回饋。Skill 新增受控快速記錄入口；OpenCode 的完整行為仍待複測。"
+      },
       {
         "date": "2026.09.28",
         "title": "官網網域與搜尋入口",
@@ -691,6 +701,11 @@
     "changelog_title": "更新履歴",
     "changes": [
       {
+        "date": "2026.10.01",
+        "title": "複数ページの公式サイトと簡易記録",
+        "body": "公式サイトを四言語のテーマ別ページに分け、匿名化した OpenCode の現場報告を追加。Skill に安全な短い記録入口を追加しました。OpenCode の全面的な動作確認はまだです。"
+      },
+      {
         "date": "2026.09.28",
         "title": "公式ドメインと検索対応",
         "body": "公式サイトを qiming.dashen.wang に移し、Cloudflare Pages で直接配信しプロキシを有効化しました。4 言語のページに検索向け情報、サイトマップ、よくある質問を追加しました。"
@@ -961,6 +976,11 @@
     "changelog_label": "05 / CHANGELOG",
     "changelog_title": "Changelog",
     "changes": [
+      {
+        "date": "2026.10.01",
+        "title": "Topic pages and quick logging",
+        "body": "The site now has separate topic pages in four languages and a sanitized OpenCode field report. The Skill adds controlled quick logging; a complete OpenCode replay remains pending."
+      },
       {
         "date": "2026.09.28",
         "title": "Official domain and search access",

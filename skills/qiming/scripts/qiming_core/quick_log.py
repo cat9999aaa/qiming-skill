@@ -35,6 +35,7 @@ def log_event(
     expected_sha256: str | None = None,
 ) -> dict[str, object]:
     """Append an idempotent event to an existing mapped work JSON record."""
+    manifest_path = manifest_path.resolve()
     if not isinstance(intent_ref, str) or not intent_ref.strip():
         return _problem("INVALID_INPUT", "intent_ref is required", "error")
     if not isinstance(event, dict):

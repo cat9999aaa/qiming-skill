@@ -119,3 +119,13 @@ def test_short_log_uses_mapped_work_root_not_hardcoded_project(tmp_path: Path) -
                              "--workspace-manifest", str(manifest), "--intent-ref", "incident"], capture_output=True, text=True)
     assert result.returncode == 0
     assert json.loads(work.read_text())["events"][0]["summary"] == "Recovered"
+
+
+def test_quickstart_relative_manifest_command(tmp_path):
+    manifest, work = fixture_workspace(tmp_path)
+    script = Path(__file__).resolve().parents[2] / 'skills/qiming/scripts/qiming.py'
+    result = subprocess.run([sys.executable, str(script), 'log', 'work/incident.json', 'Quickstart works',
+                             '--workspace-manifest', '.qiming/workspace.json', '--intent-ref', 'incident'],
+                            cwd=tmp_path, capture_output=True, text=True)
+    assert result.returncode == 0, result.stdout
+    assert json.loads(work.read_text())['events'][0]['summary'] == 'Quickstart works'

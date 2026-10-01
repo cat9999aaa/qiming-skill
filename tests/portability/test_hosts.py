@@ -31,8 +31,8 @@ def test_binding_prefers_ready_user_instance_over_seed(tmp_path: Path):
     manifest = _ready(tmp_path)
     result = binding_preview(manifest, "codex", manifest.parent.parent)
     assert result["status"] == "ok"
-    assert result["source_path"].endswith("qiming-user/SKILL.md")
-    assert result["binding_path"].endswith(".agents/skills/qiming-user")
+    assert Path(result["source_path"]).as_posix().endswith("qiming-user/SKILL.md")
+    assert Path(result["binding_path"]).as_posix().endswith(".agents/skills/qiming-user")
 
 
 def test_binding_cannot_install_project_instance_in_another_root(tmp_path: Path):

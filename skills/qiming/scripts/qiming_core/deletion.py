@@ -33,7 +33,7 @@ def _conflict(code: str, message: str) -> dict[str, object]:
 def _historical_copies(manifest_path: Path, targets: list[dict[str, object]]) -> tuple[list[dict[str, object]], list[dict[str, object]]]:
     """Find operation backups and staged bytes tied to the selected authority paths."""
     control = manifest_path.parent.resolve()
-    locators = {(item["target"]["root"], item["target"]["path"]) for item in targets if item.get("scope") in {"authority", "known-export"}}
+    locators = {(item["target"]["root"], Path(item["target"]["path"]).as_posix()) for item in targets if item.get("scope") in {"authority", "known-export"}}
     copies: list[dict[str, object]] = []
     limitations: list[dict[str, object]] = []
     seen: set[str] = set()
@@ -44,7 +44,7 @@ def _historical_copies(manifest_path: Path, targets: list[dict[str, object]]) ->
                 continue
             for index, change in enumerate(journal["plan"]["changes"]):
                 target = change.get("target", {})
-                if (target.get("root"), target.get("path")) not in locators:
+                if (target.get("root"), Path(target.get("path", "")).as_posix()) not in locators:
                     continue
                 if journal.get("state") not in {"completed", "rolled_back"}:
                     limitations.append({"kind": "incomplete-operation", "location": str(journal_path), "reason": "Reconcile this operation before deleting the member"})

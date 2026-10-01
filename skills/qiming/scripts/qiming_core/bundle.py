@@ -48,7 +48,7 @@ def bundle(manifest_path: Path, selection: dict[str, object], destination: Path,
             continue
         path = control / name
         if path.is_file() and not path.is_symlink() and path.resolve().is_relative_to(control):
-            selected.append((path, f"workspace/{path.relative_to(source_root)}", "management", None, "workspace"))
+            selected.append((path, f"workspace/{path.relative_to(source_root).as_posix()}", "management", None, "workspace"))
     for name in ("AGENTS.md", "CLAUDE.md", "GEMINI.md"):
         path=source_root/name
         if path.is_file() and not path.is_symlink():
@@ -58,11 +58,11 @@ def bundle(manifest_path: Path, selection: dict[str, object], destination: Path,
         instance_manifest = control / str(instance.get("manifest", ""))
         if instance_manifest.is_file():
             instance_doc, _ = load_record(instance_manifest, "json")
-            selected.append((instance_manifest, f"workspace/{instance_manifest.relative_to(source_root)}", "instance-manifest", None, "workspace"))
+            selected.append((instance_manifest, f"workspace/{instance_manifest.relative_to(source_root).as_posix()}", "instance-manifest", None, "workspace"))
             for resource in instance_doc.get("resources", []):
                 path = instance_manifest.parent / str(resource.get("path", ""))
                 if path.is_file() and not path.is_symlink() and path.resolve().is_relative_to(instance_manifest.parent.resolve()):
-                    selected.append((path, f"workspace/{path.relative_to(source_root)}", "instance-resource", None, "workspace"))
+                    selected.append((path, f"workspace/{path.relative_to(source_root).as_posix()}", "instance-resource", None, "workspace"))
                 elif resource.get("required"):
                     omissions.append({"reason": "required-instance-resource-missing", "path": str(resource.get("path"))})
         else:
@@ -89,7 +89,7 @@ def bundle(manifest_path: Path, selection: dict[str, object], destination: Path,
         if not path.is_relative_to(source_root):
             omissions.append({"reason": "external-root-not-selected", "root": locator["root"], "path": locator["path"]})
             continue
-        selected.append((path, f"workspace/{path.relative_to(source_root)}", "authority", row["ref"], str(row.get("scope"))))
+        selected.append((path, f"workspace/{path.relative_to(source_root).as_posix()}", "authority", row["ref"], str(row.get("scope"))))
     if excluded_count:
         omissions.append({"reason": "scope-or-history-excluded", "count": excluded_count})
     for locator in selection.get("business_paths", []):
@@ -103,7 +103,7 @@ def bundle(manifest_path: Path, selection: dict[str, object], destination: Path,
             omissions.append({"reason": "external-root-not-selected", "root": alias, "path": locator.get("path")})
             continue
         if path.is_file() and not path.is_symlink():
-            selected.append((path, f"workspace/{path.relative_to(source_root)}", "business-content", None, "selected"))
+            selected.append((path, f"workspace/{path.relative_to(source_root).as_posix()}", "business-content", None, "selected"))
         else:
             omissions.append({"reason": "business-content-missing", "root": alias, "path": locator.get("path")})
     unique: dict[str, tuple[Path, str, str, dict[str, object] | None, str]] = {item[1]: item for item in selected}

@@ -45,16 +45,16 @@ def authority_records(manifest_path: Path, collections: list[str], *, limit: int
             visited += 1
             if path.is_symlink() or not path.is_file():
                 continue
-            locator = {"root": collection["root"], "path": str(path.relative_to(root)), "collection": collection_id}
+            locator = {"root": collection["root"], "path": path.relative_to(root).as_posix(), "collection": collection_id}
             try:
                 if collection.get('codec') == 'markdown-frontmatter' and not path.read_bytes().startswith(b'---'):
-                    skipped.append(str(path.relative_to(root)))
+                    skipped.append(path.relative_to(root).as_posix())
                     continue
                 view = member_view(manifest_path, locator)
                 if f"{view['ref']['workspace_id']}:{view['ref']['id']}" not in redirects:
                     rows.append(view)
             except (OSError, ValueError):
-                errors.append(str(path.relative_to(root)))
+                errors.append(path.relative_to(root).as_posix())
         if truncated:
             break
     return rows, {"collections": selected, "visited": visited, "truncated": truncated, "errors": errors, "skipped": skipped}

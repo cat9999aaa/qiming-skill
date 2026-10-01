@@ -51,7 +51,7 @@ def _inputs(manifest_path: Path) -> tuple[dict, Path, bytes, dict[str, str]]:
     if raw is None:
         name = root.name.replace("\n", " ").replace("\r", " ")
         raw = f"项目：{name}。职责、关键偏好和长期约束从本项目实际资料确认后写在这里；当前目标与进展见短入口。\n".encode()
-    local = raw.decode("utf-8")
+    local = raw.decode("utf-8").replace("\r\n", "\n")
     if START in local or END in local:
         raise ValueError("Startup source cannot contain generated-region markers")
     # Leave space for the governing rules and other project instructions.
@@ -122,7 +122,7 @@ def ensure_startup(manifest_path: Path) -> dict[str, object]:
             existing = (original or b"").decode("utf-8")
             region = _region(existing)
             if region:
-                before = existing[region[0]:region[1]]
+                before = existing[region[0]:region[1]].replace("\r\n", "\n")
                 saved = old_state.get("blocks", {}).get(name)
                 if before != block and _sha(before.encode()) != saved and before != legacy[name]:
                     raise ValueError(f"Generated instructions were locally edited: {path}; preserve and reconcile them")
@@ -182,7 +182,7 @@ def startup_status(manifest_path: Path, host: str, instruction_name: str) -> dic
             region = _region(data.decode()) if data is not None else None
             if region is None:
                 return {"status": "incomplete", "reason": "project-instruction-missing"}
-            current = data.decode()[region[0]:region[1]]
+            current = data.decode()[region[0]:region[1]].replace("\r\n", "\n")
             if _sha(current.encode()) != state.get("blocks", {}).get(name):
                 return {"status": "incomplete", "reason": "project-instruction-edited-or-untracked"}
             if current != blocks[name]:

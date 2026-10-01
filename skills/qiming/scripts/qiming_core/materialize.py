@@ -53,7 +53,7 @@ def _default_resources(seed: Path) -> list[dict[str, object]]:
     result = []
     for path in sorted(set(included)):
         if path.is_file():
-            relative = str(path.relative_to(seed))
+            relative = path.relative_to(seed).as_posix()
             result.append({"source": relative, "path": relative, "sha256": _sha(path.read_bytes()), "required": True, "purpose": "runtime" if relative.startswith("scripts/") else "method-or-contract", "license": "source-package"})
     return result
 

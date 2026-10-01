@@ -162,3 +162,21 @@ def test_nested_control_directory_keeps_the_explicit_project_root(tmp_path):
     assert not (root / "management/AGENTS.md").exists()
     assert binding_preview(path, "codex", root)["status"] == "ok"
     assert scope_check(path, root)["active"] is True
+
+
+def test_crlf_generated_block_is_not_mistaken_for_user_edit(tmp_path):
+    from qiming_core.host_binding import ensure_project_entrypoints, binding_status
+
+    manifest = _ready(tmp_path)
+    _bound(manifest)
+    entry = manifest.parent.parent / 'AGENTS.md'
+    prefix = b'# user prefix\r\n'
+    suffix = b'\r\nuser suffix\r\n'
+    entry.write_bytes(prefix + entry.read_bytes().replace(b'\n', b'\r\n') + suffix)
+    (manifest.parent / 'startup.md').write_bytes('Updated summary.\r\n'.encode())
+    assert binding_status(manifest, 'codex')['status'] == 'stale-context'
+    result = ensure_project_entrypoints(manifest)
+    assert result['status'] == 'ok', result
+    assert entry.read_bytes().startswith(prefix)
+    assert entry.read_bytes().endswith(suffix)
+    assert ensure_project_entrypoints(manifest)['changed'] == []

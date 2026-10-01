@@ -57,7 +57,16 @@ def lock_status(manifest_path: Path) -> dict:
                 kernel.CloseHandle.argtypes=[wintypes.HANDLE]
                 handle=kernel.OpenProcess(0x1000,False,pid)
                 if handle:
-                    kernel.CloseHandle(handle); state='alive'
+                    try:
+                        # A terminated process object can still have open handles.
+                        # Query its exit state rather than treating OpenProcess as liveness.
+                        kernel.GetExitCodeProcess.argtypes=[wintypes.HANDLE,ctypes.POINTER(wintypes.DWORD)]
+                        kernel.GetExitCodeProcess.restype=wintypes.BOOL
+                        code=wintypes.DWORD()
+                        if kernel.GetExitCodeProcess(handle,ctypes.byref(code)):
+                            state='alive' if code.value==259 else 'stale'
+                    finally:
+                        kernel.CloseHandle(handle)
                 elif ctypes.get_last_error()==87:
                     state='stale'
             else:

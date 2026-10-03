@@ -149,6 +149,11 @@
     "changelog_title": "更新日志",
     "changes": [
       {
+        "date": "2026-10-03",
+        "title": "v0.2.2 · 存量目录与接入边界",
+        "body": "明确记录路径基数与漏检原因，支持可选分类筛选、根入口选择和接入预览；补四份英文操作指南与安全/运维参考。"
+      },
+      {
         "date": "2026-10-01",
         "title": "v0.2.1 · 本地定制与新手体验",
         "body": "本地修改改为可追踪警告，缺失文件仍报错；成功后清理本次暂存。补全源码版本与包指纹、中文接入摘要；快速记录默认关联目标任务 ID。"
@@ -449,6 +454,11 @@
     "changelog_label": "05 / CHANGELOG",
     "changelog_title": "更新紀錄",
     "changes": [
+      {
+        "date": "2026-10-03",
+        "title": "v0.2.2 · 既有目錄與接入邊界",
+        "body": "明確紀錄路徑基準與漏查原因，支援可選分類篩選、根入口選擇及接入預覽；補四份英文操作指南與安全/維運參考。"
+      },
       {
         "date": "2026-10-01",
         "title": "v0.2.1 · 本地自訂與新手體驗",
@@ -751,6 +761,11 @@
     "changelog_title": "更新履歴",
     "changes": [
       {
+        "date": "2026-10-03",
+        "title": "v0.2.2 · 既存フォルダーと導入範囲",
+        "body": "記録パスの基準と検索漏れを明示。任意の分類フィルター、ルート入口の選択とプレビュー、英語の操作ガイド4点と安全・運用資料を追加。"
+      },
+      {
         "date": "2026-10-01",
         "title": "v0.2.1 · ローカル編集と導入体験",
         "body": "ローカル編集は追跡可能な警告となり、必須ファイルの欠落は引き続きエラーです。成功した処理の一時ファイルを削除し、ソース情報・パッケージ指紋・導入概要を改善。記録時は対象タスクの ID を既定で使います。"
@@ -1051,6 +1066,11 @@
     "changelog_label": "05 / CHANGELOG",
     "changelog_title": "Changelog",
     "changes": [
+      {
+        "date": "2026-10-03",
+        "title": "v0.2.2 · Existing folders and explicit onboarding",
+        "body": "Clarified record path bases and skipped-file coverage; added optional category filters, root entry selection and preview, four English operating guides, and security/infrastructure references."
+      },
       {
         "date": "2026-10-01",
         "title": "v0.2.1 · Local edits and onboarding polish",

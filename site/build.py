@@ -345,9 +345,9 @@ def prompts(t: dict) -> str:
 
 def feedback(p: dict) -> str:
     f = p["feedback"]
-    followup = p.get("followup_feedback")
-    report = (f'<section class="page-section wrap"><article class="pixel-card feedback-card">'
-              f'<h2>{e(followup["credit"])}</h2><p>{e(followup["body"])}</p></article></section>') if followup else ""
+    reports = [p[key] for key in ("legacy_feedback", "followup_feedback") if p.get(key)]
+    report = "".join(f'<section class="page-section wrap"><article class="pixel-card feedback-card">'
+                     f'<h2>{e(item["credit"])}</h2><p>{e(item["body"])}</p></article></section>' for item in reports)
     cards = "".join(f'<article class="pixel-card feedback-card"><span class="pixel-index">0{i}</span>'
                     f'<h2>{e(f[key + "_title"])}</h2><p>{e(f[key])}</p></article>'
                     for i, key in enumerate(("worked", "friction", "boundary"), 1))

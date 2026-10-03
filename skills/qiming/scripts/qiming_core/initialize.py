@@ -58,7 +58,9 @@ def write_payloads(manifest_path, payloads, intent):
     return finish_stage(stage, result)
 
 
-def initialize(root: Path, preset='general', name=None, goal=None, hosts='auto', dry_run=False):
+def initialize(root: Path, preset='general', name=None, goal=None, hosts='auto', dry_run=False, entry='all'):
+    if entry not in {'all','agents','none'}:
+        raise ValueError('entry must be all, agents or none')
     if sys.version_info < (3,11):
         raise ValueError('Python 3.11+ required; install Python then run again')
     from .secrets import validate_account_ref
@@ -90,14 +92,20 @@ def initialize(root: Path, preset='general', name=None, goal=None, hosts='auto',
         if journal.get('protocol')!='qiming.initialization/1' or not isinstance(original,dict) or not isinstance(original_profile,dict):
             raise ValueError('Incomplete unrecognized initialization; inspect before retrying')
         if dry_run:
-            return {'status':'ok','result':{'dry_run':True,'resume_initialization':journal['initialization_id']},'changed':[]}
+            policy=original.get('extensions',{}).get('entry_policy','all')
+            if policy not in {'all','agents','none'}:
+                raise ValueError('Saved entry_policy must be all, agents or none')
+            entries=['AGENTS.md','CLAUDE.md','GEMINI.md'] if policy=='all' else ['AGENTS.md'] if policy=='agents' else []
+            return {'status':'ok','result':{'dry_run':True,'resume_initialization':journal['initialization_id'],'entry_policy':policy,'root_entry_files':entries,'root_file_actions':[{'path':p,'action':'inspect-and-preserve' if (root/p).exists() else 'create'} for p in entries],'collections':original_profile['collections']},'changed':[]}
         resumed=bootstrap(root,control,original,original_profile,journal['initialization_id'])
         if resumed['status']!='ok': return resumed
         exists=True
         manifest,_=load_record(path,'json')
         profile=load_profile(path)
+    entry = manifest.get('extensions',{}).get('entry_policy','all') if exists else entry
+    root_entries = ['AGENTS.md','CLAUDE.md','GEMINI.md'] if entry=='all' else ['AGENTS.md'] if entry=='agents' else []
     if dry_run:
-        return {'status':'ok','result':{'dry_run':True,'already_initialized':exists,'root':str(root),'collections':profile['collections'],'hosts':selected,'next_steps':['Run init without --dry-run to apply this setup']},'changed':[]}
+        return {'status':'ok','result':{'entry_policy':entry,'root_entry_files':root_entries,'root_file_actions':[{'path':p,'action':'inspect-and-preserve' if (root/p).exists() else 'create'} for p in root_entries],'dry_run':True,'already_initialized':exists,'root':str(root),'collections':profile['collections'],'hosts':selected,'next_steps':['Run init without --dry-run to apply this setup']},'changed':[]}
     changed=[]
     setup=manifest.get('extensions',{}).get('onboarding',{}) if exists else {}
     ready=exists and manifest['state']=='ready' and (not setup or setup.get('complete') is True)
@@ -105,7 +113,7 @@ def initialize(root: Path, preset='general', name=None, goal=None, hosts='auto',
         goal=setup.get('goal')
         name=setup.get('name')
     if not exists:
-        manifest={'protocol':'qiming.workspace/1','workspace_id':f'ws_{uuid.uuid4()}','state':'initializing','workspace_entry':'START.md','conventions':'conventions.md','profile':'profile.json','init_journal':'init.json','roots':{'project':{'location':'..','access':'read-write'}},'extensions':{'onboarding':{'goal':goal,'name':name,'complete':False}}}
+        manifest={'protocol':'qiming.workspace/1','workspace_id':f'ws_{uuid.uuid4()}','state':'initializing','workspace_entry':'START.md','conventions':'conventions.md','profile':'profile.json','init_journal':'init.json','roots':{'project':{'location':'..','access':'read-write'}},'extensions':{'entry_policy':entry,'onboarding':{'goal':goal,'name':name,'complete':False}}}
         init_id=f'init_{uuid.uuid4()}'
         output=bootstrap(root,control,manifest,profile,init_id)
         if output['status']!='ok': return output
@@ -155,4 +163,4 @@ def initialize(root: Path, preset='general', name=None, goal=None, hosts='auto',
     check=validate(path,[],False)
     if check['status'] not in {'ok','ok_with_warnings'}: return check
     manifest,_=load_record(path,'json')
-    return {'status':check['status'],'result':{'workspace_id':manifest['workspace_id'],'instance_id':manifest['instance']['id'],'already_initialized':ready,'created':not exists,'bound_hosts':bound,'warnings':(['Writing preset leaves your manuscripts untouched; map existing drafts explicitly as read-only.'] if preset=='writing' else []),'next_steps':['Read .qiming/START.md. Daily work uses qiming-user.','Keep project-local seed for future upgrades or remove it yourself after backing up; never remove the user instance.']},'changed':changed,'diagnostics':check['diagnostics']}
+    return {'status':check['status'],'result':{'workspace_id':manifest['workspace_id'],'instance_id':manifest['instance']['id'],'already_initialized':ready,'created':not exists,'entry_policy':entry,'root_entry_files':root_entries,'bound_hosts':bound,'warnings':(['Writing preset leaves your manuscripts untouched; map existing drafts explicitly as read-only.'] if preset=='writing' else []),'next_steps':['Read .qiming/START.md. Daily work uses qiming-user.','Keep project-local seed for future upgrades or remove it yourself after backing up; never remove the user instance.']},'changed':changed,'diagnostics':check['diagnostics']}

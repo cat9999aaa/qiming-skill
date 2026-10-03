@@ -46,6 +46,9 @@ def binding_status(manifest_path: Path, host: str) -> dict[str, object]:
     if preview["status"] != "ok":
         return preview
     binding = Path(preview["binding_path"])
+    startup = startup_status(manifest_path, host, _INSTRUCTION_FILES[host])
+    if startup['status']=='manual-entry':
+        return {**startup,'binding_path':str(binding),'instance_id':preview['instance_id']}
     if not binding.exists():
         return {"status": "not-bound", "binding_path": str(binding), "instance_id": preview["instance_id"]}
     check = startup_status(manifest_path.resolve(), host, _INSTRUCTION_FILES[host])
@@ -86,6 +89,8 @@ def bind(manifest_path: Path, host: str) -> dict:
         return {'status':preview['status'],'result':preview,'changed':[]}
     target=Path(preview['binding_path'])
     current=binding_status(manifest_path,host)
+    if current['status']=='manual-entry':
+        return {'status':'ok','result':{**current,'host':host,'method':'manual'},'changed':[]}
     if current['status'] in {'bound','bound-copy'}:
         return {'status':'ok','result':{**current,'host':host,'method':'copy' if current['status']=='bound-copy' else 'symlink'},'changed':[]}
     if target.exists() or target.is_symlink():

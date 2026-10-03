@@ -70,7 +70,9 @@ def log_event(
         directory = Path(str(work["directory"]))
         from .collections import contains
         if not contains(profile, work, relative):
-            return _problem("SCOPE_MISMATCH", "target is outside the mapped work collection")
+            result = _problem("SCOPE_MISMATCH", "target is outside the mapped work collection")
+            result['diagnostics'][0]['hint'] = f"work_ref.path is relative to registered root '{work['root']}', not the collection directory. Include directory '{work['directory']}', e.g. {directory.as_posix()}/w-0001.json; check codec and exclusions too."
+            return result
         target = resolve_target(manifest_path, work_ref)
         if not target.is_file():
             return _problem("NOT_FOUND", "work record does not exist")

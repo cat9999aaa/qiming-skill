@@ -43,6 +43,8 @@ description: Use for work and 会员 management inside the project owning this l
 每次新会话开始实际工作前，读取清单指定的短入口、本地约定及当前任务，按本地 profile 定位记录；用户无需再次提及启明。日常工作与收尾按[管理](references/manage.md)，经验沉淀按[知识](references/knowledge.md)，规则变化按[演化](references/evolve.md)，故障与换机按[恢复](references/recover.md)。领域问题见[领域](references/domains.md)，工具接口见[工具](references/tools.md)。用户明确要求另一个项目接入时可用自带[适配](references/adapt.md)，在新项目生成独立实例后再接续。
 
 本实例的工具入口是 `scripts/qiming.py`，使用 JSON 请求协议 `qiming.tool/1`。长期产物必须能从所属会员和工作记录找到；实际验证与未知状态分别保留。项目启动摘要变更后运行 `refresh_context`，将关键规则带入下次会话。账户卡只保存凭据 provider 引用。用户实例和权威资料属于用户；操作无需原始种子目录。
+
+English operational guides: [Quickstart](references/quickstart.en.md), [Tools](references/tools.en.md), [Profile](references/profile.en.md), [Adaptation](references/adapt.en.md). Other references and generated guidance remain primarily Chinese.
 """.encode("utf-8")
 
 

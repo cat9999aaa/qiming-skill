@@ -35,3 +35,13 @@
 ```
 
 此调用只产生计划，不代表已迁移；检查实际结果后按工具协议 apply。完整操作字段见 [工具](tools.md)。
+
+## 多层目录与分类
+
+会员不要求平铺。已有 `members/00-foundation/`、`members/20-models/`、`members/99-archive/` 可以保持；设 directory 为 members、pattern 为 **/*.json（或既有 codec 对应扩展名）。这些名字只是示例，不自动创建空分类。
+
+档案可保存 `category: "infra"`；原字段名不同则映射 `"category":{"source":"/group","writable":false}`。search 命中会携带 category，args.categories 可筛选。分类省略时返回 null，目录名不会被自动当作权限或归档状态；退役仍依据 lifecycle。依赖方向按 relations 单独记录。已有会员移动位置不得重建 ID；跨分类仍只有一份权威档案。
+
+无 frontmatter 的 Markdown 会列入 coverage.skipped_files，reason 为 missing-frontmatter，并返回 partial。可先用宿主的只读文本搜索查正文；经用户确认再补稳定 ID 的 frontmatter 或建立显式 JSON 侧车。不要为了索引重写正文或用文件名冒充稳定会员 ID。当前没有隐式 filename 索引模式。
+
+English: [profile.en](profile.en.md)。

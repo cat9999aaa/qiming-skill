@@ -69,6 +69,10 @@
     "followup_feedback": {
       "credit": "用户转述 · Claude 网页版 · v0.2.0 复测",
       "body": "报告称公开测试与安装闭环已通过，并指出本地修改校验、暂存残留、版本追溯与命令体验问题。我们独立复现后在 v0.2.1 修复；init 原已有 stderr 摘要，本次补全信息。未取得报告者原始日志，不将此反馈计为 Claude Code 新会话实测。"
+    },
+    "legacy_feedback": {
+      "credit": "用户提供 · OpenCode 存量目录反馈 · 2026-10-03",
+      "body": "报告描述 Ubuntu / Python 3.12 / OpenCode 下的存量目录适配，提出八条建议。我们用独立合成目录核验并修复路径提示、遗漏覆盖、分类和入口选择；补运维/安全参考与英文高频文档。refresh_context 原本在顶层 changed 返回变更和哈希，已补协议说明与回归。未取得报告者原始环境与完整档案，不据此宣称 OpenCode 全面兼容。"
     }
   },
   "zh-TW": {
@@ -141,6 +145,10 @@
     "followup_feedback": {
       "credit": "使用者轉述 · Claude 網頁版 · v0.2.0 複測",
       "body": "報告稱公開測試與安裝流程已通過，並指出本地修改校驗、暫存殘留、版本追溯及指令體驗問題。我們獨立重現後於 v0.2.1 修正；init 原有 stderr 摘要，本次補全資訊。未取得原始日誌，此回饋不列為 Claude Code 新對話實測。"
+    },
+    "legacy_feedback": {
+      "credit": "使用者提供 · OpenCode 既有目錄回饋 · 2026-10-03",
+      "body": "報告描述 Ubuntu / Python 3.12 / OpenCode 的既有目錄適配，提出八項建議。我們以獨立合成目錄核驗並修正路徑提示、遺漏範圍、分類與入口選擇；補維運/安全參考及英文高頻文件。refresh_context 原已在頂層 changed 回傳變更與雜湊，已補協定說明及回歸。未取得原始環境與完整檔案，不據此宣稱 OpenCode 全面相容。"
     }
   },
   "ja": {
@@ -213,6 +221,10 @@
     "followup_feedback": {
       "credit": "ユーザー経由の報告 · Claude ウェブ版 · v0.2.0 再検証",
       "body": "公開テストと導入の成功に加え、ローカル編集の検証、一時ファイル、出典とコマンドの問題が報告されました。独立に再現し v0.2.1 で対応。init には既に stderr の概要があり、今回詳しくしました。報告元の生ログは未提供で、Claude Code の新規セッション実測には含めません。"
+    },
+    "legacy_feedback": {
+      "credit": "ユーザー提供 · OpenCode の既存フォルダー報告 · 2026-10-03",
+      "body": "Ubuntu / Python 3.12 / OpenCode での既存フォルダー運用について8件の提案を受領。独立した合成データで検証し、パスの案内、検索範囲、分類、入口選択を改善しました。運用・安全資料と英語ガイドも追加。refresh_context は従来から最上位 changed に変更とハッシュを返しており、説明と回帰テストを補足しました。報告者の環境と全記録は未入手で、OpenCode の全面互換を示すものではありません。"
     }
   },
   "en": {
@@ -285,6 +297,10 @@
     "followup_feedback": {
       "credit": "User-relayed report · Claude web · v0.2.0 retest",
       "body": "The report describes passing public tests and onboarding, then identifies local-edit validation, staging leftovers, provenance and CLI friction. We reproduced these issues and addressed them in v0.2.1. Init already printed a stderr summary; it now gives more detail. Original reviewer logs were not provided. This is not a Claude Code fresh-session test."
+    },
+    "legacy_feedback": {
+      "credit": "User-provided · OpenCode legacy-folder report · 2026-10-03",
+      "body": "The report describes Ubuntu / Python 3.12 / OpenCode adoption of an existing directory and offers eight suggestions. Independent synthetic checks informed fixes for path guidance, coverage gaps, categories and entry selection, plus operating references and English guides. refresh_context already reported changes and hashes in top-level changed; documentation and regression coverage now clarify this. The reporter’s original environment and full records were not obtained; this is not comprehensive OpenCode validation."
     }
   }
 }

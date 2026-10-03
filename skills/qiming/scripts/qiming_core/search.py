@@ -8,7 +8,7 @@ import json
 from pathlib import Path
 
 from .codec import load_record
-from .index import authority_records, source_set_fingerprint
+from .index import authority_records, source_set_fingerprint, coverage_diagnostics
 from .profile import load_profile
 from .scan import _relative_path, _root
 
@@ -51,7 +51,10 @@ def search(manifest_path: Path, request: dict[str, object]) -> dict[str, object]
     query = str(request.get("query", ""))
     types = request.get("types")
     identity = request.get("ref")
-    signature = _fingerprint({"scopes": scopes, "query": query, "types": types, "ref": identity, "collections": collections, "include_history": bool(request.get("include_history", False)), "limit": limit})
+    categories = request.get('categories')
+    if categories is not None and (not isinstance(categories,list) or not all(isinstance(c,str) for c in categories)):
+        raise ValueError('categories must be a list of strings')
+    signature = _fingerprint({"categories": categories, "scopes": scopes, "query": query, "types": types, "ref": identity, "collections": collections, "include_history": bool(request.get("include_history", False)), "limit": limit})
     offset = 0
     if request.get("cursor"):
         cursor = _cursor_decode(str(request["cursor"]))
@@ -62,6 +65,8 @@ def search(manifest_path: Path, request: dict[str, object]) -> dict[str, object]
     # Scope filtering happens before content is read for candidate matching.
     for row in rows:
         if row.get("scope") not in scopes:
+            continue
+        if categories is not None and row.get('category') not in categories:
             continue
         if types and row.get("type") not in types:
             continue
@@ -91,7 +96,7 @@ def search(manifest_path: Path, request: dict[str, object]) -> dict[str, object]
                 review_status='due' if deadline<=datetime.now(timezone.utc) else 'current'
             except (ValueError,AttributeError): review_status='invalid-date'
         rank = 0 if exact or path_match else 1 if meta_match else 2
-        matched.append((rank, {"workspace_id": row["ref"]["workspace_id"], "id": row["ref"]["id"], "name": row.get("name"), "summary": row.get("summary"), "type": row.get("type"), "scope": row.get("scope"), "record_locator": locator, "record_fingerprint": row["record_fingerprint"], "match": "exact" if rank == 0 else "metadata" if rank == 1 else "text", "freshness": "source-current", "review_status": review_status}))
+        matched.append((rank, {"workspace_id": row["ref"]["workspace_id"], "id": row["ref"]["id"], "category": row.get("category"), "name": row.get("name"), "summary": row.get("summary"), "type": row.get("type"), "scope": row.get("scope"), "record_locator": locator, "record_fingerprint": row["record_fingerprint"], "match": "exact" if rank == 0 else "metadata" if rank == 1 else "text", "freshness": "source-current", "review_status": review_status}))
     matched.sort(key=lambda item: (item[0], item[1]["workspace_id"], item[1]["id"]))
     items = [item for _, item in matched[offset:offset + limit]]
     next_offset = offset + len(items)
@@ -100,4 +105,4 @@ def search(manifest_path: Path, request: dict[str, object]) -> dict[str, object]
         payload = json.dumps({"snapshot": snapshot, "request": signature, "offset": next_offset}, separators=(",", ":"))
         next_cursor = base64.urlsafe_b64encode(payload.encode()).decode().rstrip("=")
     result = {"items": items, "next_cursor": next_cursor, "coverage": {**coverage, "source_set_fingerprint": snapshot, "searched_scopes": scopes, "matched": len(matched)}, "warnings": ["Index optional; searched source files"]}
-    return {"status": "partial" if coverage["truncated"] or coverage["errors"] else "ok", "result": result, "diagnostics": [], "changed": []}
+    return {"status": "partial" if coverage["truncated"] or coverage["errors"] or coverage["skipped"] else "ok", "result": result, "diagnostics": coverage_diagnostics(coverage), "changed": []}

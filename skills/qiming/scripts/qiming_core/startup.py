@@ -82,7 +82,12 @@ def _inputs(manifest_path: Path) -> tuple[dict, Path, bytes, dict[str, str]]:
 
 {local.rstrip()}
 {END}"""
-    return manifest, source, raw, {"AGENTS.md": block, "CLAUDE.md": f"{START}\n@AGENTS.md\n{END}", "GEMINI.md": f"{START}\n@./AGENTS.md\n{END}"}
+    blocks = {"AGENTS.md": block, "CLAUDE.md": f"{START}\n@AGENTS.md\n{END}", "GEMINI.md": f"{START}\n@./AGENTS.md\n{END}"}
+    policy = manifest.get('extensions',{}).get('entry_policy','all')
+    if policy not in {'all','agents','none'}:
+        raise ValueError('entry_policy must be all, agents or none')
+    blocks = blocks if policy=='all' else {'AGENTS.md':block} if policy=='agents' else {}
+    return manifest, source, raw, blocks
 
 
 def _legacy_blocks(control: str) -> dict[str, str]:
@@ -125,7 +130,7 @@ def ensure_startup(manifest_path: Path) -> dict[str, object]:
             if region:
                 before = existing[region[0]:region[1]].replace("\r\n", "\n")
                 saved = old_state.get("blocks", {}).get(name)
-                if before != block and _sha(before.encode()) != saved and before != legacy[name]:
+                if before != block and _sha(before.encode()) != saved and before != legacy.get(name):
                     raise ValueError(f"Generated instructions were locally edited: {path}; preserve and reconcile them")
                 desired = existing[:region[0]] + block + existing[region[1]:]
             else:
@@ -175,6 +180,8 @@ def startup_status(manifest_path: Path, host: str, instruction_name: str) -> dic
     try:
         manifest, source, raw, blocks = _inputs(manifest_path)
         root = project_root(manifest_path, manifest)
+        if instruction_name not in blocks:
+            return {'status':'manual-entry','reason':'entry-file-disabled','hint':'Read the project START.md and instance SKILL.md explicitly; automatic startup is not configured for this host.'}
         override = root / "AGENTS.override.md"
         if host == "codex" and override.exists() and override.stat().st_size:
             return {"status": "incomplete", "reason": "project-instruction-shadowed", "locator": str(override)}

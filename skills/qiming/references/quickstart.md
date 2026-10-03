@@ -54,3 +54,15 @@ python3 .qiming/qiming-user/scripts/qiming.py log .qiming/work/w-0001.json "第�
 Skills CLI 可能生成 `.agents/`、`.claude/`、`agent/`、`skills-lock.json` 等安装记录；这些不全由启明产生。种子 `qiming` 仅用于接入与升级；日常使用 `qiming-user`。保留种子便于升级，也可在检查归属后自行删除项目内种子。工具不会自动删除用户目录。
 
 `log` 省略 `--intent-ref` 时，使用已选任务记录的 `id`；任务无 ID 时明确报错，也可显式指定。`init` 的 stdout 保持单条 JSON；stderr 显示项目目录、是否已接入、宿主绑定和下一步，方便人读与脚本解析同时使用。
+
+## 控制根目录入口文件
+
+默认 `--entry all` 管理 AGENTS.md、CLAUDE.md、GEMINI.md 的启明区块，保留区块外原文。可选 `--entry agents` 只管理 AGENTS.md；`--entry none` 不创建或修改这些根文件。先加 `--dry-run`，JSON 中 result.root_entry_files 和 root_file_actions 列出目标，stderr 也给人看的提示；dry-run 不写文件。
+
+例如：`python3 .agents/skills/qiming/scripts/qiming.py init --root . --goal "整理研究记录" --entry none --dry-run`。确认实际影响后去掉 --dry-run。
+
+入口选择保存于本项目 `workspace.json.extensions.entry_policy`。重复 init 与升级沿用原选择，命令参数不会重置已有项目。确需改变时，先审查并通过受控写入修改本地配置，再运行 refresh_context；已存在但停管的文件不删除，须人工审查旧入口是否仍被宿主读取。当前只提供 all/agents/none，不推断任意自定义路径的宿主自动发现能力。
+
+`none` 下仍可使用目录中的工具，但宿主返回 manual-entry，不自动建立 Skill 绑定；每次显式读取 `.qiming/START.md`、conventions.md 和 qiming-user/SKILL.md。`agents` 下 Claude/Gemini 也可能需要人工配置；不要把文件存在当作已自动加载。
+
+日志路径相对 work.root 登记根（默认项目根），必须包含 `.qiming/work/` 等集合目录前缀。English: [quickstart.en](quickstart.en.md)。

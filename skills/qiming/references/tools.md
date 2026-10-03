@@ -7,10 +7,10 @@
 紧急现场给已有工作 JSON 追加一条事件，可从**项目实例的权威脚本**执行：
 
 ```sh
-python3 .qiming/qiming-user/scripts/qiming.py log 'work/incident.json' '服务在 10:00 恢复；待重启复核' --workspace-manifest "$PWD/.qiming/workspace.json" --kind observation --intent-ref incident
+python3 .qiming/qiming-user/scripts/qiming.py log '.qiming/work/incident.json' '服务在 10:00 恢复；待重启复核' --workspace-manifest "$PWD/.qiming/workspace.json" --kind observation --intent-ref incident
 ```
 
-`work/incident.json` 是相对 profile 中工作集合所用**根目录**的实际工作记录路径。短命令从 profile 读取该根，自动填写带时区的观察时间，返回同一 JSON 协议。可加 `--event-id` 固定事件身份，重试不会重复写入。支持 `observation`、`decision`、`action`、`handoff`。`log_event` 的 JSON args 是 `work_ref`（文件定位符）、`event`（`id/kind/summary/observed_at`）、`intent_ref`，可选 `expected_sha256`；它只修改映射的已有工作 JSON。冲突时重新读取现场，不能盲重试覆盖。
+`work_ref.path`（短命令的位置参数）相对 `workspace.json.roots[profile.collections.work.root]` 登记的根目录，默认是项目根，**不相对 collection.directory**。默认 work.directory 为 `.qiming/work`，所以应传 `.qiming/work/incident.json`；自定义目录为 `记录/任务` 时传 `记录/任务/incident.json`。不要省略目录前缀，也不要按当前 shell 子目录猜测。短命令从 profile 读取该根，自动填写带时区的观察时间，返回同一 JSON 协议。可加 `--event-id` 固定事件身份，重试不会重复写入。支持 `observation`、`decision`、`action`、`handoff`。`log_event` 的 JSON args 是 `work_ref`（文件定位符）、`event`（`id/kind/summary/observed_at`）、`intent_ref`，可选 `expected_sha256`；它只修改映射的已有工作 JSON。冲突时重新读取现场，不能盲重试覆盖。
 
 `scope_check` 的 args 为 `{"start_dir":"当前任务目录"}`，检查此任务是否属于清单对应的项目。它检查启用范围；授权操作的系统文件或远端资源不作为当前任务目录传入。`result.active` 为 false 时，不沿用该实例继续其他项目工作。
 
@@ -35,3 +35,13 @@ python3 .qiming/qiming-user/scripts/qiming.py log 'work/incident.json' '服务�
 - `scan`：不给 roots 时观察映射集合的文件元数据；指定 roots 时按预算观察目录。不会读取任意业务正文。
 
 状态：ok / ok_with_warnings 返回 0；error 返回 2；conflict 返回 3；partial 返回 4。partial 表示只完成一部分或检索覆盖缺失，不可当作全部通过。diagnostics.hint 提供下一步动作。
+
+## 响应层级与覆盖范围
+
+`status`、`diagnostics`、`changed` 都在响应顶层。`refresh_context` 更新入口时，顶层 `changed` 每项带 path、before_sha256、after_sha256；原样重试为 []。不要读取 `result.changed`。
+
+`search` 的 `result.items` 是命中；`result.coverage` 描述检查范围。无 frontmatter 的 Markdown 不生成会员身份：返回 partial、INCOMPLETE_COVERAGE 和 coverage.skipped_files（root、collection、path、reason）、skipped_count。旧 coverage.skipped 保留兼容。错误见 errors，截断见 truncated。partial 不等于没有命中，也不表示全量完成。
+
+可用 `args.categories: ["infra"]` 按可选分类精确过滤；省略时不按分类过滤。分类是导航元数据，不赋予权限。
+
+接入入口策略见 [quickstart](quickstart.md)；主机操作与凭据参考见 [security](security.md)，服务会员模板见 [infrastructure](infrastructure.md)。English: [tools.en](tools.en.md)。

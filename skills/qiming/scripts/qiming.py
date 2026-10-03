@@ -210,7 +210,7 @@ from qiming_core.host_binding import bind
 
 def _init(request):
     args=request['args']
-    return initialize(Path(args['root']),args.get('preset','general'),args.get('name'),args.get('goal'),args.get('hosts','auto'),bool(args.get('dry_run',False)))
+    return initialize(Path(args['root']),args.get('preset','general'),args.get('name'),args.get('goal'),args.get('hosts','auto'),bool(args.get('dry_run',False)),args.get('entry','all'))
 
 register('init', _init)
 register('bind', lambda request: bind(Path(request['workspace_manifest']),request['args']['host']))
@@ -229,6 +229,7 @@ def _short_init(argv):
     parser.add_argument('--name')
     parser.add_argument('--goal')
     parser.add_argument('--hosts',default='auto')
+    parser.add_argument('--entry',choices=['all','agents','none'],default='all')
     parser.add_argument('--dry-run',action='store_true')
     args=vars(parser.parse_args(argv)); args['root']=str(args['root'])
     result=dispatch({'protocol':'qiming.tool/1','request_id':'init','op':'init','args':args})
@@ -237,6 +238,7 @@ def _short_init(argv):
     print('启明接入：'+result['status'],file=sys.stderr)
     print('项目目录：'+str(Path(args['root']).resolve()),file=sys.stderr)
     if info.get('dry_run'):
+        print('根入口文件（将创建或检查保留）：'+(', '.join(info.get('root_entry_files',[])) or '无'),file=sys.stderr)
         print('仅预览，未写入文件。下一步：去掉 --dry-run 执行接入。',file=sys.stderr)
     elif result['status'] in {'ok','ok_with_warnings'}:
         print('已有实例已保留。' if info.get('already_initialized') else '已建立本项目的启明实例。',file=sys.stderr)

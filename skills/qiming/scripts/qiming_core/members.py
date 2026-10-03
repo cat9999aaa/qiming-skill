@@ -49,6 +49,7 @@ def member_view(manifest_path: Path, record_locator: dict[str, object]) -> dict[
         "type": fields.get("type", source.get("type", "custom")),
         "summary": fields.get("summary", source.get("summary")),
         "owner": fields.get("owner", source.get("owner")),
+        "category": fields.get("category", source.get("category")),
         "scope": fields.get("scope", source.get("scope", "workspace")),
         "lifecycle": lifecycle,
         "updated_at": fields.get("updated_at", source.get("updated_at")),

@@ -25,6 +25,7 @@ def authority_records(manifest_path: Path, collections: list[str], *, limit: int
         redirects, _ = load_record(redirects_path, "json")
     errors: list[str] = []
     skipped: list[str] = []
+    skipped_files: list[dict] = []
     visited = 0
     truncated = False
     for collection_id in selected:
@@ -49,6 +50,7 @@ def authority_records(manifest_path: Path, collections: list[str], *, limit: int
             try:
                 if collection.get('codec') == 'markdown-frontmatter' and not path.read_bytes().startswith(b'---'):
                     skipped.append(path.relative_to(root).as_posix())
+                    skipped_files.append({'path':path.relative_to(root).as_posix(),'root':collection['root'],'collection':collection_id,'reason':'missing-frontmatter'})
                     continue
                 view = member_view(manifest_path, locator)
                 if f"{view['ref']['workspace_id']}:{view['ref']['id']}" not in redirects:
@@ -57,7 +59,13 @@ def authority_records(manifest_path: Path, collections: list[str], *, limit: int
                 errors.append(path.relative_to(root).as_posix())
         if truncated:
             break
-    return rows, {"collections": selected, "visited": visited, "truncated": truncated, "errors": errors, "skipped": skipped}
+    return rows, {"collections": selected, "visited": visited, "truncated": truncated, "errors": errors, "skipped": skipped, "skipped_files": skipped_files, "skipped_count": len(skipped_files)}
+
+
+def coverage_diagnostics(coverage):
+    if coverage['errors'] or coverage['truncated'] or coverage['skipped']:
+        return [{'code':'INCOMPLETE_COVERAGE','message':f"Search coverage incomplete: {len(coverage['skipped'])} skipped files, {len(coverage['errors'])} errors.",'hint':'Inspect result.coverage.skipped_files and errors. Plain Markdown needs explicit adaptation; no member IDs were invented.'}]
+    return []
 
 
 def source_set_fingerprint(rows: list[dict[str, object]]) -> str:
@@ -96,4 +104,4 @@ def reindex(manifest_path: Path, collections: list[str]) -> dict[str, object]:
         os.replace(temporary, destination)
     finally:
         Path(temporary).unlink(missing_ok=True)
-    return {"status": "partial" if coverage["errors"] or coverage["truncated"] else "ok", "result": {"index_ref": str(destination), "source_set_fingerprint": source_set_fingerprint(rows), "coverage": coverage}, "diagnostics": [], "changed": [{"path": str(destination), "action": "replaced-derived-index"}]}
+    return {"status": "partial" if coverage["errors"] or coverage["truncated"] or coverage["skipped"] else "ok", "result": {"index_ref": str(destination), "source_set_fingerprint": source_set_fingerprint(rows), "coverage": coverage}, "diagnostics": coverage_diagnostics(coverage), "changed": [{"path": str(destination), "action": "replaced-derived-index"}]}

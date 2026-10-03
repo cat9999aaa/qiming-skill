@@ -20,3 +20,5 @@ description: Use when the user explicitly asks to initialize, adopt, or repair Q
 已接入项目遇到紧急事件时，用户实例可用 `log_event` / `qiming.py log` 先受控记录，再补齐验收；设备和服务状态附观察时间，下一次接手先复核。[工具](references/tools.md)给出接口。宿主可见的 Skill 路径是入口，权威清单和脚本在项目实例中。
 
 首次接入优先使用 [quickstart](references/quickstart.md) 的 `init`，不要照抄示例 UUID 或手编默认清单。已有结构看 [profile](references/profile.md)，陌生名词看 [glossary](references/glossary.md)。旧实例从新安装包调用 upgrade_preview；永远不直接覆盖实例目录。
+
+English operational guides: [Quickstart](references/quickstart.en.md) · [Tools](references/tools.en.md) · [Profile](references/profile.en.md) · [Adaptation](references/adapt.en.md). Other references and generated guidance are primarily Chinese.

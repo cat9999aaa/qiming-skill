@@ -15,9 +15,9 @@
 | 正式 projectId | 宿主项目/会话实际读回；不能用名称、工作区UUID或侧栏名称推测 |
 | 侧栏 section | 宿主实际成员列表；与正式项目归属分开 |
 
-Codex：已知正式项目ID且在项目根时，使用该项目的 local 创建；保持子目录或宿主项目无法解析时，优先同目录 fork。不要退到 projectless 新目录来假装继承。具体工具参数按当前可用 schema 校核。若宿主没有能保持归属的方式，保留未完成并说明限制，不猜一个相似名称的项目。
+Codex：已知正式项目ID且在项目根时，使用该项目的 local 创建；保持子目录或宿主项目无法解析时，优先同目录 fork。不要退到 projectless 新目录来假装继承。具体工具参数按当前可用 schema 校核。若宿主没有能保持归属的方式，保留未完成并说明限制，不猜一个相似名称的项目。用户要求正式项目时，找不到对应ID就停在待定位；不要为了绕过此要求创建目录会话或新增一个近似项目。
 
-创建返回ID只是发起。读回子会话 cwd、清单身份、正式项目归属和用户要求的侧栏成员后再报告。双方 projectId **明确为 null** 且实际会话ID、cwd、清单根/身份、读回引用一致，可称“同目录工作区，宿主项目未登记”；字段缺失不能当null，也不能称正式项目已继承。相同cwd不证明侧栏已放对。现有合适会话只差分组时整理它，不重复创建。无法验证的字段保留未知。
+创建返回ID只是发起。读回子会话 cwd、清单身份、正式项目归属和用户要求的侧栏成员后再报告。只有任务要求本来就是目录工作区、而非正式项目归属时，才可使用下述目录模式；不能根据工具不可用或暂时找不到项目自行降级。双方 projectId **明确为 null** 且实际会话ID、cwd、清单根/身份、读回引用一致，可称“同目录工作区，宿主项目未登记”；字段缺失不能当null，也不能称正式项目已继承。相同cwd不证明侧栏已放对。现有合适会话只差分组时整理它，不重复创建。无法验证的字段保留未知。
 
 ## 控制上下文与结题
 
@@ -36,3 +36,10 @@ Codex：已知正式项目ID且在项目根时，使用该项目的 local 创建
 用户要求侧栏放置时，context加`expected_section_id`，thread提供`section_id, sidebar_readback_ref`。缺失/不匹配返回未验证；复用建议会保留同一thread并带`placement_code`，让宿主补核验/整理，不新建替代。
 
 归档条目需`status:completed`，`is_coordinator, executing, awaiting_approval, awaiting_user`均明确false，非空`outcome_refs, verification_refs`列表及`handoff_ref`。有worktree时提供`has_independent_changes:false`或非空`preservation_ref`。helper只检查形状和一致性，不打开引用核实成果、Git保全或宿主读回真实性；这是调用者的职责。其他宿主遵循上述事实/授权边界，工具接口和行为需单独验证。
+
+
+### 正式项目要求不能由目录模式替代
+
+`context.project_requirement` 默认为 `registered`：需要实际非空正式项目ID，`project_id:null` 返回 `HOST_PROJECT_REQUIRED`，不建议创建、复用为已验证或归档。即使cwd、清单身份、侧栏分组都匹配，也不能满足这一要求。正式归属尚未定位时保持待办，不重复移动现有会话或凭近似名称选择目标；由负责整理者获取准确目标后统一移动并读回。
+
+只有任务本来允许同目录工作区时，显式设 `project_requirement: workspace`。它保留目录模式，但成功仍只能称“目录身份已核验，宿主项目未登记”。此字段表达用户任务要求，不是绕过失败的开关；不能因registered被拒就改成workspace。非法/未知值返回 `INVALID_PROJECT_REQUIREMENT`。成功建议/验证结果也回报project_requirement，便于与实际要求对照。

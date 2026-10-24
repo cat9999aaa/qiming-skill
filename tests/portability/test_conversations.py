@@ -42,6 +42,7 @@ def test_missing_project_not_null(request_data, record):
 
 def test_null_directory_project_is_not_registered(request_data):
     for key in ('context','thread'): request_data[key]['project_id'] = None
+    request_data['context']['project_requirement'] = 'workspace'
     result = call(request_data)
     assert result['verified'] and result['host_project_membership'] == 'unregistered'
     del request_data['thread']['host_readback_ref']
@@ -81,7 +82,9 @@ def test_registered_root_creates_in_project(request_data):
 @pytest.mark.parametrize('unresolved', [True, False])
 def test_unresolved_or_subdirectory_forks(request_data, unresolved):
     request_data['op'] = 'recommend'
-    if unresolved: request_data['context']['project_id'] = None
+    if unresolved:
+        request_data['context']['project_id'] = None
+        request_data['context']['project_requirement'] = 'workspace'
     else:
         child = Path(request_data['context']['cwd']) / 'component'
         child.mkdir()
@@ -111,6 +114,7 @@ def test_archive_requires_authorization_evidence_preservation(request_data):
     assert call(request_data)['code'] == 'WORKTREE_NOT_PRESERVED'
     request_data['thread']['worktree']['preservation_ref'] = 'snapshot.json'
     assert call(request_data)['action'] == 'archive'
+    assert call(request_data)['project_requirement'] == 'registered'
     assert not call(request_data)['verified']
 
 def test_current_thread_never_archived(request_data):
@@ -163,3 +167,27 @@ def test_ids_are_scalar_strings(request_data, field):
     request_data['thread'][field] = ['wrong-shape']
     if field == 'project_id': request_data['context'][field] = ['wrong-shape']
     assert call(request_data)['status'] == 'blocked'
+
+
+@pytest.mark.parametrize('op', ['verify', 'recommend', 'archive'])
+def test_formal_project_requirement_cannot_be_satisfied_by_null_directory_mode(request_data, op):
+    for key in ('context', 'thread'):
+        request_data[key]['project_id'] = None
+    request_data['context']['expected_section_id'] = 'section-test'
+    request_data['thread']['section_id'] = 'section-test'
+    request_data['thread']['sidebar_readback_ref'] = 'sidebar.json'
+    request_data['op'] = op
+    request_data['threads'] = [request_data['thread']]
+    result = call(request_data)
+    assert result['code'] == 'HOST_PROJECT_REQUIRED'
+    assert not result['verified']
+    assert 'tool_request' not in result
+
+@pytest.mark.parametrize('bad', [None, True, [], 'directory', ''])
+def test_unknown_project_requirement_does_not_silently_downgrade(request_data, bad):
+    request_data['context']['project_requirement'] = bad
+    assert call(request_data)['code'] == 'INVALID_PROJECT_REQUIREMENT'
+
+def test_explicit_registered_requirement_still_verifies_real_project(request_data):
+    request_data['context']['project_requirement'] = 'registered'
+    assert call(request_data)['verified']

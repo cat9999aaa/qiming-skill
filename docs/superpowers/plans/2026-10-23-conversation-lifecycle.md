@@ -24,3 +24,9 @@ No host API calls, background workers, credentials or real project records. Dist
 - [x] Run complete pytest suite and site build; inspect public diff for private data.
 - [x] Independent review and corrections: initial nine malformed-input regressions failed before fixes; 35 targeted + 193 full tests and 41 independent checks now pass.
 - [ ] Commit/push feature branch and open reviewable PR. Attach PR and report actual checks and unverified host behavior.
+
+## Formal membership regression follow-up
+
+- [x] Reproduce formal-project requests passing explicit-null directory/section verification; malformed requirement values also accepted before fix.
+- [x] Default project_requirement to registered; explicitly permitted workspace tasks retain directory mode. Invalid values and formal-null requests fail without host action suggestions.
+- [x] Fresh review and44targeted/202full tests passed; update this same PR; no live instance upgrade or session movement.

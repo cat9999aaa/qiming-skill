@@ -17,6 +17,11 @@ def scope(request):
     manifest_path = Path(request['workspace_manifest']).resolve(strict=True)
     manifest = json.loads(manifest_path.read_text(encoding='utf-8'))
     context = request['context']
+    requirement = context.get('project_requirement', 'registered')
+    if not isinstance(requirement, str) or requirement not in {'registered', 'workspace'}:
+        return reject('INVALID_PROJECT_REQUIREMENT')
+    if 'project_id' in context and context['project_id'] is None and requirement == 'registered':
+        return reject('HOST_PROJECT_REQUIRED')
     if not text_ref(context.get('cwd')):
         return reject('INVALID_INPUT')
     if not text_ref(context.get('current_thread_id')):
@@ -46,6 +51,8 @@ def thread_scope(thread, context, manifest_path):
         return 'CWD_MISMATCH'
     if 'project_id' not in context or 'project_id' not in thread:
         return 'PROJECT_UNVERIFIED'
+    if context.get('project_requirement', 'registered') == 'registered' and thread['project_id'] is None:
+        return 'HOST_PROJECT_REQUIRED'
     if context['project_id'] is None and thread['project_id'] is None:
         # Explicit host null is an unregistered directory project, not an unknown ID.
         manifest_path = Path(manifest_path).resolve(strict=True)
@@ -91,8 +98,12 @@ def evaluate(request):
         identity = (dict(project_identity_mode='workspace_root', host_project_membership='unregistered')
                     if 'project_id' in context and context['project_id'] is None
                     else dict(project_identity_mode='host_project', host_project_membership='registered'))
+        requirement = context.get('project_requirement', 'registered')
+        identity['project_requirement'] = requirement
         op = request['op']
         if op == 'recommend':
+            if requirement == 'registered' and not context.get('project_id'):
+                return reject('PROJECT_UNVERIFIED')
             task = request.get('task_ref')
             if not isinstance(task, str) or not task.strip():
                 return reject('TASK_REQUIRED')
@@ -120,7 +131,7 @@ def evaluate(request):
                 action = 'fork'
             else:
                 return reject('PARENT_THREAD_REQUIRED')
-            return dict(status='ok', action=action, verified=False,
+            return dict(status='ok', action=action, verified=False, project_requirement=requirement,
                         tool_request=dict(tool=tool, args=args),
                         next='Read back child cwd/workspace/project identity before reporting success or starting task.')
         if op not in {'verify', 'archive'}:
@@ -154,7 +165,7 @@ def evaluate(request):
         if tree is not None and (not isinstance(tree, dict) or
                 (tree.get('has_independent_changes') is not False and not text_ref(tree.get('preservation_ref')))):
             return reject('WORKTREE_NOT_PRESERVED')
-        return dict(status='ok', action='archive', verified=False,
+        return dict(status='ok', action='archive', verified=False, project_requirement=requirement,
                     tool_request=dict(tool='mcp__codex_app__set_thread_archived',
                                       args=dict(threadId=thread['id'], archived=True)),
                     next='Host checks cited records, executes reversible archive if authorized, then reads back state. Never deletes worktree.')

@@ -42,3 +42,6 @@
 ```
 
 result.status 为 bound / bound-copy 才表示文件绑定就绪；instruction_bytes 表示 AGENTS.md 大小。它没有宣称模型一定遵从。
+
+
+需要拆分可见专题会话或结题归档时，按[会话生命周期](conversations.md)操作。正式项目、cwd、工作区身份和侧栏分组分别验证；内部子agent不冒充可见会话。

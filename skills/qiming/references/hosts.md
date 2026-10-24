@@ -21,6 +21,8 @@
 | OpenCode | `.opencode/skills/<name>/SKILL.md`，也识别 `.agents/skills` | [OpenCode Docs](https://opencode.ai/docs/skills) |
 
 
+`context_coverage` 中生成上下文为 current，只是受控区块与源文一致；短入口、链接记录和摘要准确性仍是 not_checked。短入口中的进度需对照权威记录复核，`refresh_context` 或绑定成功不会替你更新它。收尾核对顺序见[管理](manage.md#收尾时分开核对权威记录与启动摘要)。
+
 ## 路径核对与验证边界
 
 核对日期：2026-10-01。绑定结构的自动化测试不等于真实会话遵从。Python 3.11+；Linux/macOS 用 python3，Windows 用 py -3。复制绑定可用于无软链权限的环境。

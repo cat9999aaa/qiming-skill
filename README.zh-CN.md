@@ -55,3 +55,14 @@ The two smoke checks used synthetic project records. They are not the complete 3
 Operational guides: [English quickstart](skills/qiming/references/quickstart.en.md), [tools](skills/qiming/references/tools.en.md), [profile](skills/qiming/references/profile.en.md), [adaptation](skills/qiming/references/adapt.en.md). Other references and generated guidance remain primarily Chinese.
 
 Version/update checks: `python3 .qiming/qiming-user/scripts/qiming.py version --workspace-manifest .qiming/workspace.json` and `python3 .qiming/qiming-user/scripts/qiming.py check-update --workspace-manifest .qiming/workspace.json`. [Guide](skills/qiming/references/updates.en.md). This release uses the preview channel; checks never overwrite project rules.
+
+## v0.3.0 更新了什么
+
+- 查看项目实例和安装包各自的版本，按需查询官方新版。
+- 续接同一任务前核对会话、项目和目录，交接时留下成果与下一步。
+- 入口刷新明确列出未检查的记录，独立子项目不会借用父项目身份。
+- 旧项目先预览再升级，保留原规则、目录、任务与会员 ID。
+
+本版为预发布；Windows 验收未完成。完整改动、用法及验证范围见官网更新日志。
+
+[Changelog](https://qiming.dashen.wang/updates/) · [v0.3.0](https://github.com/cat9999aaa/qiming-skill/releases/tag/v0.3.0)

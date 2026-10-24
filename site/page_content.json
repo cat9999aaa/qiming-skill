@@ -24,7 +24,7 @@
       "prompts": "复制一句话就能开始；项目内的启明实例会先读取现场。",
       "feedback": "现场反馈与版本复测，分别说明来源、改进与验证边界。",
       "story": "我和 Agent Dark源从自己的管理模板里，把启明一点点做出来。",
-      "updates": "只记录有来源和验证边界的产品进展。",
+      "updates": "每次更新改了什么、解决什么问题、你该怎么用，以及哪些地方还没验证。",
       "faq": "把安装、范围、会员和安全这些常见疑问说清楚。",
       "more": "从这里进入提示词、反馈、故事、更新和常见问题。"
     },
@@ -38,7 +38,7 @@
       "prompts": "启明 Skill 的开始、接续、工具入会、网站维护等可复制提示词。",
       "feedback": "现场反馈与版本复测，分别说明来源、改进与验证边界。",
       "story": "启明由我和 Agent Dark源在长期项目管理中沉淀，名字也有启明星的含义。",
-      "updates": "启明 Skill 与官网已核实的更新、测试边界和后续方向。",
+      "updates": "每次更新改了什么、解决什么问题、你该怎么用，以及哪些地方还没验证。",
       "faq": "回答启明 Skill 的作用范围、会员含义、凭据保存和跨 Agent 验证问题。",
       "more": "浏览启明 Skill 的提示词、用户反馈、起源、更新日志与常见问题。"
     },
@@ -100,7 +100,7 @@
       "prompts": "複製一句話就能開始；專案內的啟明實例會先讀取現況。",
       "feedback": "現場回饋與版本複測，分別說明來源、改善與驗證範圍。",
       "story": "我和 Agent Dark源從自己的管理範本裡，一步步做出啟明。",
-      "updates": "只記錄有來源與驗證邊界的產品進展。",
+      "updates": "每次更新改了什麼、解決什麼問題、你該怎麼用，以及哪些部分尚未驗證。",
       "faq": "說清楚安裝、範圍、會員與安全的常見疑問。",
       "more": "從這裡前往提示詞、回饋、故事、更新和常見問題。"
     },
@@ -114,7 +114,7 @@
       "prompts": "啟明 Skill 的開始、接續、工具入會、網站維護等可複製提示詞。",
       "feedback": "現場回饋與版本複測，分別說明來源、改善與驗證範圍。",
       "story": "啟明由我和 Agent Dark源在長期專案管理中沉澱，名字也帶有啟明星的意思。",
-      "updates": "啟明 Skill 與官網已核實的更新、測試邊界和後續方向。",
+      "updates": "每次更新改了什麼、解決什麼問題、你該怎麼用，以及哪些部分尚未驗證。",
       "faq": "回答啟明 Skill 的作用範圍、會員含義、憑據保存與跨 Agent 驗證問題。",
       "more": "瀏覽啟明 Skill 的提示詞、使用回饋、起源、更新紀錄與常見問題。"
     },
@@ -176,7 +176,7 @@
       "prompts": "一文をコピーして始められます。ローカルインスタンスはまず現状を読みます。",
       "feedback": "現場報告とバージョン再検証。出典、改善点、検証範囲を明記します。",
       "story": "私と Agent Dark源が自分たちの管理テンプレートから育てました。",
-      "updates": "根拠と検証範囲を示せる更新だけを記載します。",
+      "updates": "各リリースの変更点、解決する問題、使い方と未検証の範囲。",
       "faq": "導入、適用範囲、管理対象、機密情報について答えます。",
       "more": "プロンプト、利用報告、物語、更新履歴、質問へ。"
     },
@@ -190,7 +190,7 @@
       "prompts": "導入、継続、ツール管理、サイト運営に使える Qiming のプロンプト。",
       "feedback": "現場報告とバージョン再検証。出典、改善点、検証範囲を明記します。",
       "story": "Qiming は私と Agent Dark源の長期の管理実践から生まれ、明けの明星にも由来します。",
-      "updates": "Qiming Skill と公式サイトの確認済み更新、テスト範囲、次の課題。",
+      "updates": "各リリースの変更点、解決する問題、使い方と未検証の範囲。",
       "faq": "Qiming の適用範囲、管理対象、認証情報、エージェント間の検証について回答。",
       "more": "Qiming のプロンプト、利用報告、物語、更新履歴とよくある質問。"
     },
@@ -252,7 +252,7 @@
       "prompts": "Copy a sentence to begin. Your project instance reads the local context first.",
       "feedback": "Field reports and release retests, with sources, changes and verification limits.",
       "story": "Agent Dark源 and I grew Qiming out of our own project management template.",
-      "updates": "A record of product changes with sources and verification limits.",
+      "updates": "What changed, which problems it addresses, how to use it, and what remains unverified.",
       "faq": "Straight answers about setup, scope, membership, and credential handling.",
       "more": "Find prompts, feedback, the origin story, updates, and answers."
     },
@@ -266,7 +266,7 @@
       "prompts": "Copyable Qiming prompts for starting, resuming, managing tools, and maintaining a website.",
       "feedback": "Field reports and release retests, with sources, changes and verification limits.",
       "story": "Qiming grew from project management by me and Agent Dark源; its name also points to the morning star.",
-      "updates": "Verified Qiming Skill and website changes, test boundaries, and next steps.",
+      "updates": "What changed, which problems it addresses, how to use it, and what remains unverified.",
       "faq": "Answers about Qiming scope, members, credential storage, and cross-agent verification.",
       "more": "Explore Qiming prompts, user feedback, origin, changelog, and common questions."
     },

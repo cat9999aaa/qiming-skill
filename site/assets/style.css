@@ -122,9 +122,15 @@ h1,h2,h3,p{overflow-wrap:anywhere}
 .story-mark span{font-size:.23em;vertical-align:top;color:var(--green)}
 .story-prose{border-top:5px solid var(--green)}
 .story-prose p{font-size:18px;line-height:1.95;color:#dedfd4}
-.update-row{grid-template-columns:190px 1fr}
+.update-row{grid-template-columns:190px 1fr;align-items:start}
 .update-row time{font:800 13px var(--mono);color:var(--green)}
 .update-row h2{margin-bottom:8px}
+.release-details{max-width:72ch}
+.release-details section{margin-top:28px}
+.release-details h3{font-size:17px;line-height:1.5;margin:0 0 9px;color:var(--ink)}
+.release-details p{font-size:16px;line-height:1.85}
+.release-details .prompt-box{margin:14px 0 0}
+.update-row .release-link{margin-top:24px}
 .faq-card h2{font-size:20px;margin:12px 0}.faq-card p{margin:0}
 .site-footer{background:#0b0e15;border-top:5px solid var(--orange)}
 .footer-grid{display:grid;grid-template-columns:1fr 1.2fr;gap:60px;padding:54px 0}

@@ -150,8 +150,39 @@
     "changes": [
       {
         "date": "2026-10-24",
-        "title": "v0.3.0 · 跨设备合并与版本检查",
-        "body": "合并专题会话管理与上下文刷新覆盖说明，修复独立子项目边界检查。新增离线 version 和显式联网 check-update，区分项目实例与安装包版本；升级仍先预览，保留本地规则与会员 ID。"
+        "title": "v0.3.0 · 查清版本，接着旧任务做",
+        "body": "这次更新解决几件具体的事：不知道项目用的是哪一版、同一任务散在多个聊天里、刷新入口后误以为所有记录都核对过，以及把独立子项目当成父项目来管理。下面是改了什么、怎么用和目前验证到哪里。",
+        "sections": [
+          {
+            "title": "新增：查版本，也能查有没有新版",
+            "body": "你可能刚装了新安装包，项目里的启明却还停在旧版。现在 version 会分别报告两者版本、来源提交和实例身份；check-update 再联网查询 GitHub 官方发行。断网、限流或版本无法识别时会告诉你“无法判断”。检查不会自动下载或覆盖项目。",
+            "prompt": "检查当前项目的启明实例版本、安装包版本和官方可用更新，先不要升级。"
+          },
+          {
+            "title": "合并：同一件事先续接，另开会话前留下交接",
+            "body": "另一台设备提交的会话管理规则已合入。比如官网改到一半，又要处理部署问题：先找同一任务已有的可用会话；确实需要拆开时，核对项目、工作目录和任务归属。结束前留下成果、验证和下一步，满足条件再归档。当前辅助脚本面向 Codex 的会话接口，只提供建议；创建会话、发送消息和归档仍按宿主能力及用户授权执行。",
+            "prompt": "按当前项目的启明会话规则检查这项工作：先找可续接的同任务会话；需要拆分时，先写清已有成果、验证和下一步，再核对新会话的项目与目录。"
+          },
+          {
+            "title": "修正：刷新入口时，说清到底检查了什么",
+            "body": "refresh_context 会明确区分“生成的入口区块已刷新”和“短入口、关联任务、摘要准确性尚未检查”。例如任务已经完成但 START.md 还写着进行中，仅刷新 AGENTS.md 不会把这条旧进度自动改对。Agent 收尾时需要分别核对任务记录和启动摘要，避免下次会话接着错误进度继续。"
+          },
+          {
+            "title": "修复：独立子项目不会借用父项目的身份",
+            "body": "会话辅助脚本现在复用项目边界检查。子目录里如果存在独立 .git 或 .qiming 项目入口，会拒绝沿用父项目身份。比如一个仓库里放着另一个独立维护的项目，Agent 需要切换到它自己的实例；代码有引用关系也不会自动合并管理范围。"
+          },
+          {
+            "title": "旧用户怎么升级",
+            "body": "本次仍使用保留式升级：先用新安装包做 upgrade_preview，查看哪些文件未改、哪些被你改过，再升级未修改部分。已经实际验证：0.2.2 能发现 0.3.0，升级后手改规则、原任务、目录布局和实例身份保留，追加记录与搜索仍可用。不要删除 .qiming，也不要重新 init 覆盖。",
+            "prompt": "启明已更新。先读取本项目 START.md，用官方新安装包做 upgrade_preview，列出待更新项和本地修改；保留我的规则、原目录、任务和会员 ID，再升级未修改部分。完成后检查版本、搜索、记录追加和宿主绑定。"
+          },
+          {
+            "title": "这次验证到哪里",
+            "body": "v0.3.0 目前是 preview 预发布。本地 248 项、独立公开包 233 项测试通过；Linux/macOS 六组 CI 通过。Windows 三组未完成验收，限时诊断超时且未取得可用日志，原因尚未确认。公开 npx 安装、旧版保留定制升级、官网四语言资源及桌面/手机排版已检查；完整真实 Agent 行为矩阵仍未完成。"
+          }
+        ],
+        "release_label": "查看 GitHub 发行说明与下载",
+        "release_url": "https://github.com/cat9999aaa/qiming-skill/releases/tag/v0.3.0"
       },
       {
         "date": "2026-10-03",
@@ -461,8 +492,39 @@
     "changes": [
       {
         "date": "2026-10-24",
-        "title": "v0.3.0 · 跨裝置合併與版本檢查",
-        "body": "合併專題對話管理與上下文更新範圍說明，修正獨立子專案邊界。新增離線 version 與明確聯網 check-update，區分實例與安裝包版本；升級先預覽並保留本地規則及會員 ID。"
+        "title": "v0.3.0 · 查清版本，接著原任務做",
+        "body": "這次更新處理幾件具體的事：不知道專案用哪一版、同一任務散落在多個對話、更新入口後以為所有紀錄都核對過，以及把獨立子專案當成父專案管理。以下說明改動、用法與驗證範圍。",
+        "sections": [
+          {
+            "title": "新增：查版本，也能查有沒有新版",
+            "body": "剛下載新套件，專案裡的啟明可能還是舊版。version 會分別回報兩者版本、來源提交與實例身分；check-update 再連線查詢 GitHub 官方發行。斷線、限流或版本無法辨識時會回報「無法判斷」。檢查不會自動下載或覆蓋專案。",
+            "prompt": "檢查目前專案的啟明實例版本、安裝套件版本與官方可用更新，先不要升級。"
+          },
+          {
+            "title": "合併：同一件事先接續，另開對話前留下交接",
+            "body": "另一台裝置提交的對話管理規則已合入。例如官網改到一半又要處理部署：先找同任務可接續的對話；需要拆分時，核對專案、工作目錄與任務歸屬。結束前留下成果、驗證及下一步，符合條件再封存。目前輔助腳本對應 Codex 的對話介面，只提供建議；建立對話、傳送訊息與封存仍依宿主能力及使用者授權執行。",
+            "prompt": "依目前專案的啟明對話規則檢查這項工作：先找可接續的同任務對話；需要拆分時，先寫清成果、驗證與下一步，再核對新對話的專案和目錄。"
+          },
+          {
+            "title": "修正：更新入口時說清檢查範圍",
+            "body": "refresh_context 會分開回報「產生的入口區塊已更新」與「短入口、關聯任務、摘要正確性尚未檢查」。任務若已完成但 START.md 仍寫進行中，只更新 AGENTS.md 不會自動改對舊進度。Agent 收尾時需分別核對任務紀錄及啟動摘要。"
+          },
+          {
+            "title": "修復：獨立子專案不沿用父專案身分",
+            "body": "對話輔助腳本現在共用專案邊界檢查。子目錄若有獨立 .git 或 .qiming 入口，會拒絕沿用父專案身分；Agent 需切換到子專案自己的實例。程式碼互相引用不會自動合併管理範圍。"
+          },
+          {
+            "title": "舊使用者怎麼升級",
+            "body": "先用新套件執行 upgrade_preview，查看未修改檔案與本地修改，再更新未修改部分。已實測 0.2.2 能發現 0.3.0；升級保留手改規則、原任務、目錄配置與實例身分，追加紀錄及搜尋仍可用。不要刪除 .qiming 或重新 init 覆蓋。",
+            "prompt": "啟明已更新。先讀取本專案 START.md，用官方新套件執行 upgrade_preview，列出待更新項與本地修改；保留我的規則、原目錄、任務和會員 ID，再升級未修改部分。完成後檢查版本、搜尋、追加紀錄及宿主綁定。"
+          },
+          {
+            "title": "這次驗證到哪裡",
+            "body": "v0.3.0 目前為 preview 預發行。本地 248 項、獨立公開套件 233 項測試與 Linux/macOS 六組 CI 通過。Windows 三組未完成驗收；限時診斷逾時且沒有可用紀錄，原因尚未確認。公開 npx 安裝、舊版保留自訂升級、四語官網資源與桌面/手機排版已檢查；完整真實 Agent 行為矩陣尚未完成。"
+          }
+        ],
+        "release_label": "查看 GitHub 發行說明與下載",
+        "release_url": "https://github.com/cat9999aaa/qiming-skill/releases/tag/v0.3.0"
       },
       {
         "date": "2026-10-03",
@@ -772,8 +834,39 @@
     "changes": [
       {
         "date": "2026-10-24",
-        "title": "v0.3.0 · 端末間の統合と更新確認",
-        "body": "会話ライフサイクルとコンテキスト更新範囲を統合し、独立した子プロジェクトの境界判定を修正。オフライン version と明示的なオンライン check-update を追加。ローカルルールと ID を保つ更新プレビューを継続します。"
+        "title": "v0.3.0 · バージョンを確認し、前の作業を続ける",
+        "body": "今回の変更は、使用中のバージョンが分からない、同じ作業の会話が散らばる、入口の更新を全記録の確認と取り違える、独立した子プロジェクトに親の管理情報を使ってしまう、といった問題への対応です。",
+        "sections": [
+          {
+            "title": "追加：プロジェクトのバージョンと公式更新を確認",
+            "body": "新しいパッケージを取得しても、プロジェクト内の実体は旧版のままの場合があります。version は両方のバージョン、ソースコミット、インスタンス識別情報を表示します。check-update は GitHub の公式リリースを照会します。通信失敗・制限・不明なバージョンは「判定できない」と報告し、自動ダウンロードや上書きは行いません。",
+            "prompt": "このプロジェクトの啓明インスタンス、インストール用パッケージのバージョンと公式更新を確認してください。まだアップグレードしないでください。"
+          },
+          {
+            "title": "統合：同じ作業の会話を再利用し、分割時に引き継ぐ",
+            "body": "別端末からの会話管理ルールを統合しました。例えばサイト修正の途中でデプロイ対応が必要になったら、まず同じタスクの既存会話を探します。分割時はプロジェクトと作業ディレクトリを確認し、終了前に成果・検証・次の手順を残します。現在の補助スクリプトは Codex の会話 API 向けで、提案だけを返します。会話作成、送信、アーカイブはホスト機能とユーザーの許可に従います。",
+            "prompt": "この作業について啓明の会話ルールを確認してください。同じタスクの既存会話を探し、分割が必要なら成果・検証・次の手順を記録して、新しい会話のプロジェクトと作業ディレクトリを確認してください。"
+          },
+          {
+            "title": "修正：入口の更新と内容の確認を区別",
+            "body": "refresh_context は、生成した入口ブロックの更新と、短い入口・関連タスク・要約の正確性の未確認を分けて報告します。完了済みのタスクが START.md で進行中のままなら、AGENTS.md の更新だけでは直りません。終了時にはタスク記録と起動時の要約をそれぞれ確認します。"
+          },
+          {
+            "title": "修復：独立した子プロジェクトの境界を尊重",
+            "body": "会話補助スクリプトも共通の境界確認を使うようにしました。子ディレクトリに独立した .git または .qiming の入口がある場合、親の識別情報の使用を拒否します。子プロジェクト自身のインスタンスへ切り替える必要があり、コードの参照関係だけでは管理範囲は統合されません。"
+          },
+          {
+            "title": "既存プロジェクトの更新方法",
+            "body": "新しいパッケージで upgrade_preview を実行し、ローカル変更を確認してから、未変更の部分を更新します。0.2.2 から 0.3.0 の検出、手動変更したルール・既存タスク・ディレクトリ構成・識別情報の保持、更新後の記録追加と検索を実測しました。.qiming の削除や init による上書きは避けてください。",
+            "prompt": "まずこのプロジェクトの START.md を読んでください。公式の新パッケージで upgrade_preview を実行して更新対象とローカル変更を示し、既存ルール・ディレクトリ・タスク・会員 ID を保持して未変更部分を更新してください。その後、バージョン・検索・記録追加・ホストとの接続を確認してください。"
+          },
+          {
+            "title": "検証済みの範囲",
+            "body": "v0.3.0 は preview リリースです。ローカル 248 件、独立公開パッケージ 233 件のテストと Linux/macOS の CI 6 構成が通過しました。Windows の 3 構成は未検証で、診断ジョブはタイムアウトし有効なログが得られず、原因は未確定です。公開 npx 導入、旧版のカスタマイズ保持更新、4 言語のサイト資産とデスクトップ・モバイル表示を確認済みです。実際の Agent 全組合せの検証は未完了です。"
+          }
+        ],
+        "release_label": "GitHub のリリース説明とダウンロード",
+        "release_url": "https://github.com/cat9999aaa/qiming-skill/releases/tag/v0.3.0"
       },
       {
         "date": "2026-10-03",
@@ -1083,8 +1176,39 @@
     "changes": [
       {
         "date": "2026-10-24",
-        "title": "v0.3.0 · Cross-device integration and update checks",
-        "body": "Merged conversation lifecycle guidance and explicit context refresh coverage; fixed nested-project scope checks. Added offline version and explicit online check-update, distinguishing installed instances from packages. Upgrades still preserve local rules and IDs through preview."
+        "title": "v0.3.0 · Know your version and resume existing work",
+        "body": "This release addresses several concrete problems: not knowing which version a project uses, scattering one task across chats, mistaking an entry refresh for a review of every record, and using a parent project’s identity inside an independent child project.",
+        "sections": [
+          {
+            "title": "Added: version reporting and official update checks",
+            "body": "Downloading a new package does not update the instance inside an existing project. version reports both versions, source commits and instance identity. check-update queries official GitHub releases. Network failures, rate limits and unrecognized versions return an unknown outcome. Checking does not download software or overwrite the project.",
+            "prompt": "Check this project’s Qiming instance version, the package version, and available official updates. Do not upgrade yet."
+          },
+          {
+            "title": "Merged: reuse task conversations and leave a handoff before splitting",
+            "body": "Merged the conversation rules contributed from another device. For example, when a site edit leads to deployment work, look for an existing conversation for that task first. When a split is needed, verify project and working-directory identity, then retain outcomes, verification and next steps before completion or archiving. The current helper targets Codex conversation APIs and returns recommendations only; creating conversations, messaging and archiving still depend on host capabilities and user authorization.",
+            "prompt": "Apply this project’s Qiming conversation rules to this task. Look for a reusable conversation first. If a split is needed, record outcomes, verification and next steps, then verify the new conversation’s project and working directory."
+          },
+          {
+            "title": "Corrected: report what an entry refresh actually checked",
+            "body": "refresh_context now distinguishes a refreshed generated entry block from an unchecked short entry, linked tasks and summary accuracy. If a finished task still appears as in progress in START.md, refreshing AGENTS.md alone will not correct it. Task records and startup summaries need separate review when work ends."
+          },
+          {
+            "title": "Fixed: respect independent child-project boundaries",
+            "body": "The conversation helper now uses shared project-boundary checks. An independent .git or .qiming entry in a child directory prevents it from borrowing the parent identity. The Agent must switch to the child project’s own instance. Code references between projects do not merge their management scopes."
+          },
+          {
+            "title": "How existing users upgrade",
+            "body": "Run upgrade_preview from the new package, inspect local changes, then upgrade unchanged resources. We tested 0.2.2 discovering 0.3.0 and retaining edited rules, existing tasks, layout and instance identity; logging and search still worked afterward. Keep .qiming and do not reinitialize over an existing project.",
+            "prompt": "Read this project’s START.md first. Use the new official package to run upgrade_preview and list incoming changes and local edits. Preserve my rules, directories, tasks and member IDs, then upgrade unchanged resources. Check versions, search, log append and host bindings afterward."
+          },
+          {
+            "title": "What has been verified",
+            "body": "v0.3.0 is a preview release. All 248 local tests, 233 standalone public-package tests and six Linux/macOS CI jobs passed. Three Windows configurations remain unverified: the bounded diagnostic timed out without usable logs, so the cause is unknown. Public npx installation, customized old-instance upgrades, four-language site resources and desktop/mobile layouts were checked. The complete real-Agent behavior matrix has not been run."
+          }
+        ],
+        "release_label": "GitHub release notes and downloads",
+        "release_url": "https://github.com/cat9999aaa/qiming-skill/releases/tag/v0.3.0"
       },
       {
         "date": "2026-10-03",

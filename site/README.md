@@ -23,6 +23,10 @@ Source inspiration: [Omarchy's homepage](https://omarchy.us/) for its direct val
 
 Each topic has its own canonical URL, description, visible `h1`, four-language alternate links, JSON-LD for visible entities, and sitemap entry. Article details advertise only languages with actual full text. `robots.txt` allows public crawlers, including OAI-SearchBot. These help pages be discovered and understood; they do not guarantee search ranking or AI citations. Update the relevant content files when a topic changes. Long articles are edited as Markdown and rendered with the site's small dependency-free block renderer. Keep field reports labeled with attribution, sample size, and limits; never publish private project paths, domains, machine identifiers, or credentials.
 
+## Release notes
+
+Every public version needs a readable entry in all four `content.json` editions and matching GitHub release notes. State the concrete problem, what changed, how the user can use it (include copyable Agent prompts where useful), how existing projects upgrade, and the verification limits. Explain internal terms through examples. A version number, PR number, commit hash or "updated management" is not a user-facing change description. Keep source attribution and technical evidence after the explanation. Update the localized public README highlights as well. The updates renderer supports optional `sections` with `title`, `body`, and `prompt`, plus a release link; reuse this layout for later releases.
+
 ## Production hosting
 
 The official domain `https://qiming.dashen.wang/` is hosted directly on Cloudflare Pages project `qiming-skill`. Its DNS record is a proxied (orange-cloud) CNAME to `qiming-skill.pages.dev`. The build output is `site/dist/`; upload its contents, with `index.html` at the root, for each release. The earlier ChatGPT Sites address is a secondary published copy, not the origin for this domain. Rebuild the static files before publishing so canonical, `hreflang`, robots and sitemap URLs continue to point at the official domain.

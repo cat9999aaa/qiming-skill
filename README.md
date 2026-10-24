@@ -65,3 +65,14 @@ python3 .agents/skills/qiming/scripts/qiming.py init --root . --goal "完成当�
 Operational guides: [English quickstart](skills/qiming/references/quickstart.en.md), [tools](skills/qiming/references/tools.en.md), [profile](skills/qiming/references/profile.en.md), [adaptation](skills/qiming/references/adapt.en.md). Other references and generated guidance remain primarily Chinese.
 
 Version/update checks: `python3 .qiming/qiming-user/scripts/qiming.py version --workspace-manifest .qiming/workspace.json` and `python3 .qiming/qiming-user/scripts/qiming.py check-update --workspace-manifest .qiming/workspace.json`. [Guide](skills/qiming/references/updates.en.md). This release uses the preview channel; checks never overwrite project rules.
+
+## What changed in v0.3.0
+
+- Report project-instance and package versions separately, and check official updates on request.
+- Verify task-conversation, project and directory identity before resuming or splitting work.
+- Show unchecked context explicitly and respect independent child-project boundaries.
+- Preview upgrades while retaining existing rules, layout, tasks and member IDs.
+
+This is a preview release; Windows validation is incomplete. See the official changelog for details, usage and verification limits.
+
+[Changelog](https://qiming.dashen.wang/en/updates/) · [v0.3.0](https://github.com/cat9999aaa/qiming-skill/releases/tag/v0.3.0)

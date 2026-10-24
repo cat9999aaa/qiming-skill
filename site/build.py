@@ -364,9 +364,19 @@ def story(t: dict) -> str:
 
 
 def updates(t: dict) -> str:
-    rows = "".join(f'<article class="update-row"><time datetime="{e(item["date"].replace(".", "-"))}">{e(item["date"])}</time>'
-                   f'<div><h2>{e(item["title"])}</h2><p>{e(item["body"])}</p></div></article>' for item in t["changes"])
-    return f'<section class="page-section wrap"><div class="updates-list">{rows}</div></section>'
+    rows = []
+    for item in t["changes"]:
+        details = []
+        for section in item.get("sections", []):
+            prompt = (f'<div class="prompt-box"><p>{e(section["prompt"])}</p>{copy_button(section["prompt"], t)}</div>'
+                      if section.get("prompt") else "")
+            details.append(f'<section><h3>{e(section["title"])}</h3><p>{e(section["body"])}</p>{prompt}</section>')
+        release = (f'<p class="release-link"><a href="{e(item["release_url"])}" rel="noopener noreferrer">{e(item["release_label"])}</a></p>'
+                   if item.get("release_url") else "")
+        rows.append(f'<article class="update-row"><time datetime="{e(item["date"].replace(".", "-"))}">{e(item["date"])}</time>'
+                    f'<div><h2>{e(item["title"])}</h2><p>{e(item["body"])}</p>'
+                    f'<div class="release-details">{"".join(details)}</div>{release}</div></article>')
+    return f'<section class="page-section wrap"><div class="updates-list">{"".join(rows)}</div></section>'
 
 
 def faq(t: dict) -> str:

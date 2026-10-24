@@ -180,3 +180,88 @@ def test_crlf_generated_block_is_not_mistaken_for_user_edit(tmp_path):
     assert entry.read_bytes().startswith(prefix)
     assert entry.read_bytes().endswith(suffix)
     assert ensure_project_entrypoints(manifest)['changed'] == []
+
+
+def _expected_context_coverage():
+    return dict(generated_context='current', short_entry='not_checked',
+                linked_records='not_checked', summary_accuracy='not_checked')
+
+
+def test_refresh_reports_scope_when_navigation_disagrees_with_authority(tmp_path):
+    """Rendering the author's startup text must not certify unrelated progress."""
+    from qiming_core.host_binding import ensure_project_entrypoints
+    manifest = _ready(tmp_path)
+    control = manifest.parent
+    record = control / 'work.json'
+    record.write_text('{"id":"task-synthetic","status":"completed"}', encoding='utf-8')
+    entry = control / 'START.md'
+    entry.write_text('Task is still running; see [authority](work.json).\n', encoding='utf-8')
+    (control / 'startup.md').write_text('Read the navigation entry for current work.\n', encoding='utf-8')
+    before = {path: path.read_bytes() for path in (entry, record)}
+    result = ensure_project_entrypoints(manifest)
+    assert result['status'] == 'ok'
+    assert result['result']['context_coverage'] == _expected_context_coverage()
+    for path, content in before.items():
+        assert path.read_bytes() == content
+    again = ensure_project_entrypoints(manifest)
+    assert again['changed'] == []
+    assert again['result']['context_coverage'] == _expected_context_coverage()
+
+
+def test_bound_status_exposes_unreviewed_summary_scope(tmp_path):
+    from qiming_core.host_binding import binding_status
+    manifest = _ready(tmp_path)
+    _bound(manifest)
+    result = binding_status(manifest, 'codex')
+    assert result['status'] == 'bound'
+    assert result['context_coverage'] == _expected_context_coverage()
+
+
+def test_context_coverage_respects_custom_navigation_and_refresh_conflict(tmp_path):
+    from qiming_core.host_binding import ensure_project_entrypoints
+    manifest = _ready(tmp_path)
+    control = manifest.parent
+    data = json.loads(manifest.read_text())
+    data['workspace_entry'] = 'navigation.md'
+    data['startup_context'] = 'policy.md'
+    manifest.write_text(json.dumps(data), encoding='utf-8')
+    entry = control / 'navigation.md'
+    entry.write_text('Keep this user-owned navigation.\n', encoding='utf-8')
+    (control / 'policy.md').write_text('Custom startup policy.\n', encoding='utf-8')
+    result = ensure_project_entrypoints(manifest)
+    assert result['status'] == 'ok'
+    assert result['result']['context_coverage'] == _expected_context_coverage()
+    assert entry.read_text() == 'Keep this user-owned navigation.\n'
+    host = control.parent / 'AGENTS.md'
+    host.write_text(host.read_text().replace('Custom startup policy.', 'Locally edited generated block.'))
+    before = host.read_bytes()
+    conflict = ensure_project_entrypoints(manifest)
+    assert conflict['status'] == 'conflict'
+    assert conflict['result'] is None
+    assert conflict['changed'] == []
+    assert host.read_bytes() == before
+
+
+def test_refresh_disabled_entrypoints_never_claims_current_generated_context(tmp_path):
+    from qiming_core.initialize import initialize
+    from qiming_core.host_binding import ensure_project_entrypoints
+    root = tmp_path / 'manual'
+    root.mkdir()
+    assert initialize(root, goal='synthetic manual context', entry='none')['status'] == 'ok'
+    result = ensure_project_entrypoints(root / '.qiming/workspace.json')
+    assert result['result']['entrypoints'] == []
+    assert result['result']['context_coverage']['generated_context'] == 'not_configured'
+    assert not (root / 'AGENTS.md').exists()
+
+
+def test_copy_binding_preserves_context_coverage(tmp_path):
+    import shutil
+    from qiming_core.host_binding import binding_preview, binding_status
+    manifest = _ready(tmp_path)
+    preview = binding_preview(manifest, 'codex', manifest.parent.parent)
+    target = Path(preview['binding_path'])
+    target.parent.mkdir(parents=True)
+    shutil.copytree(preview['source_directory'], target)
+    result = binding_status(manifest, 'codex')
+    assert result['status'] == 'bound-copy'
+    assert result['context_coverage'] == _expected_context_coverage()

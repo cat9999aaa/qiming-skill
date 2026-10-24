@@ -55,7 +55,7 @@ def binding_status(manifest_path: Path, host: str) -> dict[str, object]:
     if check["status"] not in {"ok", "ok_with_warnings"}:
         return {**check, "binding_path": str(binding), "instruction_path": preview["instruction_path"], "instance_id": preview["instance_id"]}
     if binding.resolve() == Path(preview["source_directory"]):
-        return {"status": "bound", "instruction_bytes": preview["instruction_bytes"], "method": "symlink", "binding_path": str(binding), "instance_id": preview["instance_id"], "source_fingerprint": preview["source_fingerprint"], "validation_diagnostics": preview["validation_diagnostics"]}
+        return {"status": "bound", "instruction_bytes": preview["instruction_bytes"], "method": "symlink", "binding_path": str(binding), "instance_id": preview["instance_id"], "source_fingerprint": preview["source_fingerprint"], "validation_diagnostics": preview["validation_diagnostics"], "context_coverage": check["context_coverage"]}
     copy_manifest = binding / "instance.json"
     if not copy_manifest.is_symlink() and copy_manifest.is_file() and hashlib.sha256(copy_manifest.read_bytes()).hexdigest() == preview["source_fingerprint"]:
         try:
@@ -64,7 +64,7 @@ def binding_status(manifest_path: Path, host: str) -> dict[str, object]:
                 path = _control_path(binding, resource["path"])
                 if not path.is_file() or path.read_bytes() != _control_path(Path(preview["source_directory"]), resource["path"]).read_bytes():
                     raise ValueError("Copied resource differs from its authority")
-            return {"status": "bound-copy", "instruction_bytes": preview["instruction_bytes"], "method": "copy", "binding_path": str(binding), "instance_id": preview["instance_id"], "source_fingerprint": preview["source_fingerprint"], "validation_diagnostics": preview["validation_diagnostics"]}
+            return {"status": "bound-copy", "instruction_bytes": preview["instruction_bytes"], "method": "copy", "binding_path": str(binding), "instance_id": preview["instance_id"], "source_fingerprint": preview["source_fingerprint"], "validation_diagnostics": preview["validation_diagnostics"], "context_coverage": check["context_coverage"]}
         except (OSError, ValueError, KeyError):
             pass
     return {"status": "stale-or-conflicting", "binding_path": str(binding), "instance_id": preview["instance_id"]}

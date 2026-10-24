@@ -19,6 +19,13 @@ END = "<!-- qiming:entry:end -->"
 STATE = "project-entrypoints.json"
 
 
+def _context_coverage(configured: bool) -> dict[str, str]:
+    """Rendering user-authored text does not validate its business meaning."""
+    return {"generated_context": "current" if configured else "not_configured",
+            "short_entry": "not_checked",
+            "linked_records": "not_checked", "summary_accuracy": "not_checked"}
+
+
 def _sha(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
 
@@ -154,7 +161,7 @@ def ensure_startup(manifest_path: Path) -> dict[str, object]:
         return {"status": "conflict", "result": None, "diagnostics": [{"code": "WRITE_CONFLICT", "message": str(error), "locator": str(manifest_path)}], "changed": []}
     warnings = ([{'code':'STARTUP_BUDGET','message':'Startup summary exceeds the 3000-byte soft budget','hint':'Keep decisions and 3–5 current task links; move details into referenced records.'}] if len(raw)>3000 else [])
     if not payloads:
-        return {"status": "ok_with_warnings" if warnings else "ok", "result": {"entrypoints": sorted(blocks)}, "diagnostics": warnings, "changed": []}
+        return {"status": "ok_with_warnings" if warnings else "ok", "result": {"entrypoints": sorted(blocks), "context_coverage": _context_coverage(bool(blocks))}, "diagnostics": warnings, "changed": []}
     stage = control / ".host-entry-staging" / str(uuid.uuid4())
     stage.mkdir(parents=True, exist_ok=True)
     changes = []
@@ -169,6 +176,7 @@ def ensure_startup(manifest_path: Path) -> dict[str, object]:
     applied = apply_plan(manifest_path, planned["result"])
     if applied["status"] == "ok":
         applied["result"]["entrypoints"] = sorted(blocks)
+        applied["result"]["context_coverage"] = _context_coverage(bool(blocks))
         if warnings:
             applied["status"] = "ok_with_warnings"
             applied["diagnostics"] = warnings
@@ -198,6 +206,6 @@ def startup_status(manifest_path: Path, host: str, instruction_name: str) -> dic
                 return {"status": "stale-context", "reason": "startup-context-changed"}
         if not source.is_file() or state.get("source_sha256") != _sha(raw):
             return {"status": "stale-context", "reason": "startup-context-changed"}
-        return {"status": "ok"}
+        return {"status": "ok", "context_coverage": _context_coverage(bool(blocks))}
     except (OSError, ValueError, KeyError, UnicodeError) as error:
         return {"status": "incomplete", "reason": "invalid-startup-context", "detail": str(error)}

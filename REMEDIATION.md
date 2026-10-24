@@ -45,3 +45,6 @@ A user relayed a Claude web review of v0.2.0. We reproduced local-edit validatio
 
 ## 2026-10-03 / v0.2.2 follow-up
 User-provided OpenCode legacy-folder feedback was checked with synthetic fixtures, without access to the reporter's environment or complete records. Corrected log path guidance, exposed missing-frontmatter coverage with explicit partial status and reasons, added optional category filtering and persistent init entry selection (all/agents/none). Added four English operational guides and optional security/infrastructure references. refresh_context already returned top-level changed and before/after hashes; a regression test and documentation clarify this. No filename-based member identities, automatic sudo helper, forced directory taxonomy, or claims of complete host compatibility were introduced.
+
+## 2026-10-24 / v0.3.0 integration
+Merged other-device PR #1 (conversation lifecycle) and #2 (refresh coverage) with original ancestry preserved. Review found and fixed nested-project boundary checks in the optional session helper by reusing scope_check. Added offline version reporting and explicit official-release checking, distinguishing runtime package/project instances, preview/stable channels and unknown network results. Checks never install or rewrite a project. Complete real-host matrix remains unverified.

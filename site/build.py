@@ -270,6 +270,8 @@ def start(locale: str, t: dict, p: dict, repo_url: str | None) -> str:
                     f'<h2>{e(item["title"])}</h2><p>{e(item["body"])}</p></article>' for item in t["beginner_steps"])
     o = onboarding(locale)
     init_command = 'python3 .agents/skills/qiming/scripts/qiming.py init --root . --hosts auto'
+    version_commands = ['python3 .qiming/qiming-user/scripts/qiming.py version --workspace-manifest .qiming/workspace.json', 'python3 .qiming/qiming-user/scripts/qiming.py check-update --workspace-manifest .qiming/workspace.json']
+    checks = ''.join(f'<div class="command-row"><code>{e(command)}</code>{copy_button(command,t)}</div>' for command in version_commands)
     slug = repo_slug(repo_url)
     if slug:
         command = f"npx skills add {slug} --skill qiming"
@@ -287,6 +289,7 @@ def start(locale: str, t: dict, p: dict, repo_url: str | None) -> str:
             f'{copy_button(t["install_adopt"], t)}</div><p class="install-note">{e(t["install_note"])}</p></div>'
             f'<div class="pixel-card init-panel"><h2>{e(o["init_title"])}</h2><div class="command-row"><code>{e(init_command)}</code>{copy_button(init_command,t)}</div><p>{e(o["init_note"])}</p></div>'
             f'<div class="pixel-card init-panel"><h2>{e(o["upgrade_title"])}</h2><p>{e(o["upgrade_note"])}</p></div>'
+            f'<div class="pixel-card init-panel"><h2>{e(o["check_title"])}</h2><p class="install-note">{e(o["version_title"])}</p>{checks}<p>{e(o["check_note"])}</p></div>'
             f'<p class="scope-note">{e(p["scope_note"])}</p></section>')
 
 
@@ -516,7 +519,7 @@ def build(out: Path, repo_url: str | None, site_url: str) -> None:
     assets.mkdir(parents=True, exist_ok=True)
     for name in ("style.css", "app.js", "logo.svg", "favicon.ico"):
         shutil.copyfile(HERE / "assets" / name, assets / name)
-    (out / "release.json").write_text(json.dumps({"repo_url": repo_url, "site_url": site_url, "published": bool(repo_url)}, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    (out / "release.json").write_text(json.dumps({"repo_url": repo_url, "site_url": site_url, "published": bool(repo_url), **{key: value for key, value in json.loads((HERE.parent / "skills/qiming/assets/contracts/version.json").read_text(encoding="utf-8")).items() if key in {"version", "release", "release_channel"}}}, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     (out / "robots.txt").write_text(f"User-agent: *\nAllow: /\n\nUser-agent: OAI-SearchBot\nAllow: /\n\nSitemap: {site_url}/sitemap.xml\n", encoding="utf-8")
     (out / "sitemap.xml").write_text(sitemap(site_url, articles), encoding="utf-8")
 

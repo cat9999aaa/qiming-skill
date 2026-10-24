@@ -35,3 +35,5 @@ Search args include query, collections, scope_ids, types, optional categories (e
 - `plan_migration`: args.new_profile_ref, affected_collections, intent_ref; preview before applying profile/record migrations.
 
 Credential records hold only provider references. Use project-approved credential storage and the host's authorization mechanisms. The Chinese [security reference](security.md) and [infrastructure template](infrastructure.md) describe optional operating conventions; they do not grant permissions.
+
+Version checks: use `qiming.py version` offline or `qiming.py check-update` explicitly online, with the authoritative --workspace-manifest. See [updates](updates.en.md). Old instances can use the new package without reinitializing.

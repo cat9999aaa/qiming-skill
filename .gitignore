@@ -1,0 +1,8 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+.wrangler/
+.env
+.env.*
+!.env.example

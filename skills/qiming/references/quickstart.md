@@ -66,3 +66,5 @@ Skills CLI 可能生成 `.agents/`、`.claude/`、`agent/`、`skills-lock.json` 
 `none` 下仍可使用目录中的工具，但宿主返回 manual-entry，不自动建立 Skill 绑定；每次显式读取 `.qiming/START.md`、conventions.md 和 qiming-user/SKILL.md。`agents` 下 Claude/Gemini 也可能需要人工配置；不要把文件存在当作已自动加载。
 
 日志路径相对 work.root 登记根（默认项目根），必须包含 `.qiming/work/` 等集合目录前缀。English: [quickstart.en](quickstart.en.md)。
+
+查看版本与官方更新：先 `qiming.py version`，再按需 `qiming.py check-update`，传入本项目权威 --workspace-manifest；详见[更新检查](updates.md)。旧实例可从新安装包运行这两个只读命令，检测后仍先 upgrade_preview。

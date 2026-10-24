@@ -191,3 +191,14 @@ def test_unknown_project_requirement_does_not_silently_downgrade(request_data, b
 def test_explicit_registered_requirement_still_verifies_real_project(request_data):
     request_data['context']['project_requirement'] = 'registered'
     assert call(request_data)['verified']
+
+@pytest.mark.parametrize('marker',['.git','.qiming/workspace.json'])
+def test_parent_policy_rejects_nested_independent_project(request_data,marker):
+    root=Path(request_data['context']['cwd']);child=root/'independent';child.mkdir()
+    target=child/marker
+    if marker=='.git':target.mkdir()
+    else:
+        target.parent.mkdir();target.write_text(json.dumps({'protocol':'qiming.workspace/1','workspace_id':'ws_other'}))
+    for name in ('context','thread'):request_data[name]['cwd']=str(child)
+    assert call(request_data)['status']=='blocked'
+    request_data['op']='recommend';assert call(request_data)['status']=='blocked'

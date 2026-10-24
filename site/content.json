@@ -149,6 +149,11 @@
     "changelog_title": "更新日志",
     "changes": [
       {
+        "date": "2026-10-24",
+        "title": "v0.3.0 · 跨设备合并与版本检查",
+        "body": "合并专题会话管理与上下文刷新覆盖说明，修复独立子项目边界检查。新增离线 version 和显式联网 check-update，区分项目实例与安装包版本；升级仍先预览，保留本地规则与会员 ID。"
+      },
+      {
         "date": "2026-10-03",
         "title": "v0.2.2 · 存量目录与接入边界",
         "body": "明确记录路径基数与漏检原因，支持可选分类筛选、根入口选择和接入预览；补四份英文操作指南与安全/运维参考。"
@@ -454,6 +459,11 @@
     "changelog_label": "05 / CHANGELOG",
     "changelog_title": "更新紀錄",
     "changes": [
+      {
+        "date": "2026-10-24",
+        "title": "v0.3.0 · 跨裝置合併與版本檢查",
+        "body": "合併專題對話管理與上下文更新範圍說明，修正獨立子專案邊界。新增離線 version 與明確聯網 check-update，區分實例與安裝包版本；升級先預覽並保留本地規則及會員 ID。"
+      },
       {
         "date": "2026-10-03",
         "title": "v0.2.2 · 既有目錄與接入邊界",
@@ -761,6 +771,11 @@
     "changelog_title": "更新履歴",
     "changes": [
       {
+        "date": "2026-10-24",
+        "title": "v0.3.0 · 端末間の統合と更新確認",
+        "body": "会話ライフサイクルとコンテキスト更新範囲を統合し、独立した子プロジェクトの境界判定を修正。オフライン version と明示的なオンライン check-update を追加。ローカルルールと ID を保つ更新プレビューを継続します。"
+      },
+      {
         "date": "2026-10-03",
         "title": "v0.2.2 · 既存フォルダーと導入範囲",
         "body": "記録パスの基準と検索漏れを明示。任意の分類フィルター、ルート入口の選択とプレビュー、英語の操作ガイド4点と安全・運用資料を追加。"
@@ -1066,6 +1081,11 @@
     "changelog_label": "05 / CHANGELOG",
     "changelog_title": "Changelog",
     "changes": [
+      {
+        "date": "2026-10-24",
+        "title": "v0.3.0 · Cross-device integration and update checks",
+        "body": "Merged conversation lifecycle guidance and explicit context refresh coverage; fixed nested-project scope checks. Added offline version and explicit online check-update, distinguishing installed instances from packages. Upgrades still preserve local rules and IDs through preview."
+      },
       {
         "date": "2026-10-03",
         "title": "v0.2.2 · Existing folders and explicit onboarding",

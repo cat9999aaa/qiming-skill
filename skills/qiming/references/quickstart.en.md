@@ -41,3 +41,5 @@ Matches are in `result.items`. Inspect `result.coverage` and diagnostics before 
 ## Existing projects
 
 Read START.md first. Use the new package's `upgrade_preview`, review its resource states, then pass the complete result and its plan_id to `upgrade`. Preserve local changes, profile and member IDs. Never delete `.qiming` or reinitialize over an existing instance. [Adaptation](adapt.en.md) describes scope; [tools](tools.en.md) gives the protocol. The installed seed `qiming` supports adoption/upgrades; daily work uses the project's `qiming-user` instance. Other reference documents and generated guidance are currently primarily Chinese.
+
+Version checks: use `qiming.py version` offline or `qiming.py check-update` explicitly online, with the authoritative --workspace-manifest. See [updates](updates.en.md). Old instances can use the new package without reinitializing.

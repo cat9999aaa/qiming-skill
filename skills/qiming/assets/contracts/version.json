@@ -1,6 +1,7 @@
 {
-  "version": "0.2.2",
-  "commit": "ddca9e5d1f70d2dd187316685c4d31c2fc1a5c3c",
+  "version": "0.3.0",
+  "commit": null,
   "commit_kind": "release-source",
-  "release": "https://github.com/cat9999aaa/qiming-skill/releases/tag/v0.2.2"
+  "release": "https://github.com/cat9999aaa/qiming-skill/releases/tag/v0.3.0",
+  "release_channel": "preview"
 }

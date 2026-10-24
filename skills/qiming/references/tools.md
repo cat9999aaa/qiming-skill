@@ -50,3 +50,5 @@ python3 .qiming/qiming-user/scripts/qiming.py log '.qiming/work/incident.json' '
 `refresh_context` 成功时的 `result.context_coverage` 以及成功 `binding_status` 的同名字段分别回报覆盖范围：`generated_context: current`、`short_entry: not_checked`、`linked_records: not_checked`、`summary_accuracy: not_checked`。它们不证明任务、短入口或源摘要的语义准确。刷新不改短入口/业务记录；先按[管理闭环](manage.md#收尾时分开核对权威记录与启动摘要)核对实际进度。生成区块冲突或刷新失败时不回报 current 覆盖成功。
 
 入口策略为 `none` 时没有受管宿主区块，刷新返回 `generated_context: not_configured`，不把未配置的生成上下文标成 current。
+
+查看版本与官方更新：先 `qiming.py version`，再按需 `qiming.py check-update`，传入本项目权威 --workspace-manifest；详见[更新检查](updates.md)。旧实例可从新安装包运行这两个只读命令，检测后仍先 upgrade_preview。

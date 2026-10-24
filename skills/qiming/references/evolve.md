@@ -25,3 +25,5 @@
 实例属于本项目，可以修改。`validate` 对文件指纹变化返回 `ok_with_warnings` / `LOCAL_MODIFICATION`，保留修改并提示内容尚未经验证；文件缺失、身份错误和非法路径仍是错误。宿主副本必须与实际权威文件一致，陈旧副本仍报冲突。修改后需实际检查功能，不能把警告状态当作运行验证通过。
 
 `seed_commit` 是发行时记录的源码提交，`seed_commit_kind: release-source` 表示它指向写入发行元数据之前的源码提交，不是包含自身哈希的最终提交。最终发布提交见 Release。`seed_package_sha256` 标识安装包实际字节；Git 换行设置或本地修改会改变它。通过 npx 安装即使没有 `.git` 也保留这些信息。未标记的开发包可没有 commit，但仍有包指纹，不虚构来源。
+
+查看版本与官方更新：先 `qiming.py version`，再按需 `qiming.py check-update`，传入本项目权威 --workspace-manifest；详见[更新检查](updates.md)。旧实例可从新安装包运行这两个只读命令，检测后仍先 upgrade_preview。

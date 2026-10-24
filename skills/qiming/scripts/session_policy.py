@@ -3,6 +3,7 @@
 import json
 from pathlib import Path
 import sys
+from qiming_core.discovery import scope_check, project_root
 
 
 def text_ref(value):
@@ -28,7 +29,7 @@ def scope(request):
         return reject('PROJECT_UNVERIFIED')
     if 'project_id' in context and context['project_id'] is not None and not text_ref(context['project_id']):
         return reject('PROJECT_UNVERIFIED')
-    root = (manifest_path.parent / manifest['project_root']).resolve(strict=True)
+    root = project_root(manifest_path, manifest)
     if manifest.get('protocol') != 'qiming.workspace/1' or manifest.get('state') != 'ready':
         return reject('WORKSPACE_NOT_READY')
     if context.get('workspace_id') != manifest.get('workspace_id'):
@@ -37,6 +38,8 @@ def scope(request):
     cwd = Path(context['cwd']).resolve()
     if not cwd.is_relative_to(root):
         return reject('CWD_MISMATCH')
+    if not scope_check(manifest_path, cwd).get('active'):
+        return reject('WORKSPACE_BOUNDARY_MISMATCH')
     return None
 
 
@@ -57,7 +60,7 @@ def thread_scope(thread, context, manifest_path):
         # Explicit host null is an unregistered directory project, not an unknown ID.
         manifest_path = Path(manifest_path).resolve(strict=True)
         manifest = json.loads(manifest_path.read_text(encoding='utf-8'))
-        root = (manifest_path.parent / manifest['project_root']).resolve(strict=True)
+        root = project_root(manifest_path, manifest)
         if not thread.get('id'):
             return 'THREAD_ID_REQUIRED'
         if not context.get('current_thread_id'):
@@ -118,7 +121,7 @@ def evaluate(request):
             auth = request.get('authorization', {})
             if auth.get('split_current_work') is not True or not text_ref(auth.get('source_ref')):
                 return reject('CREATION_NOT_AUTHORIZED')
-            root = (Path(request['workspace_manifest']).resolve().parent / json.loads(Path(request['workspace_manifest']).read_text(encoding='utf-8'))['project_root']).resolve()
+            root = project_root(Path(request['workspace_manifest']))
             if context.get('project_id') and Path(context['cwd']).resolve() == root:
                 tool = 'mcp__codex_app__create_thread'
                 args = dict(target=dict(type='project', projectId=context['project_id'], environment=dict(type='local')),

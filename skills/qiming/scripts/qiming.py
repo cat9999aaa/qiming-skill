@@ -222,6 +222,44 @@ register('lock_break', lambda r: lock_break(Path(r['workspace_manifest']),r['arg
 register('upgrade_preview', lambda r: upgrade_preview(Path(r['workspace_manifest']),Path(r['args']['seed_dir'])))
 register('upgrade', lambda r: upgrade(Path(r['workspace_manifest']),r['args']['preview'],r['args']['plan_id']))
 
+from qiming_core.updates import version_info, check_updates
+register('version', lambda r: version_info(Path(r['workspace_manifest']) if r.get('workspace_manifest') else None))
+register('check_update', lambda r: check_updates(Path(r['workspace_manifest']) if r.get('workspace_manifest') else None,r['args'].get('channel')))
+
+
+def _short_version(argv, check=False):
+    parser=argparse.ArgumentParser(description='Check Qiming versions without changing project files')
+    parser.add_argument('--workspace-manifest',type=Path)
+    if check:
+        parser.add_argument('--channel',choices=['stable','preview'])
+    options=parser.parse_args(argv)
+    manifest=options.workspace_manifest
+    if manifest is None:
+        observed=discover(Path.cwd())
+        if observed['status']=='conflict':
+            output=response('version','conflict',None,observed['diagnostics'],[],None)
+            print(json.dumps(output,ensure_ascii=False))
+            return EXIT_CODES['conflict']
+        if observed.get('manifest_path'):
+            manifest=Path(observed['manifest_path'])
+    request={'protocol':'qiming.tool/1','request_id':'check-update' if check else 'version','op':'check_update' if check else 'version','args':{'channel':options.channel} if check else {}}
+    if manifest is not None:
+        request['workspace_manifest']=str(manifest)
+    output=dispatch(request)
+    print(json.dumps(output,ensure_ascii=False))
+    info=output.get('result') or {}
+    if check:
+        print('启明更新检查：'+str(info.get('comparison','unknown')),file=sys.stderr)
+        if info.get('latest'):
+            print('官方版本：'+info['latest']['version']+' · '+info['channel'],file=sys.stderr)
+        for diagnostic in output.get('diagnostics',[]):
+            print(diagnostic.get('message',''),file=sys.stderr)
+    else:
+        print('工具包版本：'+str(info.get('package',{}).get('version','unknown')),file=sys.stderr)
+        print('项目实例版本：'+str((info.get('installed') or {}).get('version','未选择实例')),file=sys.stderr)
+    return EXIT_CODES[output['status']]
+
+
 def _short_init(argv):
     parser=argparse.ArgumentParser(description='Initialize Qiming in this project only')
     parser.add_argument('--root',type=Path,default=Path.cwd())
@@ -279,6 +317,10 @@ def _short_log(argv: list[str]) -> int:
 
 
 def main() -> int:
+    if sys.argv[1:2] == ['version']:
+        return _short_version(sys.argv[2:])
+    if sys.argv[1:2] == ['check-update']:
+        return _short_version(sys.argv[2:],check=True)
     if sys.argv[1:2] == ["init"]:
         return _short_init(sys.argv[2:])
     if sys.argv[1:2] == ["log"]:

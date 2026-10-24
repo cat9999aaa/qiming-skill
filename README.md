@@ -1,6 +1,6 @@
 # Qiming / 启明
 
-[![Tests](https://github.com/cat9999aaa/qiming-skill/actions/workflows/tests.yml/badge.svg)](https://github.com/cat9999aaa/qiming-skill/actions/workflows/tests.yml) · Python 3.11+ · [v0.2.2](https://github.com/cat9999aaa/qiming-skill/releases/tag/v0.2.2)
+[![Tests](https://github.com/cat9999aaa/qiming-skill/actions/workflows/tests.yml/badge.svg)](https://github.com/cat9999aaa/qiming-skill/actions/workflows/tests.yml) · Python 3.11+ · [v0.3.0](https://github.com/cat9999aaa/qiming-skill/releases/tag/v0.3.0)
 
 Official website / 官网：https://qiming.dashen.wang/
 
@@ -63,3 +63,5 @@ python3 .agents/skills/qiming/scripts/qiming.py init --root . --goal "完成当�
 2026-10-01：Codex 和 Claude Code 的真实新会话接续抽查通过；Gemini CLI 需要登录，本次未验证；Cursor / OpenCode 完整行为矩阵待测。三系统 CI 结果见上方 Actions，不能从文件格式支持推断全部宿主兼容。
 
 Operational guides: [English quickstart](skills/qiming/references/quickstart.en.md), [tools](skills/qiming/references/tools.en.md), [profile](skills/qiming/references/profile.en.md), [adaptation](skills/qiming/references/adapt.en.md). Other references and generated guidance remain primarily Chinese.
+
+Version/update checks: `python3 .qiming/qiming-user/scripts/qiming.py version --workspace-manifest .qiming/workspace.json` and `python3 .qiming/qiming-user/scripts/qiming.py check-update --workspace-manifest .qiming/workspace.json`. [Guide](skills/qiming/references/updates.en.md). This release uses the preview channel; checks never overwrite project rules.

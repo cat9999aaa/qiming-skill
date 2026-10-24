@@ -46,14 +46,14 @@
     "init_note": "下面路径以 Skills CLI 安装到 .agents 为例；实际安装位置不同就替换路径。Windows 将 python3 换成 py -3。默认 JSON 不需要额外 Python 库；--dry-run 可先预览。",
     "upgrade_title": "已经用过旧版？",
     "upgrade_note": "对 Agent 说：启明已更新，请用新安装包先做 upgrade_preview，保留我改过的规则、原目录和会员 ID，再升级未修改部分。不要删除 .qiming，也不要重新初始化覆盖。",
-    "version_title": "v0.2.0 · 接入与恢复整改",
+    "version_title": "v0.3.0 · 跨设备合并与版本检查",
     "version_items": [
-      "新增 init、项目宿主绑定、安全升级预览与陈旧锁检查。",
-      "默认 JSON 记录支持递归检索和快速追加；修复凭据检查与普通链接误报。",
-      "公开自动化测试与三系统 CI；实际结果以 Actions 为准，完整 Agent 行为矩阵尚未完成。"
+      "合并专题会话管理与上下文刷新覆盖说明，修复独立子项目边界检查。新增离线 version 和显式联网 check-update，区分项目实例与安装包版本；升级仍先预览，保留本地规则与会员 ID。"
     ],
     "smoke_title": "真实新会话测试 · 演示数据",
-    "smoke_body": "2026-10-01，Codex 与 Claude Code 分别在新会话中读取同一个演示项目，回答：“前两节已完成，第三节尚未校对；下一步核对 4 月 12 日与 4 月 15 日的先后顺序。”两者都引用了 START.md 与任务记录，并指出验收证据为空。这只验证接续抽查，不代表完整行为矩阵通过。Gemini 本次需要登录，未验证。"
+    "smoke_body": "2026-10-01，Codex 与 Claude Code 分别在新会话中读取同一个演示项目，回答：“前两节已完成，第三节尚未校对；下一步核对 4 月 12 日与 4 月 15 日的先后顺序。”两者都引用了 START.md 与任务记录，并指出验收证据为空。这只验证接续抽查，不代表完整行为矩阵通过。Gemini 本次需要登录，未验证。",
+    "check_title": "查看版本、检测更新",
+    "check_note": "下面两个命令分别查看本地版本、查询官方发行。检测不会改动项目。当前为 preview 预发布频道；断网或限流会报告未知，确认更新后再让 Agent 获取新包并先做升级预览。"
   },
   "zh-TW": {
     "title": "從「聊過了」到「找得到、接得上」",
@@ -102,14 +102,14 @@
     "init_note": "此例使用 .agents 安裝路徑，請替換成實際路徑。Windows 將 python3 改為 py -3。預設 JSON 無須額外 Python 套件；--dry-run 可預覽。",
     "upgrade_title": "已經使用舊版？",
     "upgrade_note": "告訴 Agent：使用新安裝包先做 upgrade_preview，保留我的規則、原目錄與會員 ID，再升級未修改部分。不要刪除 .qiming 或覆蓋初始化。",
-    "version_title": "v0.2.0 · 接入與復原整改",
+    "version_title": "v0.3.0 · 跨裝置合併與版本檢查",
     "version_items": [
-      "新增 init、專案綁定、安全升級預覽與陳舊鎖檢查。",
-      "預設 JSON 支援遞迴搜尋與快速追加；修正憑據檢查與普通連結誤報。",
-      "公開測試與三系統 CI；結果以 Actions 為準，完整 Agent 行為矩陣尚未完成。"
+      "合併專題對話管理與上下文更新範圍說明，修正獨立子專案邊界。新增離線 version 與明確聯網 check-update，區分實例與安裝包版本；升級先預覽並保留本地規則及會員 ID。"
     ],
     "smoke_title": "真實新對話測試 · 示範資料",
-    "smoke_body": "2026-10-01，Codex 與 Claude Code 在新對話讀取同一示範專案，回答：前兩節完成，第三節待校對；下一步核對 4 月 12 日與 4 月 15 日的先後。兩者引用 START.md 與任務記錄，並指出缺少驗收證據。這是接續抽查，完整矩陣仍待測。Gemini 本次需登入，未驗證。"
+    "smoke_body": "2026-10-01，Codex 與 Claude Code 在新對話讀取同一示範專案，回答：前兩節完成，第三節待校對；下一步核對 4 月 12 日與 4 月 15 日的先後。兩者引用 START.md 與任務記錄，並指出缺少驗收證據。這是接續抽查，完整矩陣仍待測。Gemini 本次需登入，未驗證。",
+    "check_title": "查看版本、檢查更新",
+    "check_note": "兩個命令分別查看本地版本、查詢官方發行。檢查不改動專案。目前為 preview 預發行頻道；斷線或限流回報未知，確認更新後再取得新包並先預覽升級。"
   },
   "en": {
     "title": "From a conversation to work you can resume",
@@ -158,14 +158,14 @@
     "init_note": "This example assumes the Skills CLI installed into .agents; substitute the actual path. On Windows use py -3 instead of python3. Default JSON requires no extra Python packages. Add --dry-run to preview.",
     "upgrade_title": "Already using an older version?",
     "upgrade_note": "Ask your agent to run upgrade_preview from the new package, preserve local rules, paths and member IDs, then upgrade unchanged resources. Do not delete .qiming or overwrite the project with a fresh setup.",
-    "version_title": "v0.2.0 · Onboarding and recovery fixes",
+    "version_title": "v0.3.0 · Cross-device integration and update checks",
     "version_items": [
-      "Added init, project bindings, safe upgrade previews and stale-lock inspection.",
-      "Recursive JSON records support search and quick logging; improved credential checks and ordinary URL handling.",
-      "Published automated tests and a three-OS CI matrix. Check Actions for results; the complete agent behavior matrix is still pending."
+      "Merged conversation lifecycle guidance and explicit context refresh coverage; fixed nested-project scope checks. Added offline version and explicit online check-update, distinguishing installed instances from packages. Upgrades still preserve local rules and IDs through preview."
     ],
     "smoke_title": "Real fresh-session check · synthetic records",
-    "smoke_body": "On 2026-10-01, Codex and Claude Code independently read a demo project: sections one and two were recorded as complete; section three still needed checking, specifically the order of April 12 and April 15. Both cited START.md and the task record and noted missing acceptance evidence. This is a continuity smoke check, not the full behavior matrix. Gemini required login and was not verified."
+    "smoke_body": "On 2026-10-01, Codex and Claude Code independently read a demo project: sections one and two were recorded as complete; section three still needed checking, specifically the order of April 12 and April 15. Both cited START.md and the task record and noted missing acceptance evidence. This is a continuity smoke check, not the full behavior matrix. Gemini required login and was not verified.",
+    "check_title": "Check your version and available updates",
+    "check_note": "The commands below report local versions and query official releases. Checks do not change project files. This is the preview channel; failed or rate-limited checks report unknown. Obtain the new package and review an upgrade preview before applying changes."
   },
   "ja": {
     "title": "会話の記憶を、再開できる仕事へ",
@@ -214,13 +214,13 @@
     "init_note": "例は .agents への配置です。実際のパスに置き換えてください。Windows は python3 の代わりに py -3。標準 JSON は追加ライブラリ不要。--dry-run で事前確認できます。",
     "upgrade_title": "旧版を使っている場合",
     "upgrade_note": "新しいパッケージから upgrade_preview を実行し、独自ルール、元のディレクトリ、管理対象 ID を維持して未変更の資源を更新するよう依頼してください。.qiming の削除や初期化による上書きは行いません。",
-    "version_title": "v0.2.0 · 導入と復旧の改善",
+    "version_title": "v0.3.0 · 端末間の統合と更新確認",
     "version_items": [
-      "init、プロジェクト連携、安全な更新プレビュー、古いロックの確認を追加。",
-      "JSON 記録の再帰検索と追記を修正。秘密情報検出と通常 URL の処理を改善。",
-      "自動テストと 3 OS の CI を公開。結果は Actions を参照。完全な Agent 動作行列は未完了。"
+      "会話ライフサイクルとコンテキスト更新範囲を統合し、独立した子プロジェクトの境界判定を修正。オフライン version と明示的なオンライン check-update を追加。ローカルルールと ID を保つ更新プレビューを継続します。"
     ],
     "smoke_title": "実際の新規セッション検証 · デモ記録",
-    "smoke_body": "2026-10-01、Codex と Claude Code は同じデモプロジェクトを別々の新規セッションで読み、最初の 2 節は完了、3 節は未校正、次は 4 月 12 日と 15 日の順序を確認と回答しました。両者が START.md と作業記録を引用し、検証根拠の不足も指摘。完全な動作行列ではなく接続確認です。Gemini はログインが必要で未検証です。"
+    "smoke_body": "2026-10-01、Codex と Claude Code は同じデモプロジェクトを別々の新規セッションで読み、最初の 2 節は完了、3 節は未校正、次は 4 月 12 日と 15 日の順序を確認と回答しました。両者が START.md と作業記録を引用し、検証根拠の不足も指摘。完全な動作行列ではなく接続確認です。Gemini はログインが必要で未検証です。",
+    "check_title": "バージョンと更新を確認",
+    "check_note": "ローカルバージョンと公式リリースを別々に確認します。プロジェクトは変更しません。現在は preview チャンネルです。通信失敗や制限は不明と報告し、更新時は新パッケージのプレビューから進めます。"
   }
 }

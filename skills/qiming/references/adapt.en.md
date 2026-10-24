@@ -18,3 +18,5 @@ Daily work uses the project-owned qiming-user instance. bind creates a project-l
 Keep retained outputs, ownership, source tasks, verification evidence and next steps linked. An empty control directory with default text is not a completed adaptation. Plain Q&A does not require a work record. For ongoing work, use controlled record writes and refresh_context after startup summary changes.
 
 Upgrade from a new package with upgrade_preview then the exact reviewed upgrade result/plan_id; preserve local rules, IDs and profile. Never delete/reinitialize an existing instance to obtain an upgrade. The user instance remains usable without the seed. Optional operational conventions are in the Chinese [security](security.md) and [infrastructure](infrastructure.md) references. The broader references and generated guidance remain primarily Chinese; these four English guides cover the common workflows.
+
+Version checks: use `qiming.py version` offline or `qiming.py check-update` explicitly online, with the authoritative --workspace-manifest. See [updates](updates.en.md). Old instances can use the new package without reinitializing.

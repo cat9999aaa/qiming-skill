@@ -22,3 +22,5 @@ description: Use when the user explicitly asks to initialize, adopt, or repair Q
 首次接入优先使用 [quickstart](references/quickstart.md) 的 `init`，不要照抄示例 UUID 或手编默认清单。已有结构看 [profile](references/profile.md)，陌生名词看 [glossary](references/glossary.md)。旧实例从新安装包调用 upgrade_preview；永远不直接覆盖实例目录。
 
 English operational guides: [Quickstart](references/quickstart.en.md) · [Tools](references/tools.en.md) · [Profile](references/profile.en.md) · [Adaptation](references/adapt.en.md). Other references and generated guidance are primarily Chinese.
+
+用户询问版本或升级时，按[版本检查](references/updates.md)使用 version / check-update，区分工具包与项目实例。需要专题会话或交接归档时按[会话管理](references/conversations.md)核对范围与授权。

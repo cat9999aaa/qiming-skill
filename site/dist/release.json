@@ -1,5 +1,8 @@
 {
   "repo_url": "https://github.com/cat9999aaa/qiming-skill",
   "site_url": "https://qiming.dashen.wang",
-  "published": true
+  "published": true,
+  "version": "0.3.0",
+  "release": "https://github.com/cat9999aaa/qiming-skill/releases/tag/v0.3.0",
+  "release_channel": "preview"
 }
